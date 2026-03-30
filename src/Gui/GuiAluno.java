@@ -9,12 +9,13 @@ public class GuiAluno {
     public void menu(){
         int opc1 =1;
         while (opc1 ==1){
-            System.out.println("Menu Aluno");
-            System.out.println("1- Cadastrar Aluno");
-            System.out.println("2- Listar Alunos");
-            System.out.println("3- Remover Aluno");
-            System.out.println("4- Editar Aluno");
-            System.out.println("5- Sair");
+            System.out.println("           MENU ALUNO           ");
+            System.out.println(" [1] - Cadastrar Novo Aluno");
+            System.out.println(" [2] - Listar Alunos Cadastrados");
+            System.out.println(" [3] - Remover Aluno");
+            System.out.println(" [4] - Alterar Dados de um Aluno");
+            System.out.println(" [5] - Voltar ao Menu Principal");
+            System.out.print("Escolha uma opção: ");
             int op;
             try {
                 op =sc1.nextInt();
