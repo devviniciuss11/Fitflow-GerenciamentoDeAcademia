@@ -1,5 +1,6 @@
 package Servico;
 
+import Entidade.Aluno;
 import Entidade.Personal;
 import Repositorio.PersonalRepositorio;
 import java.time.LocalDate;
@@ -136,7 +137,42 @@ public class PersonalServico {
         }
 
     }
+public void GerenciarSeusAlunos(){
+    System.out.println("Gerenciar seus alunos");
+    System.out.println("O que deseja fazer? ");
+    int sair=2;
+    while(sair!=0){
+        System.out.println(" [1] - Adicionar um Aluno novo pra sua lista de alunos");
+        System.out.println(" [2] - Listar seus Alunos");
+        System.out.println(" [3] - Remover Aluno da sua lista");
+        System.out.println(" [4] - Alterar Dados de seu Aluno");
+        System.out.println(" [5] - Voltar ao Menu Principal");
+        Scanner sc1 = new Scanner(System.in);
+        int op = sc1.nextInt();
+        switch (op){
+            case 1:
+                PersonalRepositorio personalRepositorio = new PersonalRepositorio();
+                personalRepositorio.adicionarAluno();
+                System.out.println("Adicionando um novo Aluno");
 
+
+            case 2:
+                System.out.println("Listando seus alunos");
+                break;
+            case 3:
+                System.out.println("Removendo Aluno da sua lista");
+                break;
+            case 4:
+                System.out.println("Alterando Dados de seu Aluno");
+                break;
+
+                case 5:
+                System.out.println("Voltando ao Menu Principal");
+                sair=0;
+        }
+    }
+
+}
 
 }
 

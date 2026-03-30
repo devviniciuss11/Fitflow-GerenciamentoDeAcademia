@@ -18,7 +18,8 @@ public class GuiPersonal {
             System.out.println(" [2] - Listar Personais Cadastrados");
             System.out.println(" [3] - Remover Personal");
             System.out.println(" [4] - Alterar Dados de um Personal");
-            System.out.println(" [5] - Voltar ao Menu Principal");
+            System.out.println(" [5] - Gerenciar Seus alunos");
+            System.out.println(" [6] - Voltar ao Menu Principal");
             System.out.print("Escolha uma opção: ");
             try{
                 op = sc.nextInt();
@@ -36,7 +37,8 @@ public class GuiPersonal {
                 case 2 -> servico.listarPersonais();
                 case 3 -> servico.excluirPersonal();
                 case 4 -> servico.alterarPersonal();
-                case 5 -> System.out.println(" Voltando ao Menu Principal... ");
+                case 5 -> servico.GerenciarSeusAlunos();
+                case 6 -> System.out.println(" Voltando ao Menu Principal... ");
                 default -> System.out.println(" Opção Inválida! Tente Novamente. ");
 
             }
