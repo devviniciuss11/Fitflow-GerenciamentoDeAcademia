@@ -1,31 +1,50 @@
 package Servico;
 
-import Entidade.Plano;
 import Repositorio.PlanoRepositorio;
-
+import Entidade.Plano;
 import java.util.List;
 
 public class PlanoServico {
-
     private PlanoRepositorio repositorio;
 
-    public PlanoServico(PlanoRepositorio repository) {
-        this.repositorio = repository;
+    public PlanoServico(){
+        repositorio = new PlanoRepositorio();
     }
 
-    public void criarPlano(Plano plano) {
-        repositorio.criar(plano);
+    public void cadastrarPlano(Plano plano){
+    repositorio.getPlanos().add(plano);
+    }
+    public List<Plano> listarPlano(){
+        return repositorio.getPlanos();
     }
 
-    public List<Plano> listarPlanos() {
-        return repositorio.listar();
+    public Plano buscarPorId(int id){
+        for (Plano p : repositorio.getPlanos()){
+            if (p.getId() == id){
+                return p;
+            }
+        }
+        return null;
     }
 
-    public void atualizarPlano(String nome, Plano plano) {
-        repositorio.atualizar(nome, plano);
+    public boolean removerPlano(int id){
+    Plano plano = buscarPorId(id);
+
+        if (plano != null){
+            repositorio.getPlanos().remove(plano);
+            return true;
+        }
+        return false;
     }
 
-    public void deletarPlano(String nome) {
-        repositorio.deletar(nome);
+    public boolean atualizarPlano(Plano planoAtualizado){
+        List<Plano> lista = repositorio.getPlanos();
+
+        for (int i = 0; i < lista.size(); i++){
+            if(lista.get(i).getId() == planoAtualizado.getId()){
+                return true;
+            }
+        }
+        return false;
     }
 }

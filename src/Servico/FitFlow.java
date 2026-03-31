@@ -2,6 +2,7 @@ package Servico;
 
 import Gui.GuiAluno;
 import Gui.GuiPersonal;
+import Gui.GuiPlano;
 
 import java.util.Scanner;
 
@@ -25,6 +26,9 @@ public class FitFlow {
                     GuiPersonal guiPersonal = new GuiPersonal();
                     guiPersonal.menu();
                     break;
+                case 4:
+                    GuiPlano guiPlano = new GuiPlano();
+                    guiPlano.menuPlano();
                 case 5:
                     System.out.println("Saindo...");
                     opc2=0;
