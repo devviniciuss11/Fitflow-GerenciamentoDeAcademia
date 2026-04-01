@@ -1,20 +1,18 @@
 package Entidade;
 
-import java.util.ArrayList;
-
 public class Plano {
     private String nome;
     private double valor;
     private int duracao;
     private String descricao;
+    private int id;
 
-    public Plano(){}
-
-    public Plano(String nome, double valor, int duracao, String descricao){
+    public Plano(int id, String nome, double valor, String descricao, int duracao) {
         this.nome = nome;
         this.valor = valor;
         this.duracao = duracao;
         this.descricao = descricao;
+        this.id = id;
     }
 
     public int getDuracao() {
@@ -45,8 +43,19 @@ public class Plano {
         return descricao;
     }
 
+    public int getId(){
+        return id;
+    }
     public void setDescricao(String descricao) {
         this.descricao = descricao;
     }
 
+    @Override
+    public String toString(){
+        return "ID: " + id +
+                "| Nome: " + nome +
+                "| Valor: R$ " + valor +
+                "| Duração: " + duracao +
+                "| Descrição: " + descricao;
+    }
 }
