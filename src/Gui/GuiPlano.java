@@ -16,7 +16,7 @@ public class GuiPlano {
         int opc = -1;
         while(opc != 0){
             System.out.println("========== MENU PLANOS ==========");
-            System.out.println(" [1] Cadastra Plano personalizado. ");
+            System.out.println(" [1] Cadastrar Planos personalizados. ");
             System.out.println(" [2] Listar Planos disponiveis. ");
             System.out.println(" [3] Remover Planos. ");
             System.out.println(" [4] Alterar Planos. ");
@@ -40,11 +40,11 @@ public class GuiPlano {
                     atualizar();
                     break;
                 case 0:
-                    System.out.println("Saindo...");
+                    System.out.println("Saindo.......✈");
                     break;
 
                 default:
-                    System.out.println("Opção inválida!");
+                    System.out.println("OPÇÃO INVÁLIDA!❌");
             }
         }
     }
@@ -79,9 +79,12 @@ public class GuiPlano {
 
         System.out.println("Duração: ");
         int duracao = sc.nextInt();
+        sc.nextLine();
 
-        System.out.println("Descricao ");
+        System.out.println("Descrição: ");
         String descricao = sc.nextLine();
+
+        System.out.println("=================================");
 
         Plano plano = new Plano(id, nome, valor, descricao, duracao);
 
@@ -116,6 +119,7 @@ public class GuiPlano {
 
         System.out.println("Novo Duração: ");
         int duracao = sc.nextInt();
+        sc.nextLine();
 
         System.out.println("Nova Descrição: ");
         String descricao = sc.nextLine();
