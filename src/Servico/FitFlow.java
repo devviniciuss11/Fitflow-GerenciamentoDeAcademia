@@ -27,10 +27,12 @@ public class FitFlow {
                     guiPersonal.menu();
                     break;
                 case 4:
-                    GuiPlano guiPlano = new GuiPlano();
-                    guiPlano.menuPlano();
+                    PlanoServico servico = new PlanoServico();
+                    GuiPlano gui = new GuiPlano(servico);
+                    gui.menuPlano();
+                    break;
                 case 5:
-                    System.out.println("Saindo...");
+                    System.out.println("Saindo.....");
                     opc2=0;
                     break;
             }

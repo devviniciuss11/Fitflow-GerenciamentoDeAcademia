@@ -6,7 +6,11 @@ import java.util.List;
 
 public class GuiPlano {
     private Scanner sc = new Scanner(System.in);
-    private PlanoServico servico = new PlanoServico();
+    private PlanoServico servico;
+
+    public GuiPlano(PlanoServico servico){
+        this.servico = servico;
+    }
 
     public void menuPlano(){
         int opc = -1;
@@ -73,10 +77,17 @@ public class GuiPlano {
         System.out.print("Valor: ");
         double valor = sc.nextDouble();
 
-        Plano plano = new Plano(id, nome, valor);
+        System.out.println("Duração: ");
+        int duracao = sc.nextInt();
+
+        System.out.println("Descricao ");
+        String descricao = sc.nextLine();
+
+        Plano plano = new Plano(id, nome, valor, descricao, duracao);
 
         servico.cadastrarPlano(plano);
-
+        System.out.println("Qtd depois de cadastrar: "
+                + servico.listarPlano().size());
         System.out.println("CADASTRO REALIZADO! ✅");
     }
     private void remover(){
@@ -103,7 +114,13 @@ public class GuiPlano {
         System.out.print("Novo Valor: ");
         double valor = sc.nextDouble();
 
-        Plano plano = new Plano(id, nome, valor);
+        System.out.println("Novo Duração: ");
+        int duracao = sc.nextInt();
+
+        System.out.println("Nova Descrição: ");
+        String descricao = sc.nextLine();
+
+        Plano plano = new Plano(id, nome, valor, descricao, duracao);
 
         boolean atualizado = servico.atualizarPlano(plano);
 
