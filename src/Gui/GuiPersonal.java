@@ -1,8 +1,5 @@
 package Gui;
-
 import Servico.PersonalServico;
-
-import java.nio.file.attribute.UserDefinedFileAttributeView;
 import java.util.Scanner;
 
 
@@ -12,19 +9,21 @@ public class GuiPersonal {
 
     public void menu(){
         int op = -1;
-        while (op != 5){
-            System.out.println("           MENU PERSONAL           ");
+        while (op != 7){
+            System.out.println("    MENU PERSONAL        ");
             System.out.println(" [1] - Cadastrar Novo Personal");
             System.out.println(" [2] - Listar Personais Cadastrados");
             System.out.println(" [3] - Remover Personal");
             System.out.println(" [4] - Alterar Dados de um Personal");
-            System.out.println(" [5] - Voltar ao Menu Principal");
-            System.out.print("Escolha uma opção: ");
-            try{
-                op = sc.nextInt();
-                sc.nextLine();
+            System.out.println(" [5] - Vicnular Aluno ao Personal");
+            System.out.println(" [6] - Ver Alunos de um Personal");
+            System.out.println(" [7] - Voltar ao Menu Principal");
+            System.out.println(" Escolha uma opção: ");
 
-            }catch (java.util.InputMismatchException e) {
+            try {
+                op =sc.nextInt();
+                sc.nextLine();
+            } catch (java.util.InputMismatchException e) {
                 System.out.println(" ERRO: Digite apenas números!");
                 sc.nextLine();
                 continue;
@@ -36,13 +35,12 @@ public class GuiPersonal {
                 case 2 -> servico.listarPersonais();
                 case 3 -> servico.excluirPersonal();
                 case 4 -> servico.alterarPersonal();
-                case 5 -> System.out.println(" Voltando ao Menu Principal... ");
+                case 5 -> servico.vincularAlunoAoPersonal();
+                case 6 -> servico.listarAlunosDoPersonal();
+                case 7 -> System.out.println(" Voltando ao Menu Principal... ");
                 default -> System.out.println(" Opção Inválida! Tente Novamente. ");
 
             }
-
-
-
 
         }
 
