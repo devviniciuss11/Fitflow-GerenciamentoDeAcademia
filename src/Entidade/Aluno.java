@@ -10,7 +10,7 @@ import java.util.Set;
 public class Aluno extends Pessoa{
     private ArrayList<Plano> planos;
     private ArrayList<Treino>fichaDeTreino;
-    public static Set<LocalDate> diasTreino = new HashSet<>();
+    public Set<LocalDate> diasTreino = new HashSet<>();
 
     @Override
     public void VerLogin(){
@@ -28,6 +28,16 @@ public class Aluno extends Pessoa{
         this.fichaDeTreino = new ArrayList<>();
         this.planos = new ArrayList<>();
 
+    }
+  
+    
+    
+    public Set<LocalDate> getDiasTreino() {
+        return diasTreino;
+    }
+
+    public void setDiasTreino(Set<LocalDate> diasTreino) {
+        this.diasTreino = diasTreino;
     }
 
     public ArrayList<Plano> getPlanos() {
