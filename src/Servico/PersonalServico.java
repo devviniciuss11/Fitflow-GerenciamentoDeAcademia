@@ -1,5 +1,7 @@
 package Servico;
 
+import Entidade.Aluno;
+import Repositorio.AlunoRepositorio;
 import Entidade.Personal;
 import Repositorio.PersonalRepositorio;
 import java.time.LocalDate;
@@ -13,6 +15,87 @@ public class PersonalServico {
 
     Scanner sc = new Scanner(System.in);
     PersonalRepositorio personalRepositorio = new PersonalRepositorio();
+
+    public void vincularAlunoAoPersonal(){
+        System.out.println("  Vincular Aluno ao Personal   ");
+        System.out.println("   Digite o CRAF do Personal   ");
+
+        String crafBusca = sc.nextLine();
+
+        Personal personalEncontrado = null;
+        for(Personal p : PersonalRepositorio.personais){
+            if (p.getCraf().equals(crafBusca)){
+                personalEncontrado = p;
+                break;
+
+            }
+
+        }
+
+        if(personalEncontrado == null){
+            System.out.println("  Personal não encontrado   ");
+            return;
+
+        }
+
+        System.out.println("  Digite o CPF do Aluno que será treinado pelo Personal:  ");
+        String cpfAluno = sc.nextLine();
+
+        Aluno alunoEncontrado = null;
+        for(Aluno a : AlunoRepositorio.alunos){
+            if(a.getCpf().equals(cpfAluno)){
+                alunoEncontrado = a;
+                break;
+
+            }
+
+        }
+
+        if(alunoEncontrado == null) {
+            System.out.println("  Aluno não encontrado na base de Dados! Verifique o CPF.  ");
+            return;
+
+        }
+
+        personalEncontrado.adicionarAluno(alunoEncontrado.getNome());
+        System.out.println(" Sucesso! O Aluno " + alunoEncontrado.getNome() + " agora treina com o Personal " + personalEncontrado.getNome() +".");
+
+
+    }
+
+    public void listarAlunosDoPersonal(){
+        System.out.println("  Ver alunos de um Personal  ");
+        System.out.println("  Digitar o CRAF do Personal:  ");
+        String crafBusca = sc.nextLine();
+
+        Personal personalEncontrado = null;
+        for (Personal p : PersonalRepositorio.personais) {
+            if(p.getCraf().equals(crafBusca)){
+                personalEncontrado = p;
+                break;
+
+            }
+
+        }
+        if(personalEncontrado != null) {
+            if(personalEncontrado.getAlunosdele() == null || personalEncontrado.getAlunosdele().isEmpty()) {
+                System.out.println(" Este Personal ainda não possui alunos vinculados. ");
+
+            }else {
+                System.out.println(" Alunos do Personal " + personalEncontrado.getNome() + ":");
+                for (String nomeAluno : personalEncontrado.getAlunosdele()){
+                    System.out.println(" - " + nomeAluno);
+
+                }
+
+            }
+
+        } else {
+            System.out.println(" Personal não encontrado! ");
+
+        }
+
+    }
 
     public void cadastrarPersonal(){
         System.out.println("     CADASTRO DO PERSONAL!     ");
@@ -139,4 +222,3 @@ public class PersonalServico {
 
 
 }
-
