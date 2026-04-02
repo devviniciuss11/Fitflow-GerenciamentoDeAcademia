@@ -16,6 +16,7 @@ public class GuiAluno {
             System.out.println(" [4] - Alterar Dados de um Aluno");
             System.out.println(" [5] - Voltar ao Menu Principal");
             System.out.print("Escolha uma opção: ");
+            System.out.println("5- Sair");
             int op;
             try {
                 op =sc1.nextInt();
