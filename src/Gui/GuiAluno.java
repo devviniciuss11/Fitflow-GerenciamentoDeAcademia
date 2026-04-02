@@ -2,6 +2,7 @@ package Gui;
 
 import Servico.AlunoServico;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class GuiAluno {
@@ -20,7 +21,7 @@ public class GuiAluno {
             int op;
             try {
                 op =sc1.nextInt();
-            }catch (java.util.InputMismatchException e){
+            }catch (InputMismatchException e){
                 System.out.println("digite apenas numeros");
                 sc1.nextLine();
                 return;
@@ -46,6 +47,9 @@ public class GuiAluno {
                     System.out.println("Saindo...");
                     opc1 = 0;
 
+                    break;
+                default:
+                    throw new IllegalStateException("Opcao Invalida: " + op);
             }
 
         }
