@@ -11,6 +11,7 @@ import java.time.format.DateTimeParseException;
 import java.util.*;
 
 
+import static Entidade.Aluno.diasTreino;
 import static Repositorio.AlunoRepositorio.alunos;
 
 public class AlunoServico {
@@ -18,6 +19,25 @@ public class AlunoServico {
     AlunoRepositorio alunoRepositorio = new AlunoRepositorio();
     Instancia instancia = new Instancia();
 
+    public static void marcarPresenca(){
+        LocalDate hoje = LocalDate.now();
+        if(diasTreino.contains(hoje)){
+            System.out.println("voce ja marcou presenca nesse dia");
+        }else{
+            diasTreino.add(hoje);
+            System.out.println("presenca marcada com sucesso "+ hoje);
+        }
+    }
+    public static void mostrarHistorico(){
+        if(diasTreino.isEmpty()){
+            System.out.println("Nenhuma presenca marcada");
+        }else{
+        System.out.println("Historico de presenca: ");
+        for(LocalDate data:diasTreino){
+            System.out.println("Presente - "+data);
+        }
+        }
+    }
     public int GeradorId() {
         {
             Set<Integer> idsUsados = new HashSet<>();
@@ -229,4 +249,6 @@ public class AlunoServico {
         }
 
     }
+
+
 }
