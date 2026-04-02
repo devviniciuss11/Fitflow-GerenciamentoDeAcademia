@@ -15,9 +15,10 @@ public class GuiAluno {
             System.out.println(" [2] - Listar Alunos Cadastrados");
             System.out.println(" [3] - Remover Aluno");
             System.out.println(" [4] - Alterar Dados de um Aluno");
-            System.out.println(" [5] - Voltar ao Menu Principal");
+            System.out.println(" [5] - Marcar Presenca na Academia");
+            System.out.println(" [6] - Ver Historico De Presenca");
+            System.out.println(" [7] - Voltar ao Menu Principal");
             System.out.print("Escolha uma opção: ");
-            System.out.println("5- Sair");
             int op;
             try {
                 op =sc1.nextInt();
@@ -43,7 +44,16 @@ public class GuiAluno {
                     AlunoServico alunoServico3 = new AlunoServico();
                     alunoServico3.alteraAluno();
                     break;
+
                 case 5:
+                    AlunoServico alunoServico4 = new AlunoServico();
+                    alunoServico4.marcarPresenca();
+                    break;
+
+                case 6:
+                    AlunoServico alunoServico5 = new AlunoServico();
+                    alunoServico5.mostrarHistorico();
+                case 7:
                     System.out.println("Saindo...");
                     opc1 = 0;
 
