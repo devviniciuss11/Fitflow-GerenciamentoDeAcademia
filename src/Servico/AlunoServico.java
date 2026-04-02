@@ -10,8 +10,6 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.*;
 
-
-import static Entidade.Aluno.diasTreino;
 import static Repositorio.AlunoRepositorio.alunos;
 
 public class AlunoServico {
@@ -19,25 +17,87 @@ public class AlunoServico {
     AlunoRepositorio alunoRepositorio = new AlunoRepositorio();
     Instancia instancia = new Instancia();
 
-    public static void marcarPresenca(){
+    public static void marcarPresenca(Aluno aluno){
+        if (aluno == null) {
+            System.out.println("Aluno invalido.");
+            return;
+        }
+
         LocalDate hoje = LocalDate.now();
-        if(diasTreino.contains(hoje)){
+        Set<LocalDate> diasTreino = aluno.getDiasTreino();
+
+        if (!diasTreino.add(hoje)) {
             System.out.println("voce ja marcou presenca nesse dia");
-        }else{
-            diasTreino.add(hoje);
-            System.out.println("presenca marcada com sucesso "+ hoje);
+        } else {
+            System.out.println("presenca marcada com sucesso " + hoje);
         }
     }
-    public static void mostrarHistorico(){
+
+    public static void mostrarHistorico(Aluno aluno){
+        if (aluno == null) {
+            System.out.println("Aluno invalido.");
+            return;
+        }
+
+        Set<LocalDate> diasTreino = aluno.getDiasTreino();
+
         if(diasTreino.isEmpty()){
             System.out.println("Nenhuma presenca marcada");
         }else{
-        System.out.println("Historico de presenca: ");
-        for(LocalDate data:diasTreino){
-            System.out.println("Presente - "+data);
-        }
+            System.out.println("Historico de presenca: ");
+            for(LocalDate data : diasTreino){
+                System.out.println("Presente - " + data);
+            }
         }
     }
+
+    public void presencaAluno() {
+        System.out.println("Digite o CPF do aluno para marcar/ver presenca:");
+        String cpf = sc.nextLine().trim();
+
+        Aluno alunoEncontrado = null;
+        for (Aluno a : alunos) {
+            if (a.getCpf() != null && a.getCpf().equals(cpf)) {
+                alunoEncontrado = a;
+                break;
+            }
+        }
+
+        if (alunoEncontrado == null) {
+            System.out.println("Aluno nao encontrado.");
+            return;
+        }
+
+        while (true) {
+            System.out.println("----- PRESENCA DO ALUNO: " + alunoEncontrado.getNome() + " -----");
+            System.out.println("1 - Marcar presenca hoje");
+            System.out.println("2 - Ver historico de presenca");
+            System.out.println("3 - Voltar");
+            System.out.print("Escolha: ");
+
+            int opc;
+            try {
+                opc = Integer.parseInt(sc.nextLine().trim());
+            } catch (NumberFormatException e) {
+                System.out.println("Digite apenas numeros.");
+                continue;
+            }
+
+            switch (opc) {
+                case 1:
+                    marcarPresenca(alunoEncontrado);
+                    break;
+                case 2:
+                    mostrarHistorico(alunoEncontrado);
+                    break;
+                case 3:
+                    return;
+                default:
+                    System.out.println("Opcao invalida.");
+            }
+        }
+    }
+
     public int GeradorId() {
         {
             Set<Integer> idsUsados = new HashSet<>();
@@ -184,7 +244,8 @@ public class AlunoServico {
             System.out.println("Aluno nao foi encontrado. Voltando para o menu...");
             return;
         }
-        System.out.println("Escolha o que voce quer alterar do aluno(a):" + aluno.getNome());
+
+        System.out.println("Escolha o que voce quer fazer no aluno(a):" + aluno.getNome());
         char opcao = 's';
         while (opcao != 'n') {
             System.out.println("1- Alterar Nome");

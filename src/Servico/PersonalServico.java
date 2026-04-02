@@ -17,8 +17,8 @@ public class PersonalServico {
     PersonalRepositorio personalRepositorio = new PersonalRepositorio();
 
     public void vincularAlunoAoPersonal(){
-        System.out.println("  Vincular Aluno ao Personal   ");
-        System.out.println("   Digite o CRAF do Personal   ");
+        System.out.println("Vincular Aluno ao Personal   ");
+        System.out.println("Digite o CRAF do Personal   ");
 
         String crafBusca = sc.nextLine();
 

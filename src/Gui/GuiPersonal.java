@@ -10,21 +10,21 @@ public class GuiPersonal {
     public void menu(){
         int op = -1;
         while (op != 7){
-            System.out.println("    MENU PERSONAL        ");
-            System.out.println(" [1] - Cadastrar Novo Personal");
-            System.out.println(" [2] - Listar Personais Cadastrados");
-            System.out.println(" [3] - Remover Personal");
-            System.out.println(" [4] - Alterar Dados de um Personal");
-            System.out.println(" [5] - Vicnular Aluno ao Personal");
-            System.out.println(" [6] - Ver Alunos de um Personal");
-            System.out.println(" [7] - Voltar ao Menu Principal");
-            System.out.println(" Escolha uma opção: ");
+            System.out.println("-------------MENU PERSONAL-------------");
+            System.out.println("[1] - Cadastrar Novo Personal");
+            System.out.println("[2] - Listar Personais Cadastrados");
+            System.out.println("[3] - Remover Personal");
+            System.out.println("[4] - Alterar Dados de um Personal");
+            System.out.println("[5] - Vicnular Aluno ao Personal");
+            System.out.println("[6] - Ver Alunos de um Personal");
+            System.out.println("[7] - Voltar ao Menu Principal");
+            System.out.println("Escolha uma opção: ");
 
             try {
                 op =sc.nextInt();
                 sc.nextLine();
             } catch (java.util.InputMismatchException e) {
-                System.out.println(" ERRO: Digite apenas números!");
+                System.out.println("ERRO: Digite apenas números!");
                 sc.nextLine();
                 continue;
 
@@ -37,8 +37,8 @@ public class GuiPersonal {
                 case 4 -> servico.alterarPersonal();
                 case 5 -> servico.vincularAlunoAoPersonal();
                 case 6 -> servico.listarAlunosDoPersonal();
-                case 7 -> System.out.println(" Voltando ao Menu Principal... ");
-                default -> System.out.println(" Opção Inválida! Tente Novamente. ");
+                case 7 -> System.out.println("Voltando ao Menu Principal... ");
+                default -> System.out.println("Opção Inválida! Tente Novamente. ");
 
             }
 
