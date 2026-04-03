@@ -3,6 +3,8 @@ package Servico;
 import Gui.GuiAluno;
 import Gui.GuiPersonal;
 import Gui.GuiPlano;
+import Gui.GuiTreino;
+import Repositorio.TreinoRepositorio;
 
 import java.util.Scanner;
 
