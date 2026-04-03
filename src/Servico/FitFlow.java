@@ -26,6 +26,12 @@ public class FitFlow {
                     GuiPersonal guiPersonal = new GuiPersonal();
                     guiPersonal.menu();
                     break;
+                case 3:
+                    TreinoRepositorio repositorio = new TreinoRepositorio();
+                    TreinoServico treinoServico = new TreinoServico(repositorio);
+                    GuiTreino guiTreino = new GuiTreino(treinoServico);
+                    guiTreino.menuTreino();
+                    break;
                 case 4:
                     PlanoServico servico = new PlanoServico();
                     GuiPlano gui = new GuiPlano(servico);
