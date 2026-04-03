@@ -12,7 +12,7 @@ public class FitFlow {
         int opc2=1;
         while(opc2==1){
             System.out.println("1- Gerenciar Alunos");
-            System.out.println("2- Gerenciar Personals");
+            System.out.println("2- Gerenciar Personais");
             System.out.println("3- Gerenciar Treinos");
             System.out.println("4- Gerenciar Planos");
             System.out.println("5- Sair");
