@@ -8,8 +8,6 @@ public class Treino {
     private String horario;
     private String descricao;
 
-    public Treino(){}
-
     public Treino(int id, int idAluno, int idPersonal, String data, String horario, String descricao) {
         this.id = id;
         this.idAluno = idAluno;
