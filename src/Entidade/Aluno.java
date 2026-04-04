@@ -3,12 +3,14 @@ package Entidade;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 
 public class Aluno extends Pessoa{
     private ArrayList<Plano> planos;
     private ArrayList<Treino>fichaDeTreino;
-    private boolean status;
+    public Set<LocalDate> diasTreino = new HashSet<>();
 
     @Override
     public void VerLogin(){
@@ -25,8 +27,17 @@ public class Aluno extends Pessoa{
         super(id,nome,cpf,dataNascimento,email,telefone,senha);
         this.fichaDeTreino = new ArrayList<>();
         this.planos = new ArrayList<>();
-        this.status = true;
 
+    }
+  
+    
+    
+    public Set<LocalDate> getDiasTreino() {
+        return diasTreino;
+    }
+
+    public void setDiasTreino(Set<LocalDate> diasTreino) {
+        this.diasTreino = diasTreino;
     }
 
     public ArrayList<Plano> getPlanos() {
@@ -45,11 +56,4 @@ public class Aluno extends Pessoa{
         this.fichaDeTreino = fichaDeTreino;
     }
 
-    public boolean isStatus() {
-        return status;
-    }
-
-    public void setStatus(boolean status) {
-        this.status = status;
-    }
 }

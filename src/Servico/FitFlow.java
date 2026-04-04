@@ -44,6 +44,7 @@ public class FitFlow {
                     opc2=0;
                     break;
             }
+
         }
     }
 }
