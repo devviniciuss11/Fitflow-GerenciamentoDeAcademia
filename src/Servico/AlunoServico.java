@@ -201,7 +201,7 @@ public class AlunoServico {
             System.out.println("Nenhum aluno cadastrado ainda !!!");
         }
         for (Aluno a : alunos) {
-            System.out.println("Dados do Aluno(a)" + a.getNome());
+            System.out.println("Dados do Aluno(a): " + a.getNome());
             System.out.println(a);
         }
     }

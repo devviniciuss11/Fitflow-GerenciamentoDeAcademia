@@ -1,7 +1,7 @@
 package Entidade;
 
 import java.time.LocalDate;
-import java.util.Date;
+
 
 public abstract class Pessoa {
     private int id;

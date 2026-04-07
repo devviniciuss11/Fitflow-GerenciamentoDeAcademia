@@ -150,7 +150,7 @@ public class PersonalServico {
 
         }else{
             for (Personal p : PersonalRepositorio.personais) {
-                System.out.println(" ID : " + p.getId() + " / Nome: " + p.getNome() + "/ Craf: " + p.getCraf());
+                System.out.println(p);
 
 
 

@@ -6,6 +6,7 @@ import Servico.TreinoServico;
 import java.util.List;
 import java.util.Scanner;
 
+
 public class GuiTreino {
 
     private Scanner sc = new Scanner(System.in);
@@ -57,7 +58,7 @@ public class GuiTreino {
         }
         for (Treino t : treinos) {
             // Adicionado t.getData() ou t.getDiaSemana() para aparecer na tela
-            System.out.println(STR."ID: \{t.getId()} | Aluno: \{t.getIdAluno()} | Dia: \{t.getData()} | Horário: \{t.getHorario()} | Treino de: \{t.getDescricao()}");
+            System.out.println();
         }
     }
 
