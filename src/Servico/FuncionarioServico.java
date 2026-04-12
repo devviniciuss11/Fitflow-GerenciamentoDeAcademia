@@ -1,0 +1,232 @@
+package Servico;
+import Entidade.Funcionario;
+import Interfacess.Instancia;
+import Repositorio.FuncionarioRepositorio;
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.HashSet;
+import java.util.Random;
+import java.util.Scanner;
+import java.util.*;
+
+import static Repositorio.FuncionarioRepositorio.funcionarios;
+
+
+public class FuncionarioServico {
+    Scanner sc = new Scanner(System.in);
+    FuncionarioRepositorio funcionariosRepositorio = new FuncionarioRepositorio();
+    Instancia instancia = new Instancia();
+
+    public int GeradorID() {
+        {
+
+            HashSet<Integer> IdsUsados = new HashSet<>();
+            Random random = new Random();
+            int novoID;
+            do {
+
+                novoID = random.nextInt(10000);
+            } while (IdsUsados.contains(novoID));
+            IdsUsados.add(novoID);
+            return novoID;
+
+        }
+    }
+
+    public void cadastrarFuncionarios() {
+        LocalDate datadeNascimento = LocalDate.now();
+        System.out.println("Area de Cadastro de Funcionario!!!");
+        int id = GeradorID();
+
+        System.out.println("Digite o nome do Funcionario: ");
+        String nome = sc.nextLine();
+
+        System.out.println("Digite o Cpf do Funcionario: ");
+        String Cpf = sc.nextLine();
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/mm/uuuu");
+        while (true) {
+            System.out.println("Digite a Data de Nascimento do Funcionario: (Formato dd/mm/yyyy): ");
+            String dataNacimento = sc.nextLine().trim();
+
+            try {
+                datadeNascimento = LocalDate.parse(dataNacimento, formatter);
+            } catch (DateTimeParseException e) {
+                System.out.println("Data ou Formato invalido. Exemplo: 02/08/2007");
+                continue;
+            }
+            int idade = Period.between(datadeNascimento, LocalDate.now()).getYears();
+
+            if (idade < 0) {
+                System.out.println("A Idade esta errada!! Tente novamente. ");
+                continue;
+            }
+            if (idade > 120) {
+                System.out.println("A idade esta errada (Maior que 120 anos). Tente novamente");
+                continue;
+            }
+            if (idade <= 17) {
+                System.out.println("Funcionarios precisam ter mais de 18 anos. Tente novamente ");
+                continue;
+            }
+            if (idade > 17) {
+                System.out.println("Idade Cadastrada com sucesso!!");
+            }
+            break;
+
+        }
+
+        System.out.println("Digite seu Email: ");
+        String Email = sc.nextLine();
+
+        System.out.println("Digite seu telefone: ");
+        String telefone = sc.nextLine();
+
+        System.out.println("Crie uma senha: ");
+        String senha = sc.nextLine();
+
+        System.out.println("Qual a Faixa Salario do Funcionario: ");
+        Double salario = sc.nextDouble();
+
+        System.out.println("Qual o Cargo do Funcionario: ");
+        String cargo = sc.nextLine();
+
+        System.out.println("Qual o Horario de trabalho: ");
+        String horario = sc.nextLine();
+
+        Funcionario funcionario = new Funcionario(id, nome, Cpf, datadeNascimento, Email, telefone,senha);
+        funcionariosRepositorio.Save(funcionario);
+        instancia.adicionar();
+    }
+
+
+    public void ListarFuncionarios() {
+        if (funcionarios.isEmpty()) {
+            System.out.println("Não há Funcionarios Cadastrados!!");
+        }else {
+            for (Funcionario f : funcionarios) {
+                System.out.println(" ID : " + f.getId() + " / Nome: " + f.getNome() + "Cargo: " + f.getCargo());
+            }
+        }
+    }
+    public void RemoverFuncionario(){
+        System.out.println("Aba de Remoção de Funcionarios!!");
+        System.out.println("Digite o CPF do Funcionario que deseja Remover");
+        String buscaCpf = sc.nextLine();
+        boolean removido = funcionarios.removeIf(Funcionario -> Funcionario.getCpf().equals(buscaCpf));
+
+        if (removido){
+            System.out.println("Funcionario com CPF: " + buscaCpf + " Removido");
+        }else {
+            System.out.println("Nenhum Funcionario com o Cpf: " + buscaCpf + " Encontrado!");
+        }
+    }
+
+    public void AlterarFuncionario() {
+        System.out.println("Pagina de Alteração de dados do Funcionario!!");
+        System.out.println("Digite o Cpf do funcionario");
+        String Cpf = sc.nextLine();
+        Funcionario funcionario = null;
+        for (Funcionario funcionario1 : funcionarios) {
+            if (funcionario1.getCpf().equals(Cpf)){
+                funcionario = funcionario1;
+                System.out.println("Funcionario " + funcionario.getNome() + " Encontrada com sucesso.");
+                break;
+            }
+        }
+        if (funcionario == null) {
+            System.out.println("Funcionario não encontrado. Voltando ao menu.");
+            return;
+        }
+
+        System.out.println("Escolha qual alteração gostaria de fazer nos dados do Funcionario(a): " + funcionario.getNome());
+        char opcao = '2';
+        while (opcao != '1') {
+            System.out.println("1- Alterar Nome");
+            System.out.println("2- Alterar CPF");
+            System.out.println("3- Alterar Data de Nascimento");
+            System.out.println("4- Alterar Email");
+            System.out.println("5- Alterar Telefone");
+            System.out.println("6- Alterar Senha");
+            System.out.println("7- Alterar Cargo");
+            System.out.println("8- Alterar Salario");
+            System.out.println("9- Alterar Horario de Trabalho");
+            System.out.println("10- Sair");
+            int opc = sc.nextInt();
+            switch (opc){
+                case 1:
+                    System.out.println("Digite o novo nome: ");
+                    String novoNome = sc.nextLine();
+                    funcionario.setNome(novoNome);
+                    instancia.alterar();
+                    break;
+                case 2:
+                    System.out.println("Digite o novo CPF: ");
+                    String novoCpf = sc.nextLine();
+                    funcionario.setCpf(novoCpf);
+                    instancia.alterar();
+                    break;
+                case 3:
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/uuuu");
+                    while (true) {
+                        System.out.println("Digite a nova data de nascimento (dd/MM/aaaa): ");
+                        String dataNascimento = sc.nextLine().trim();
+                        try {
+                            LocalDate dataNascimentoAlterada = LocalDate.parse(dataNascimento, formatter);
+                            funcionario.setDataNascimento(dataNascimentoAlterada);
+                            instancia.alterar();
+                            break;
+                        }catch (DateTimeParseException e) {
+                            System.out.println("Voce nao digitou a data no formato certo. Tente novamente (exemplo: 02/08/2007).");
+                        }
+                    }
+                    break;
+
+                case 4:
+                    System.out.println("Digite o novo email: ");
+                    String novoEmail = sc.nextLine();
+                    funcionario.setEmail(novoEmail);
+                    instancia.alterar();
+                    break;
+                case 5:
+                    System.out.println("Digite o novo número: ");
+                    String novoTelefone = sc.nextLine();
+                    funcionario.setTelefone(novoTelefone);
+                    instancia.alterar();
+                    break;
+                case 6:
+                    System.out.println("Digite a nova senha: ");
+                    String novaSenha = sc.nextLine();
+                    funcionario.setSenha(novaSenha);
+                    instancia.alterar();
+                    break;
+                case 7:
+                    System.out.println("Digite o novo cargo ocupado pelo Funcionario: ");
+                    String novoCargo = sc.nextLine();
+                    funcionario.setCargo(novoCargo);
+                    instancia.alterar();
+                    break;
+                case 8:
+                    System.out.println("Digite o novo salario do Funcionario: ");
+                    Double novoSalario = sc.nextDouble();
+                    funcionario.setSalario(novoSalario);
+                    instancia.alterar();
+                    break;
+                case 9:
+                    System.out.println("Digite o novo Horario de trabalho do Funcionario: ");
+                    Double novoHorario = sc.nextDouble();
+                    funcionario.setHorarioTrabalho(novoHorario);
+                    instancia.alterar();
+                    break;
+                case 10:
+                opcao = '1';
+                break;
+            }
+        }
+
+    }
+
+
+}

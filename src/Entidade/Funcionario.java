@@ -4,7 +4,7 @@ import java.time.LocalDate;
 
 public class Funcionario extends Pessoa {
     private String cargo;
-    private int salario;
+    private Double salario;
     private double horarioTrabalho;
     @Override
     public void VerLogin(){
@@ -14,8 +14,7 @@ public class Funcionario extends Pessoa {
 
     public Funcionario(
             int id, String nome, String cpf, LocalDate dataNascimento,
-            String email, String telefone, String senha,
-            String cargo, int salario, double horarioTrabalho
+            String email, String telefone, String senha
     ){
         super(id, nome, cpf, dataNascimento, email, telefone, senha);
         this.cargo = cargo;
@@ -32,11 +31,11 @@ public class Funcionario extends Pessoa {
         this.cargo = cargo;
     }
 
-    public int getSalario() {
+    public Double getSalario() {
         return salario;
     }
 
-    public void setSalario(int salario) {
+    public void setSalario(Double salario) {
         this.salario = salario;
     }
 
