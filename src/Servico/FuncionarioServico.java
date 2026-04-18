@@ -19,6 +19,86 @@ public class FuncionarioServico {
     FuncionarioRepositorio funcionariosRepositorio = new FuncionarioRepositorio();
     Instancia instancia = new Instancia();
 
+    public static void mostrarDiasTrabalhados(Funcionario funcionario) {
+        if (funcionario == null){
+            System.out.println("Funcionario não encontrado!");
+            return;
+        }
+        Set<LocalDate> diasTrabalhados = funcionario.getDiasTrabalhados();
+
+        if (diasTrabalhados.isEmpty()) {
+            System.out.println("O funcionario não possui nenhuma presença marcada!");
+        }else {
+            System.out.println("Historico de presenças do Funcionario: ");
+            for (LocalDate data : diasTrabalhados) {
+                System.out.println("Dias Presentes --- " + data);
+            }
+
+        }
+
+    }
+
+    public static void marcarPresenca(Funcionario funcionario) {
+        if (funcionario == null) {
+            System.out.println("Funcionario Não encontrado!!");
+            return;
+        }
+        LocalDate hoje = LocalDate.now();
+        Set<LocalDate> diasTrabalhados = funcionario.getDiasTrabalhados();
+        if (!diasTrabalhados.add(hoje)) {
+            System.out.println("O funcionario já consta como presente nesse dia!");
+        }else {
+            System.out.println("Presenca marcada com sucesso! " + hoje);
+        }
+
+    }
+
+    public void presencaFuncionario() {
+        System.out.println("Digite o Cpf do Funcionario que deseja Marcar Presença: ");
+        String Cpf = sc.nextLine().trim();
+
+        Funcionario funcionarioPresente = null;
+        for (Funcionario f: funcionarios) {
+            if (f.getCpf() != null && f.getCpf().equals(Cpf))
+                funcionarioPresente = f;
+            break;
+        }
+        if (funcionarioPresente == null) {
+            System.out.println("Funcionario não encontrado!!");
+            return;
+        }
+
+        while (true) {
+            System.out.println("Presença do Funcionario: "+ funcionarioPresente.getNome());
+            System.out.println("==========================================================");
+            System.out.println("Qual opção deseja executar: ");
+            System.out.println("1 - Ver historico de presença do Funcionario.");
+            System.out.println("2 - Marcar Presença do Funcionario.");
+            System.out.println("3 - Voltar.");
+
+            int opc;
+            try {
+                opc = Integer.parseInt(sc.nextLine().trim());
+            }catch (NumberFormatException e) {
+                System.out.println("Digite apenas Numeros: ");
+                continue;
+            }
+            switch (opc) {
+                case 1:
+                    mostrarDiasTrabalhados(funcionarioPresente);
+                    break;
+                case 2:
+                    marcarPresenca(funcionarioPresente);
+                    break;
+                case 3:
+                    return;
+                default:
+                    System.out.println("Opção invalida!");
+            }
+        }
+    }
+
+
     public int GeradorID() {
         {
 
@@ -46,17 +126,17 @@ public class FuncionarioServico {
         System.out.println("Digite o Cpf do Funcionario: ");
         String Cpf = sc.nextLine();
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/mm/uuuu");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/uuuu");
         while (true) {
-            System.out.println("Digite a Data de Nascimento do Funcionario: (Formato dd/mm/yyyy): ");
+            System.out.println("Digite a Data de Nascimento do Funcionario: (Formato dd/MM/yyyy): ");
             String dataNacimento = sc.nextLine().trim();
-
             try {
                 datadeNascimento = LocalDate.parse(dataNacimento, formatter);
             } catch (DateTimeParseException e) {
                 System.out.println("Data ou Formato invalido. Exemplo: 02/08/2007");
                 continue;
             }
+
             int idade = Period.between(datadeNascimento, LocalDate.now()).getYears();
 
             if (idade < 0) {
@@ -89,14 +169,16 @@ public class FuncionarioServico {
 
         System.out.println("Qual a Faixa Salario do Funcionario: ");
         Double salario = sc.nextDouble();
+        sc.nextLine(); // limpa o ENTER
 
         System.out.println("Qual o Cargo do Funcionario: ");
         String cargo = sc.nextLine();
 
         System.out.println("Qual o Horario de trabalho: ");
-        String horario = sc.nextLine();
+        Double horario = sc.nextDouble();
+        sc.nextLine();
 
-        Funcionario funcionario = new Funcionario(id, nome, Cpf, datadeNascimento, Email, telefone,senha);
+        Funcionario funcionario = new Funcionario(id, nome, Cpf, datadeNascimento, Email, telefone, senha, cargo, salario, horario);
         funcionariosRepositorio.Save(funcionario);
         instancia.adicionar();
     }
@@ -107,7 +189,7 @@ public class FuncionarioServico {
             System.out.println("Não há Funcionarios Cadastrados!!");
         }else {
             for (Funcionario f : funcionarios) {
-                System.out.println(" ID : " + f.getId() + " / Nome: " + f.getNome() + "Cargo: " + f.getCargo());
+                System.out.println(" ID : " + f.getId() + " / Nome: " + f.getNome() + " Cargo: " + f.getCargo());
             }
         }
     }
@@ -159,6 +241,7 @@ public class FuncionarioServico {
                 case 1:
                     System.out.println("Digite o novo nome: ");
                     String novoNome = sc.nextLine();
+                    sc.nextLine();
                     funcionario.setNome(novoNome);
                     instancia.alterar();
                     break;

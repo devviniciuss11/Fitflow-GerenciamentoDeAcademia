@@ -7,7 +7,7 @@ public class GuiFuncionario {
     Scanner sc = new Scanner(System.in);
     FuncionarioServico funcionarioServico = new FuncionarioServico();
 
-    public void menuFuncionario() {
+    public void menu() {
 
         int opcao = -1;
 
