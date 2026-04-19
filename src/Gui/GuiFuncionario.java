@@ -48,6 +48,8 @@ public class GuiFuncionario {
                     FuncionarioServico funcionarioServico4 = new FuncionarioServico();
                     funcionarioServico4.AlterarFuncionario();
                     break;
+                case 5: FuncionarioServico funcionarioServico5 = new FuncionarioServico();
+                funcionarioServico5.presencaFuncionario();
 
                 case 0:
                     System.out.println("Saindo...");
