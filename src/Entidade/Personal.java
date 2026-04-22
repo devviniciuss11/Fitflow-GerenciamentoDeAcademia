@@ -2,7 +2,6 @@ package Entidade;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class Personal extends Pessoa {
     private String craf;
@@ -15,7 +14,10 @@ public class Personal extends Pessoa {
         System.out.println("Email para realizar o login:"+this.getSenha());
         System.out.println("Senha para realizar o login:"+this.getSenha());
     }
-
+  @Override
+    public String toString() {
+        return "ID: " + getId() + ", Nome: " + getNome() + ",CPF: "+getCpf() + ",Data de Nascimento: "+getDataNascimento() + ",Email: "+getEmail() + ",Telefone: "+getTelefone() + ",Senha: "+getSenha();
+    }
     public Personal(int id, String nome, String cpf, LocalDate dataNascimento, String email, String telefone, String senha){
         super(id, nome, cpf, dataNascimento, email, telefone, senha);
     }

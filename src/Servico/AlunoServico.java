@@ -10,13 +10,93 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.*;
 
-
 import static Repositorio.AlunoRepositorio.alunos;
 
 public class AlunoServico {
     Scanner sc = new Scanner(System.in);
     AlunoRepositorio alunoRepositorio = new AlunoRepositorio();
     Instancia instancia = new Instancia();
+
+    public static void marcarPresenca(Aluno aluno){
+        if (aluno == null) {
+            System.out.println("Aluno invalido.");
+            return;
+        }
+
+        LocalDate hoje = LocalDate.now();
+        Set<LocalDate> diasTreino = aluno.getDiasTreino();
+
+        if (!diasTreino.add(hoje)) {
+            System.out.println("voce ja marcou presenca nesse dia");
+        } else {
+            System.out.println("presenca marcada com sucesso " + hoje);
+        }
+    }
+
+    public static void mostrarHistorico(Aluno aluno){
+        if (aluno == null) {
+            System.out.println("Aluno invalido.");
+            return;
+        }
+
+        Set<LocalDate> diasTreino = aluno.getDiasTreino();
+
+        if(diasTreino.isEmpty()){
+            System.out.println("Nenhuma presenca marcada");
+        }else{
+            System.out.println("Historico de presenca: ");
+            for(LocalDate data : diasTreino){
+                System.out.println("Presente - " + data);
+            }
+        }
+    }
+
+    public void presencaAluno() {
+        System.out.println("Digite o CPF do aluno para marcar/ver presenca:");
+        String cpf = sc.nextLine().trim();
+
+        Aluno alunoEncontrado = null;
+        for (Aluno a : alunos) {
+            if (a.getCpf() != null && a.getCpf().equals(cpf)) {
+                alunoEncontrado = a;
+                break;
+            }
+        }
+
+        if (alunoEncontrado == null) {
+            System.out.println("Aluno nao encontrado.");
+            return;
+        }
+
+        while (true) {
+            System.out.println("----- PRESENCA DO ALUNO: " + alunoEncontrado.getNome() + " -----");
+            System.out.println("1 - Marcar presenca hoje");
+            System.out.println("2 - Ver historico de presenca");
+            System.out.println("3 - Voltar");
+            System.out.print("Escolha: ");
+
+            int opc;
+            try {
+                opc = Integer.parseInt(sc.nextLine().trim());
+            } catch (NumberFormatException e) {
+                System.out.println("Digite apenas numeros.");
+                continue;
+            }
+
+            switch (opc) {
+                case 1:
+                    marcarPresenca(alunoEncontrado);
+                    break;
+                case 2:
+                    mostrarHistorico(alunoEncontrado);
+                    break;
+                case 3:
+                    return;
+                default:
+                    System.out.println("Opcao invalida.");
+            }
+        }
+    }
 
     public int GeradorId() {
         {
@@ -39,8 +119,6 @@ public class AlunoServico {
         System.out.println("Nome: ");
         String nome = sc.nextLine();
 
-        System.out.println("CPF: ");
-        String cpf = sc.nextLine();
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/uuuu");
         while (true) {
@@ -66,40 +144,43 @@ public class AlunoServico {
                 continue;
             }
 
-            if (idade <= 10) {
-                System.out.println("Aluno com " + idade + " anos: é obrigatório informar um responsável.");
-
-                String nomeResponsavel;
-                do {
-                    System.out.println("Nome do responsável: ");
-                    nomeResponsavel = sc.nextLine().trim();
-                    if (nomeResponsavel.isEmpty()) {
-                        System.out.println("Nome do responsável não pode ser vazio.");
-                    }
-                } while (nomeResponsavel.isEmpty());
-
-                String cpfResponsavel;
-                do {
-                    System.out.println("CPF do responsável: ");
-                    cpfResponsavel = sc.nextLine().trim();
-                    if (cpfResponsavel.isEmpty()) {
-                        System.out.println("CPF do responsável não pode ser vazio.");
-                    }
-                } while (cpfResponsavel.isEmpty());
-
-                String telefoneResponsavel;
-                do {
-                    System.out.println("Telefone do responsável: ");
-                    telefoneResponsavel = sc.nextLine().trim();
-                    if (telefoneResponsavel.isEmpty()) {
-                        System.out.println("Telefone do responsável não pode ser vazio.");
-                    }
-                } while (telefoneResponsavel.isEmpty());
-
-                System.out.println("Responsável registrado para validação: " + nomeResponsavel + " (CPF: " + cpfResponsavel + ")");
+            if (idade >=0 && idade < 5 ){
+                System.out.println("A academia nao da Suporte a Crianças nessa idade");
+                continue;
             }
 
-            break;
+            if (idade <= 10&& idade >= 5) {
+                System.out.println("Aluno com " + idade + " anos: é obrigatório informar os Dados Do Responsavel.");
+
+                System.out.println("Cpf Do Responsavel: ");
+                String cpf=sc.nextLine();
+
+                System.out.println("Email Do Responsavel: ");
+                String email=sc.nextLine();
+
+                System.out.println("Telefone Do Responsavel: ");
+                String telefone=sc.nextLine();
+
+                System.out.println("Senha Do Responsavel: ");
+                String senha=sc.nextLine();
+
+                ArrayList FichaDeTreino = new ArrayList();
+                ArrayList AlunoPlano= new ArrayList();
+
+                Aluno aluno = new Aluno(id, nome, cpf, dataNascimento, email, telefone, senha,FichaDeTreino, AlunoPlano);
+                alunoRepositorio.save(aluno);
+                instancia.adicionar();
+                return;
+
+                }
+                break;
+        }
+
+        System.out.println("CPF: ");
+        String cpf = sc.nextLine();
+        if (AlunoRepositorio.alunos.stream().anyMatch(a -> a.getCpf().equals(cpf))) {
+            System.out.println("Cpf ja cadastrado. Tente novamente com outro CPF.");
+            return;
         }
 
         System.out.println("Email: ");
@@ -111,7 +192,10 @@ public class AlunoServico {
         System.out.println("Senha: ");
         String senha = sc.nextLine();
 
-        Aluno aluno = new Aluno(id, nome, cpf, dataNascimento, email, telefone, senha);
+        ArrayList FichaDeTreino = new ArrayList();
+        ArrayList AlunoPlano= new ArrayList();
+
+        Aluno aluno = new Aluno(id, nome, cpf, dataNascimento, email, telefone, senha,FichaDeTreino, AlunoPlano);
         alunoRepositorio.save(aluno);
         instancia.adicionar();
     }
@@ -121,7 +205,7 @@ public class AlunoServico {
             System.out.println("Nenhum aluno cadastrado ainda !!!");
         }
         for (Aluno a : alunos) {
-            System.out.println("Dados do Aluno(a)" + a.getNome());
+            System.out.println("Dados do Aluno(a): " + a.getNome());
             System.out.println(a);
         }
     }
@@ -164,7 +248,8 @@ public class AlunoServico {
             System.out.println("Aluno nao foi encontrado. Voltando para o menu...");
             return;
         }
-        System.out.println("Escolha o que voce quer alterar do aluno(a):" + aluno.getNome());
+
+        System.out.println("Escolha o que voce quer fazer no aluno(a):" + aluno.getNome());
         char opcao = 's';
         while (opcao != 'n') {
             System.out.println("1- Alterar Nome");
@@ -229,4 +314,6 @@ public class AlunoServico {
         }
 
     }
+
+
 }

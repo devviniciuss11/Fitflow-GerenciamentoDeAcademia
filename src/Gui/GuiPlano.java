@@ -15,13 +15,12 @@ public class GuiPlano {
     public void menuPlano(){
         int opc = -1;
         while(opc != 0){
-            System.out.println("========== MENU PLANOS ==========");
-            System.out.println(" [1] Cadastra Plano personalizado. ");
-            System.out.println(" [2] Listar Planos disponiveis. ");
-            System.out.println(" [3] Remover Planos. ");
-            System.out.println(" [4] Alterar Planos. ");
-            System.out.println(" [0] Sair. ");
-            System.out.println("=================================");
+            System.out.println("-------------MENU PLANO-------------");
+            System.out.println("[1] Cadastra Plano personalizado. ");
+            System.out.println("[2] Listar Planos disponiveis. ");
+            System.out.println("[3] Remover Planos. ");
+            System.out.println("[4] Alterar Planos. ");
+            System.out.println("[0] Sair. ");
 
             opc = sc.nextInt();
 

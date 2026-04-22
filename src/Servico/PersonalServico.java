@@ -1,5 +1,7 @@
 package Servico;
 
+import Entidade.Aluno;
+import Repositorio.AlunoRepositorio;
 import Entidade.Personal;
 import Repositorio.PersonalRepositorio;
 import java.time.LocalDate;
@@ -14,15 +16,111 @@ public class PersonalServico {
     Scanner sc = new Scanner(System.in);
     PersonalRepositorio personalRepositorio = new PersonalRepositorio();
 
+    public void vincularAlunoAoPersonal(){
+        System.out.println("Vincular Aluno ao Personal   ");
+        System.out.println("Digite o CRAF do Personal   ");
+
+        String crafBusca = sc.nextLine();
+
+        Personal personalEncontrado = null;
+        for(Personal p : PersonalRepositorio.personais){
+            if (p.getCraf().equals(crafBusca)){
+                personalEncontrado = p;
+                break;
+
+            }
+
+        }
+
+        if(personalEncontrado == null){
+            System.out.println("  Personal não encontrado   ");
+            return;
+
+        }
+
+        System.out.println("  Digite o CPF do Aluno que será treinado pelo Personal:  ");
+        String cpfAluno = sc.nextLine();
+
+        Aluno alunoEncontrado = null;
+        for(Aluno a : AlunoRepositorio.alunos){
+            if(a.getCpf().equals(cpfAluno)){
+                alunoEncontrado = a;
+                break;
+
+            }
+
+        }
+
+        if(alunoEncontrado == null) {
+            System.out.println("  Aluno não encontrado na base de Dados! Verifique o CPF.  ");
+            return;
+
+        }
+
+        personalEncontrado.adicionarAluno(alunoEncontrado.getNome());
+        System.out.println(" Sucesso! O Aluno " + alunoEncontrado.getNome() + " agora treina com o Personal " + personalEncontrado.getNome() +".");
+
+
+    }
+
+    public void listarAlunosDoPersonal(){
+        System.out.println("  Ver alunos de um Personal  ");
+        System.out.println("  Digitar o CRAF do Personal:  ");
+        String crafBusca = sc.nextLine();
+
+        Personal personalEncontrado = null;
+        for (Personal p : PersonalRepositorio.personais) {
+            if(p.getCraf().equals(crafBusca)){
+                personalEncontrado = p;
+                break;
+
+            }
+
+        }
+        if(personalEncontrado != null) {
+            if(personalEncontrado.getAlunosdele() == null || personalEncontrado.getAlunosdele().isEmpty()) {
+                System.out.println(" Este Personal ainda não possui alunos vinculados. ");
+
+            }else {
+                System.out.println(" Alunos do Personal " + personalEncontrado.getNome() + ":");
+                for (String nomeAluno : personalEncontrado.getAlunosdele()){
+                    System.out.println(" - " + nomeAluno);
+
+                }
+
+            }
+
+        } else {
+            System.out.println(" Personal não encontrado! ");
+
+        }
+
+    }
+
     public void cadastrarPersonal(){
         System.out.println("     CADASTRO DO PERSONAL!     ");
 
         int id = new Random().nextInt(1000);
 
-        System.out.print(" Nome : ");
+        System.out.print("Nome: ");
         String nome = sc.nextLine();
 
-        System.out.print(" CRAF : ");
+        System.out.println("Cpf:");
+        String cpf = sc.nextLine();
+
+        System.out.println( "  Data de Nascimento (dd/mm/aaaa) : ");
+        LocalDate dataNascimento = LocalDate.now();
+
+        System.out.println( "Email: " );
+        String email = sc.nextLine();
+
+        System.out.println( "Telefone: " );
+        String telefone = sc.nextLine();
+
+        System.out.println( "Senha: ");
+        String senha = sc.nextLine();
+
+        System.out.print("CRAF: ");
         String craf = sc.nextLine();
 
         double salario = 0;
@@ -55,7 +153,7 @@ public class PersonalServico {
 
         sc.nextLine();
 
-        Personal novo = new Personal(id, nome, "000.000.000-00", LocalDate.now(), "email@teste.com", "9999-9999", "123", craf, salario, horas, new ArrayList<>());
+        Personal novo = new Personal(id, nome,cpf,  LocalDate.now(), email, telefone, senha, craf, salario, horas, new ArrayList<>());
         personalRepositorio.save(novo);
 
         System.out.println(" Personal Cadastrado com Sucesso! ");
@@ -67,7 +165,7 @@ public class PersonalServico {
 
         }else{
             for (Personal p : PersonalRepositorio.personais) {
-                System.out.println(" ID : " + p.getId() + " / Nome: " + p.getNome() + "/ Craf: " + p.getCraf());
+                System.out.println(p);
 
 
 
@@ -139,4 +237,3 @@ public class PersonalServico {
 
 
 }
-
