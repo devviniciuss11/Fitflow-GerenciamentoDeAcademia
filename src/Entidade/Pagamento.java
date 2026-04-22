@@ -3,7 +3,6 @@ package Entidade;
 import java.time.LocalDate;
 
 public class Pagamento {
-
     private int id;
     private Aluno aluno;
     private Plano plano;
@@ -18,7 +17,6 @@ public class Pagamento {
         CANCELADO
     }
 
-
     public Pagamento(int id, Aluno aluno, Plano plano, StatusPagamento status){
         this.id = id;
         this.aluno = aluno;
@@ -31,7 +29,6 @@ public class Pagamento {
 
         this.status = status;
     }
-}
 
     public int getId(){ return id; }
     public Aluno getAluno() { return aluno; }
