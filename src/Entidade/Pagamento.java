@@ -31,6 +31,7 @@ public class Pagamento {
 
         this.status = status;
     }
+}
 
     public int getId(){ return id; }
     public Aluno getAluno() { return aluno; }
