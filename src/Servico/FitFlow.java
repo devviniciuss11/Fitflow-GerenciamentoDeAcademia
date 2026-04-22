@@ -1,8 +1,11 @@
 package Servico;
 
-import Gui.*;
-import Repositorio.FuncionarioRepositorio;
+import Gui.GuiAluno;
+import Gui.GuiPersonal;
+import Gui.GuiPlano;
+import Gui.GuiTreino;
 import Repositorio.TreinoRepositorio;
+import Gui.GuiPagamento;
 
 import java.util.Scanner;
 
@@ -11,12 +14,12 @@ public class FitFlow {
         Scanner sc = new Scanner(System.in);
         int opc2=1;
         while(opc2==1){
-            System.out.println("1- Gerenciar Alunos");
-            System.out.println("2- Gerenciar Personais");
-            System.out.println("3- Gerenciar Treinos");
-            System.out.println("4- Gerenciar Planos");
-            System.out.println("5- Gerenciar Funcionario");
-            System.out.println("6- Sair");
+            System.out.println("[1] - Gerenciar Alunos");
+            System.out.println("[2] - Gerenciar Personais");
+            System.out.println("[3] - Gerenciar Treinos");
+            System.out.println("[4] - Gerenciar Planos");
+            System.out.println("[5] - Gerenciar Pagamentos");
+            System.out.println("[6] - Sair");
             int opc = sc.nextInt();
             switch (opc){
                 case 1:
@@ -39,13 +42,15 @@ public class FitFlow {
                     gui.menuPlano();
                     break;
                 case 5:
-                    GuiFuncionario guiFuncionario = new GuiFuncionario();
-                    guiFuncionario.menu();
+                    GuiPagamento guiPagamento = new GuiPagamento();
+                    guiPagamento.menuPagamento();
                     break;
                 case 6:
-                    System.out.println("Saindo.....");
+                    System.out.println("Saindo...");
                     opc2=0;
                     break;
+                default:
+                    System.out.println("Opção inválida");
             }
 
         }
