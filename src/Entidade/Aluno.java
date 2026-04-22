@@ -23,7 +23,7 @@ public class Aluno extends Pessoa{
         String dataFmt = (getDataNascimento() == null) ? "N/A" : getDataNascimento().format(fmt);
         return "ID: " + getId() + ", Nome: " + getNome() + ",CPF: "+getCpf() + ",Data de Nascimento: "+dataFmt + ",Email: "+getEmail() + ",Telefone: "+getTelefone() + ",Senha: "+getSenha();
     }
-    public Aluno(int id, String nome, String cpf, LocalDate dataNascimento, String email, String telefone, String senha){
+    public Aluno(int id, String nome, String cpf, LocalDate dataNascimento, String email, String telefone, String senha,ArrayList<Plano> AlunoPlano, ArrayList<Treino> fichaDeTreino){
         super(id,nome,cpf,dataNascimento,email,telefone,senha);
         this.fichaDeTreino = new ArrayList<>();
         this.planos = new ArrayList<>();
