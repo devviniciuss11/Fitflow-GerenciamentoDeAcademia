@@ -1,6 +1,7 @@
 package Servico;
 
 import Gui.GuiAluno;
+import Gui.GuiDesempenho;
 import Gui.GuiPersonal;
 import Gui.GuiPlano;
 
@@ -15,7 +16,8 @@ public class FitFlow {
             System.out.println("2- Gerenciar Personals");
             System.out.println("3- Gerenciar Treinos");
             System.out.println("4- Gerenciar Planos");
-            System.out.println("5- Sair");
+            System.out.println("5- Gerenciar Desempenho");
+            System.out.println("6 - Sair");
             int opc = sc.nextInt();
             switch (opc){
                 case 1:
@@ -32,6 +34,10 @@ public class FitFlow {
                     gui.menuPlano();
                     break;
                 case 5:
+                    GuiDesempenho guiDesempenho = new GuiDesempenho();
+                    guiDesempenho.menu();
+                    break;
+                case 6:
                     System.out.println("Saindo.....");
                     opc2=0;
                     break;
