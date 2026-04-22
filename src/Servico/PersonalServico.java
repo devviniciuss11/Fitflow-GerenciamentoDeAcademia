@@ -102,10 +102,25 @@ public class PersonalServico {
 
         int id = new Random().nextInt(1000);
 
-        System.out.print(" Nome : ");
+        System.out.print("Nome: ");
         String nome = sc.nextLine();
 
-        System.out.print(" CRAF : ");
+        System.out.println("Cpf:");
+        String cpf = sc.nextLine();
+
+        System.out.println( "  Data de Nascimento (dd/mm/aaaa) : ");
+        LocalDate dataNascimento = LocalDate.now();
+
+        System.out.println( "Email: " );
+        String email = sc.nextLine();
+
+        System.out.println( "Telefone: " );
+        String telefone = sc.nextLine();
+
+        System.out.println( "Senha: ");
+        String senha = sc.nextLine();
+
+        System.out.print("CRAF: ");
         String craf = sc.nextLine();
 
         double salario = 0;
@@ -138,7 +153,7 @@ public class PersonalServico {
 
         sc.nextLine();
 
-        Personal novo = new Personal(id, nome, "000.000.000-00", LocalDate.now(), "email@teste.com", "9999-9999", "123", craf, salario, horas, new ArrayList<>());
+        Personal novo = new Personal(id, nome,cpf,  LocalDate.now(), email, telefone, senha, craf, salario, horas, new ArrayList<>());
         personalRepositorio.save(novo);
 
         System.out.println(" Personal Cadastrado com Sucesso! ");

@@ -119,8 +119,6 @@ public class AlunoServico {
         System.out.println("Nome: ");
         String nome = sc.nextLine();
 
-        System.out.println("CPF: ");
-        String cpf = sc.nextLine();
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/uuuu");
         while (true) {
@@ -146,40 +144,43 @@ public class AlunoServico {
                 continue;
             }
 
-            if (idade <= 10) {
-                System.out.println("Aluno com " + idade + " anos: é obrigatório informar um responsável.");
-
-                String nomeResponsavel;
-                do {
-                    System.out.println("Nome do responsável: ");
-                    nomeResponsavel = sc.nextLine().trim();
-                    if (nomeResponsavel.isEmpty()) {
-                        System.out.println("Nome do responsável não pode ser vazio.");
-                    }
-                } while (nomeResponsavel.isEmpty());
-
-                String cpfResponsavel;
-                do {
-                    System.out.println("CPF do responsável: ");
-                    cpfResponsavel = sc.nextLine().trim();
-                    if (cpfResponsavel.isEmpty()) {
-                        System.out.println("CPF do responsável não pode ser vazio.");
-                    }
-                } while (cpfResponsavel.isEmpty());
-
-                String telefoneResponsavel;
-                do {
-                    System.out.println("Telefone do responsável: ");
-                    telefoneResponsavel = sc.nextLine().trim();
-                    if (telefoneResponsavel.isEmpty()) {
-                        System.out.println("Telefone do responsável não pode ser vazio.");
-                    }
-                } while (telefoneResponsavel.isEmpty());
-
-                System.out.println("Responsável registrado para validação: " + nomeResponsavel + " (CPF: " + cpfResponsavel + ")");
+            if (idade >=0 && idade < 5 ){
+                System.out.println("A academia nao da Suporte a Crianças nessa idade");
+                continue;
             }
 
-            break;
+            if (idade <= 10&& idade >= 5) {
+                System.out.println("Aluno com " + idade + " anos: é obrigatório informar os Dados Do Responsavel.");
+
+                System.out.println("Cpf Do Responsavel: ");
+                String cpf=sc.nextLine();
+
+                System.out.println("Email Do Responsavel: ");
+                String email=sc.nextLine();
+
+                System.out.println("Telefone Do Responsavel: ");
+                String telefone=sc.nextLine();
+
+                System.out.println("Senha Do Responsavel: ");
+                String senha=sc.nextLine();
+
+                ArrayList FichaDeTreino = new ArrayList();
+                ArrayList AlunoPlano= new ArrayList();
+
+                Aluno aluno = new Aluno(id, nome, cpf, dataNascimento, email, telefone, senha,FichaDeTreino, AlunoPlano);
+                alunoRepositorio.save(aluno);
+                instancia.adicionar();
+                return;
+
+                }
+                break;
+        }
+
+        System.out.println("CPF: ");
+        String cpf = sc.nextLine();
+        if (AlunoRepositorio.alunos.stream().anyMatch(a -> a.getCpf().equals(cpf))) {
+            System.out.println("Cpf ja cadastrado. Tente novamente com outro CPF.");
+            return;
         }
 
         System.out.println("Email: ");
@@ -191,7 +192,10 @@ public class AlunoServico {
         System.out.println("Senha: ");
         String senha = sc.nextLine();
 
-        Aluno aluno = new Aluno(id, nome, cpf, dataNascimento, email, telefone, senha);
+        ArrayList FichaDeTreino = new ArrayList();
+        ArrayList AlunoPlano= new ArrayList();
+
+        Aluno aluno = new Aluno(id, nome, cpf, dataNascimento, email, telefone, senha,FichaDeTreino, AlunoPlano);
         alunoRepositorio.save(aluno);
         instancia.adicionar();
     }
