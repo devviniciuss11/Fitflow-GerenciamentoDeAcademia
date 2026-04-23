@@ -6,6 +6,7 @@ import java.util.Scanner;
 public class GuiPersonal {
     Scanner sc = new Scanner(System.in);
     PersonalServico servico = new PersonalServico();
+    GuiTreino GuiTreino = new GuiTreino();
 
     public void menu(){
         int op = -1;
@@ -17,7 +18,8 @@ public class GuiPersonal {
             System.out.println("[4] - Alterar Dados de um Personal");
             System.out.println("[5] - Vicnular Aluno ao Personal");
             System.out.println("[6] - Ver Alunos de um Personal");
-            System.out.println("[7] - Voltar ao Menu Principal");
+            System.out.println("[7] - Ir Para o Menu de Treino");
+            System.out.println("[8] - Voltar ao Menu Principal");
             System.out.println("Escolha uma opção: ");
 
             try {
@@ -37,7 +39,8 @@ public class GuiPersonal {
                 case 4 -> servico.alterarPersonal();
                 case 5 -> servico.vincularAlunoAoPersonal();
                 case 6 -> servico.listarAlunosDoPersonal();
-                case 7 -> System.out.println("Voltando ao Menu Principal... ");
+                case 7 -> GuiTreino.menuTreino();
+                case 8 -> System.out.println("Voltando ao Menu Principal... ");
                 default -> System.out.println("Opção Inválida! Tente Novamente. ");
 
             }

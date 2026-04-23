@@ -219,7 +219,7 @@ public class FuncionarioServico {
             }
         }
         if (funcionario == null) {
-            System.out.println("Funcionario não encontrado. Voltando ao menu.");
+            System.out.println("Funcionario não encontrado. Voltando ao menuInicial.");
             return;
         }
 
