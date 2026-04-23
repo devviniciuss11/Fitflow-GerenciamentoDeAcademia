@@ -1,6 +1,5 @@
 package Gui;
 
-import Entidade.Pagamento;
 import Servico.PagamentoServico;
 import java.util.Scanner;
 
@@ -11,21 +10,22 @@ public class GuiPagamento {
     public void menuPagamento() {
         int opc = -1;
         while (opc != 0) {
-            System.out.println("     MENU PAGAMENTO     ");
+            System.out.println("      MENU PAGAMENTO     ");
             System.out.println(" [1] - Realizar Novo Pagamento");
-            System.out.println(" [2] - Ver Histórico de Pagamento");
+            System.out.println(" [2] - Ver Histórico de Pagamentos");
+            System.out.println(" [3] - Remover Pagamento (Deletar)");
+            System.out.println(" [4] - Alterar Status de Pagamento (Atualizar)");
+            System.out.println(" [5] - Extrato dos Pagamentos (Soma)");
             System.out.println(" [0] - Voltar ao Menu Principal");
-            System.out.println(" Escolha uma opção");
+            System.out.print(" Escolha uma opção: ");
 
             try {
                 opc = sc.nextInt();
                 sc.nextLine();
-
-            }catch (Exception e) {
+            } catch (Exception e) {
                 System.out.println("ERRO: Digite apenas números!");
                 sc.nextLine();
                 continue;
-
             }
 
             switch (opc) {
@@ -35,15 +35,21 @@ public class GuiPagamento {
                 case 2:
                     servico.listarPagamento();
                     break;
+                case 3:
+                    servico.removerPagamento();
+                    break;
+                case 4:
+                    servico.alterarStatusPagamento();
+                    break;
+                case 5:
+                    servico.extratoDosPagamentos();
+                    break;
                 case 0:
                     System.out.println("Voltando ao Menu Principal...");
                     break;
                 default:
                     System.out.println("Opção inválida, tente novamente.");
-
             }
         }
-
     }
 }
-

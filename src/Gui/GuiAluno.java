@@ -16,7 +16,8 @@ public class GuiAluno {
             System.out.println("[3] - Remover Aluno");
             System.out.println("[4] - Alterar Dados de Um Aluno");
             System.out.println("[5] - Presença de Um Aluno");
-            System.out.println("[6] - Voltar ao Menu Principal");
+            System.out.println("[6] - ir para o menu de Treino");
+            System.out.println("[7] - Voltar ao Menu Principal");
             System.out.print("Escolha uma opção: ");
             int op;
             try {
@@ -48,7 +49,11 @@ public class GuiAluno {
                         AlunoServico alunoServico4 = new AlunoServico();
                         alunoServico4.presencaAluno();
                         break;
+
                     case 6:
+                        GuiTreino guiTreino = new GuiTreino();
+                        guiTreino.menuTreino();
+                    case 7:
                         System.out.println("Saindo...");
                         opc1 = 0;
 

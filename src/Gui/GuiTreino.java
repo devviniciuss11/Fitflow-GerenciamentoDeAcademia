@@ -20,7 +20,7 @@ public class GuiTreino {
         this.servico = servico;
     }
 
-    public void menuTreino() {
+    public  void menuTreino() {
         int opc = -1;
         // Mude de 0 para 5 aqui:
         while (opc != 5) {
@@ -29,7 +29,7 @@ public class GuiTreino {
             System.out.println(" [2] Listar Treinos. ");
             System.out.println(" [3] Remover Treino. ");
             System.out.println(" [4] Alterar Treino. ");
-            System.out.println(" [5] Voltar para o menu Principal. ");
+            System.out.println(" [5] Voltar para o menuInicial Principal. ");
             System.out.println("==================================");
 
             opc = sc.nextInt();
@@ -40,7 +40,7 @@ public class GuiTreino {
                 case 3: remover(); break;
                 case 4: atualizar(); break;
                 case 5:
-                    System.out.println("Voltando para o menu Principal...");
+                    System.out.println("Voltando para o menuInicial Principal...");
                     break;
                 default:
                     System.out.println("Opção inválida!");
