@@ -245,7 +245,7 @@ public class AlunoServico {
             }
         }
         if (aluno == null) {
-            System.out.println("Aluno nao foi encontrado. Voltando para o menu...");
+            System.out.println("Aluno nao foi encontrado. Voltando para o menuInicial...");
             return;
         }
 

@@ -12,9 +12,23 @@ public class PagamentoRepositorio {
         pagamentos.add(pagamento);
     }
 
-    // Veja que aqui o T tem que ser maiúsculo também!
     public List<Pagamento> listarTodos() {
         return pagamentos;
+    }
+
+
+    public boolean remover(int id) {
+        return pagamentos.removeIf(p -> p.getId() == id);
+    }
+
+    public boolean atualizar(Pagamento pagamentoAtualizado) {
+        for (int i = 0; i < pagamentos.size(); i++) {
+            if (pagamentos.get(i).getId() == pagamentoAtualizado.getId()) {
+                pagamentos.set(i, pagamentoAtualizado);
+                return true;
+            }
+        }
+        return false;
     }
 }
 
