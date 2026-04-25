@@ -30,7 +30,7 @@ public class GuiTreino {
             System.out.println(" [1] Cadastrar Lista De Treino. ");
             System.out.println(" [2] Listar Fichas De Treinos. ");
             System.out.println(" [3] Remover Ficha De trinoTreino. ");
-            System.out.println(" [4] Alterar Ficha deTreino. ");
+            System.out.println(" [4] Alterar Ficha de Treino. ");
             System.out.println(" [5] Voltar para o menuInicial Principal. ");
             System.out.println("==================================");
 

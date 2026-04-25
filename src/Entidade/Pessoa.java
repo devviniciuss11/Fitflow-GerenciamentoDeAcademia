@@ -1,5 +1,5 @@
 package Entidade;
-
+import Entidade.Endereco;
 import java.time.LocalDate;
 
 
@@ -11,8 +11,10 @@ public abstract class Pessoa {
     private String email;
     private String telefone;
     private String senha;
+    private Endereco endereco;
 
-    public Pessoa(int id, String nome, String cpf, LocalDate dataNascimento, String email, String telefone, String senha){
+    public Pessoa(int id, String nome, String cpf, LocalDate dataNascimento, String email, String telefone, String senha,Endereco endereco){
+        this.endereco = endereco;
         this.id = id;
         this.nome = nome;
         this.cpf = cpf;
@@ -23,6 +25,13 @@ public abstract class Pessoa {
     }
     public abstract void VerLogin();
 
+    public void setEndereco(Endereco endereco) {
+        this.endereco = endereco;
+    }
+
+    public Endereco getEndereco() {
+        return endereco;
+    }
     public int getId() {
         return id;
     }

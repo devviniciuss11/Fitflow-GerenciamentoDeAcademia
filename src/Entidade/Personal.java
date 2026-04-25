@@ -16,14 +16,14 @@ public class Personal extends Pessoa {
     }
   @Override
     public String toString() {
-        return "ID: " + getId() + ", Nome: " + getNome() + ",CPF: "+getCpf() + ",Data de Nascimento: "+getDataNascimento() + ",Email: "+getEmail() + ",Telefone: "+getTelefone() + ",Senha: "+getSenha();
+        return "ID: " + getId() + ", Nome: " + getNome() + ",CPF: "+getCpf() + ",Data de Nascimento: "+getDataNascimento() + ",Email: "+getEmail() + ",Telefone: "+getTelefone() + ",Senha: "+getSenha() + ",CRAF: "+getCraf() + ",Salario: "+getSalario() + ",Horario de Trabalho: "+getHorarioTrabalho()+ "Endereco : "+getEndereco();
     }
     public Personal(int id, String nome, String cpf, LocalDate dataNascimento, String email, String telefone, String senha){
-        super(id, nome, cpf, dataNascimento, email, telefone, senha);
+        super(id, nome, cpf, dataNascimento, email, telefone, senha, new Endereco());
     }
 
     public Personal(int id, String nome, String cpf, LocalDate dataNascimento, String email, String telefone, String senha,String craf, double salario, double horarioTrabalho, ArrayList<String> alunosdele) {
-        super(id, nome, cpf, dataNascimento, email, telefone, senha);
+        super(id, nome, cpf, dataNascimento, email, telefone, senha, new Endereco());
         this.craf = craf;
         this.salario = salario;
         this.horarioTrabalho = horarioTrabalho;

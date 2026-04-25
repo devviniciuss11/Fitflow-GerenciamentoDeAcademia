@@ -1,11 +1,6 @@
 package Servico;
 
-import Gui.GuiAluno;
-import Gui.GuiDesempenho;
-import Gui.GuiPagamento;
-import Gui.GuiPersonal;
-import Gui.GuiPlano;
-import Gui.GuiTreino;
+import Gui.*;
 import Repositorio.TreinoRepositorio;
 
 import java.util.Scanner;
@@ -21,7 +16,8 @@ public class FitFlow {
             System.out.println("[4] - Gerenciar Planos");
             System.out.println("[5] - Gerenciar Pagamentos");
             System.out.println("[6] - Gerenciar Desempenho");
-            System.out.println("[7] - Voltar");
+            System.out.println("[7] - Gerenciar Funcionarios");
+            System.out.println("[8] - Voltar");
             int opc = sc.nextInt();
             switch (opc) {
                 case 1:
@@ -51,7 +47,11 @@ public class FitFlow {
                     GuiDesempenho guiDesempenho = new GuiDesempenho();
                     guiDesempenho.menu();
                     break;
-                case 7:
+
+                case 7 :
+                    GuiFuncionario guiFuncionario = new GuiFuncionario();
+                    guiFuncionario.menufAdm();
+                case 8:
                     System.out.println("Saindo.....");
                     opc2 = 0;
                     break;

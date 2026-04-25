@@ -3,12 +3,14 @@ package Servico;
 import Entidade.Desempenho;
 import Repositorio.DesempenhoRepositorio;
 import Interfacess.Instancia;
+import Repositorio.AlunoRepositorio;
 
 import java.util.Random;
 import java.util.Scanner;
 
 public class DesempenhoServico {
     Scanner sc = new Scanner(System.in);
+    AlunoRepositorio alunoRepositorio = new AlunoRepositorio();
     DesempenhoRepositorio repositorio = new DesempenhoRepositorio();
     Instancia instancia = new Instancia();
 
@@ -16,17 +18,21 @@ public class DesempenhoServico {
         System.out.println("\n--- CADASTRO DE DESEMPENHO ---");
         int id = new Random().nextInt(10000);
 
+        System.out.println("Digite o Nome Do Aluno");
+        String nome =sc.nextLine();
+
         System.out.print("Digite o CPF do Aluno: ");
-        String cpfAluno = sc.nextLine();
+        String cpf = sc.nextLine();
+
 
         System.out.print("Digite o Peso (kg) - ex: 70,5: ");
         double peso = sc.nextDouble();
 
         System.out.print("Digite a Altura (m) - ex: 1,75: ");
         double altura = sc.nextDouble();
-        sc.nextLine(); // limpar o buffer
+        sc.nextLine();
 
-        Desempenho desempenho = new Desempenho(id, cpfAluno, peso, altura);
+        Desempenho desempenho = new Desempenho(id, cpf, peso, altura,nome);
         repositorio.save(desempenho);
 
         System.out.println("Desempenho salvo! O IMC calculado foi: " + String.format("%.2f", desempenho.getImc()));
@@ -74,7 +80,7 @@ public class DesempenhoServico {
         }
 
         if (encontrado != null) {
-            System.out.println("Desempenho encontrado para o CPF: " + encontrado.getCpfAluno());
+            System.out.println("Desempenho encontrado para o CPF: " + encontrado.getCpf());
             System.out.println("1- Alterar Peso");
             System.out.println("2- Alterar Altura");
             System.out.print("Escolha uma opção: ");

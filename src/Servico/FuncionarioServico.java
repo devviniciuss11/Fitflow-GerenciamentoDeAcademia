@@ -1,4 +1,5 @@
 package Servico;
+import Entidade.Endereco;
 import Entidade.Funcionario;
 import Interfacess.Instancia;
 import Repositorio.FuncionarioRepositorio;
@@ -169,7 +170,7 @@ public class FuncionarioServico {
 
         System.out.println("Qual a Faixa Salario do Funcionario: ");
         Double salario = sc.nextDouble();
-        sc.nextLine(); // limpa o ENTER
+        sc.nextLine();
 
         System.out.println("Qual o Cargo do Funcionario: ");
         String cargo = sc.nextLine();
@@ -178,7 +179,22 @@ public class FuncionarioServico {
         Double horario = sc.nextDouble();
         sc.nextLine();
 
-        Funcionario funcionario = new Funcionario(id, nome, Cpf, datadeNascimento, Email, telefone, senha, cargo, salario, horario);
+        System.out.println("Digite o CEP: ");
+        String cep = sc.nextLine();
+
+        System.out.println("Digite o Bairro: ");
+        String bairro = sc.nextLine();
+
+        System.out.println("Digite o Nome da Rua: ");
+        String nomeRua = sc.nextLine();
+
+        System.out.println("Digite o Complemento: ");
+        String Complemento = sc.nextLine();
+
+        System.out.println("Digite o Numero da Casa: ");
+        Integer numCasa = sc.nextInt();
+
+        Funcionario funcionario = new Funcionario(id, nome, Cpf, datadeNascimento, Email, telefone, senha, cargo, salario, horario,new Endereco(cep,bairro,nomeRua,Complemento,numCasa));
         funcionariosRepositorio.Save(funcionario);
         instancia.adicionar();
     }

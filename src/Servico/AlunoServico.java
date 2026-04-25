@@ -1,6 +1,7 @@
 package Servico;
 
 import Entidade.Aluno;
+import Entidade.Endereco;
 import Interfacess.Instancia;
 import Repositorio.AlunoRepositorio;
 
@@ -164,10 +165,25 @@ public class AlunoServico {
                 System.out.println("Senha Do Responsavel: ");
                 String senha=sc.nextLine();
 
+                System.out.println("CEP Do Responsavel: ");
+                String cep = sc.nextLine();
+
+                System.out.println("Bairro Do Responsavel: ");
+                String bairro = sc.nextLine();
+
+                System.out.println("Nome da Rua Do Responsavel: ");
+                String nomeRua = sc.nextLine();
+
+                System.out.println("Complemento Do Responsavel: ");
+                String complemento = sc.nextLine();
+
+                System.out.println("Numero da Casa Do Responsavel: ");
+                Integer numCasa = sc.nextInt();
+
                 ArrayList FichaDeTreino = new ArrayList();
                 ArrayList AlunoPlano= new ArrayList();
 
-                Aluno aluno = new Aluno(id, nome, cpf, dataNascimento, email, telefone, senha,FichaDeTreino, AlunoPlano);
+                Aluno aluno = new Aluno(id, nome, cpf, dataNascimento, email, telefone, senha,FichaDeTreino, AlunoPlano,new Endereco(cep,bairro,nomeRua,complemento,numCasa));
                 alunoRepositorio.save(aluno);
                 instancia.adicionar();
                 return;
@@ -192,10 +208,25 @@ public class AlunoServico {
         System.out.println("Senha: ");
         String senha = sc.nextLine();
 
+        System.out.println("CEP: ");
+        String cep = sc.nextLine();
+
+        System.out.println("Bairro: ");
+        String bairro = sc.nextLine();
+
+        System.out.println("Nome da Rua: ");
+        String nomeRua = sc.nextLine();
+
+        System.out.println("Complemento: ");
+        String complemento = sc.nextLine();
+
+        System.out.println("Numero da Casa: ");
+        Integer numCasa = sc.nextInt();
+
         ArrayList FichaDeTreino = new ArrayList();
         ArrayList AlunoPlano= new ArrayList();
 
-        Aluno aluno = new Aluno(id, nome, cpf, dataNascimento, email, telefone, senha,FichaDeTreino, AlunoPlano);
+        Aluno aluno = new Aluno(id, nome, cpf, dataNascimento, email, telefone, senha,FichaDeTreino, AlunoPlano,new Endereco(cep,bairro,nomeRua,complemento,numCasa));
         alunoRepositorio.save(aluno);
         instancia.adicionar();
     }

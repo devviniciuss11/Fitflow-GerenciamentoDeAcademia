@@ -4,16 +4,18 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 public class Desempenho {
+    private String nome;
     private int id;
-    private String cpfAluno;
+    private String cpf;
     private double peso;
     private double altura;
     private double imc;
     private LocalDate dataAvaliacao;
 
-    public Desempenho(int id, String cpfAluno, double peso, double altura) {
+    public Desempenho(int id, String cpf, double peso, double altura, String nome) {
+        this.nome = nome;
         this.id = id;
-        this.cpfAluno = cpfAluno;
+        this.cpf = cpf;
         this.peso = peso;
         this.altura = altura;
         this.dataAvaliacao = LocalDate.now();
@@ -35,7 +37,7 @@ public class Desempenho {
     }
 
     public int getId() { return id; }
-    public String getCpfAluno() { return cpfAluno; }
+    public String getCpf() { return cpf; }
 
     public double getPeso() { return peso; }
     public void setPeso(double peso) {
@@ -55,6 +57,6 @@ public class Desempenho {
     @Override
     public String toString() {
         DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        return "ID: " + id + " | Aluno CPF: " + cpfAluno + " | Peso: " + peso + "kg | Altura: " + altura + "m | IMC: " + String.format("%.2f", imc) + " (" + getClassificacaoImc() + ") | Data: " + dataAvaliacao.format(fmt);
+        return "ID: " + id + " | Aluno CPF: " + cpf + " | Peso: " + peso + "kg | Altura: " + altura + "m | IMC: " + String.format("%.2f", imc) + " (" + getClassificacaoImc() + ") | Data: " + dataAvaliacao.format(fmt);
     }
 }

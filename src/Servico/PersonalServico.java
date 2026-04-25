@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.Random;
 import java.util.InputMismatchException;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 
 public class PersonalServico {
@@ -109,7 +111,17 @@ public class PersonalServico {
         String cpf = sc.nextLine();
 
         System.out.println( "  Data de Nascimento (dd/mm/aaaa) : ");
-        LocalDate dataNascimento = LocalDate.now();
+        LocalDate dataNascimento;
+        DateTimeFormatter nascimentoFmt = DateTimeFormatter.ofPattern("dd/MM/uuuu");
+        while (true) {
+            String entrada = sc.nextLine().trim();
+            try {
+                dataNascimento = LocalDate.parse(entrada, nascimentoFmt);
+                break;
+            } catch (DateTimeParseException e) {
+                System.out.println("Data inválida. Use o formato dd/mm/aaaa (ex: 12/09/2000). Tente novamente:");
+            }
+        }
 
         System.out.println( "Email: " );
         String email = sc.nextLine();
@@ -128,11 +140,11 @@ public class PersonalServico {
 
         while(!salarioValido) {
             try {
-                System.out.print(" Salário (R$) : ");
+                System.out.print("Salário (R$) : ");
                 salario = sc.nextDouble();
                 salarioValido = true;
             } catch (InputMismatchException e) {
-                System.out.println("  Digite apenas números para o salário!   ");
+                System.out.println(" Digite apenas números para o salário!");
                 sc.nextLine();
             }
         }
@@ -142,24 +154,26 @@ public class PersonalServico {
 
         while(!horasValidas) {
             try {
-                System.out.print(" Horas do expediente do Personal: ");
+                System.out.print("Horas do expediente do Personal: ");
                 horas = sc.nextDouble();
                 horasValidas = true;
             } catch (InputMismatchException e) {
-                System.out.println("  Digite apenas números para as horas!  ");
+                System.out.println("Digite apenas números para as horas! ");
                 sc.nextLine();
             }
         }
 
         sc.nextLine();
 
-        Personal novo = new Personal(id, nome,cpf,  LocalDate.now(), email, telefone, senha, craf, salario, horas, new ArrayList<>());
+        Personal novo = new Personal(
+                id, nome, cpf, dataNascimento, email, telefone, senha, craf, salario, horas, new ArrayList<>()
+        );
         personalRepositorio.save(novo);
 
         System.out.println(" Personal Cadastrado com Sucesso! ");
     }
 
-    public void listarPersonais(){
+    public void listarPersonais() {
         if(PersonalRepositorio.personais.isEmpty()){
             System.out.println("Nenhum Personal foi cadastrado.");
 

@@ -14,6 +14,8 @@ public class Endereco {
         this.complemento = complemento;
         NumCasa = numCasa;
     }
+    public Endereco() {
+    }
 
     public String getCep() {
         return Cep;
