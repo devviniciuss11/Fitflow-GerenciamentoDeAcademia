@@ -40,7 +40,7 @@ public class GuiPersonal {
                 case 5 -> servico.vincularAlunoAoPersonal();
                 case 6 -> servico.listarAlunosDoPersonal();
                 case 7 -> GuiTreino.menuTreino();
-                case 8 -> System.out.println("Voltando ao Menu Principal... ");
+                case 8 -> { return; }
                 default -> System.out.println("Opção Inválida! Tente Novamente. ");
 
             }

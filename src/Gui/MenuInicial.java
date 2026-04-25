@@ -6,14 +6,12 @@ import Entidade.Personal;
 import Repositorio.AlunoRepositorio;
 import Repositorio.FuncionarioRepositorio;
 import Repositorio.PersonalRepositorio;
-import Servico.AlunoServico;
 import Servico.FitFlow;
-import Servico.FuncionarioServico;
-import Servico.PersonalServico;
-
+import Entidade.AcessoAdm;
 import java.util.Scanner;
 
 public class MenuInicial {
+    FitFlow fitFlow = new FitFlow();
 
     private final Scanner sc = new Scanner(System.in);
 
@@ -21,22 +19,21 @@ public class MenuInicial {
         int opcao = -1;
 
         while (opcao != 0) {
+            System.out.println("Bem-vindo ao Sistema FitFlow!!");
+            System.out.println("Escolha Uma Das Opções Abaixo");
             System.out.println("============= FITFLOW =============");
             System.out.println(" [1] - Login");
-            System.out.println(" [2] - Cadastro");
             System.out.println(" [0] - Sair");
             System.out.println("==================================");
             opcao = lerOpcaoInt("Escolha uma opção: ");
 
             switch (opcao) {
                 case 1 -> menuLogin();
-                case 2 -> menuCadastro();
                 case 0 -> System.out.println("Saindo...");
                 default -> System.out.println("Opção inválida!");
             }
         }
     }
-
     private void menuLogin() {
         int opcao = -1;
 
@@ -60,29 +57,6 @@ public class MenuInicial {
             }
         }
     }
-
-    private void menuCadastro() {
-        int opcao = -1;
-
-        while (opcao != 0) {
-            System.out.println("-------------- CADASTRO --------------");
-            System.out.println(" [1] - Cadastrar Funcionário");
-            System.out.println(" [2] - Cadastrar Personal");
-            System.out.println(" [3] - Cadastrar Aluno");
-            System.out.println(" [0] - Voltar");
-            System.out.println("--------------------------------------");
-            opcao = lerOpcaoInt("Escolha uma opção: ");
-
-            switch (opcao) {
-                case 1 -> new FuncionarioServico().cadastrarFuncionarios();
-                case 2 -> new PersonalServico().cadastrarPersonal();
-                case 3 -> new AlunoServico().cadastrarAluno();
-                case 0 -> { /* voltar */ }
-                default -> System.out.println("Opção inválida!");
-            }
-        }
-    }
-
     private void loginFuncionario() {
         System.out.println("Login de Funcionário");
         String cpf = lerLinhaNaoVazia("CPF: ");
@@ -97,7 +71,6 @@ public class MenuInicial {
         System.out.println("Login realizado com sucesso! Bem-vindo(a), " + encontrado.getNome() + ".");
         new GuiFuncionario().menuf();
     }
-
     private void loginAluno() {
         System.out.println("Login de Aluno");
         String cpf = lerLinhaNaoVazia("CPF: ");
@@ -110,7 +83,7 @@ public class MenuInicial {
         }
 
         System.out.println("Login realizado com sucesso! Bem-vindo(a), " + encontrado.getNome() + ".");
-        new GuiAluno().menu();
+        new GuiAluno().menuDoAlunoAdm();
     }
 
     private void loginPersonal() {
@@ -129,9 +102,6 @@ public class MenuInicial {
         new GuiPersonal().menu();
     }
 
-    // =========================
-    // Autenticação (repositórios)
-    // =========================
 
     private Funcionario autenticarFuncionario(String cpf, String senha) {
         for (Funcionario f : FuncionarioRepositorio.funcionarios) {
@@ -161,10 +131,6 @@ public class MenuInicial {
         return null;
     }
 
-    // =========================
-    // Leitura segura de entrada
-    // =========================
-
     private int lerOpcaoInt(String prompt) {
         while (true) {
             System.out.print(prompt);
@@ -187,20 +153,25 @@ public class MenuInicial {
     }
     
     public void acessoAdm() {
-        System.out.println("Acesso Administrador");
+        AcessoAdm acessoAdm = AcessoAdm.ADM_MASTER;
+        System.out.println("Acesso AcessoAdm");
 
-        String senha = lerLinhaNaoVazia("Digite a senha do Administrador: ");
+        String senha = lerLinhaNaoVazia("Digite a senha do AcessoAdm: ");
 
-        while (!senha.equals("5564")) {
+        while (!senha.equals(acessoAdm.getSenha())) {
             System.out.println("Senha incorreta. Acesso negado!");
-            senha = lerLinhaNaoVazia("Digite a senha do Administrador: ");
+            senha = lerLinhaNaoVazia("Digite a senha do AcessoAdm: ");
         }
+        String email = lerLinhaNaoVazia("Digite o email do AcessoAdm: ");
+        while (!email.equals(acessoAdm.getEmail())) {
+            System.out.println("email incorreto. Acesso negado!");
+            email = lerLinhaNaoVazia("Digite a email do AcessoAdm: ");
 
+        }
         System.out.println("Acesso liberado! Bem-vindo(a), ADM.");
-        FitFlow.main(new String[0]);
+        fitFlow.main();
     }
 
-    // Se você precisar rodar direto esta classe:
     public static void main(String[] args) {
         new MenuInicial().menuInicial();
     }

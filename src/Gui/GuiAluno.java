@@ -7,7 +7,7 @@ import java.util.Scanner;
 
 public class GuiAluno {
     Scanner sc1 = new Scanner(System.in);
-    public void menu(){
+    public void menuDoAlunoAdm(){
         int opc1 =1;
         while (opc1 ==1){
             System.out.println("-------------MENU ALUNO-------------");
@@ -16,7 +16,7 @@ public class GuiAluno {
             System.out.println("[3] - Remover Aluno");
             System.out.println("[4] - Alterar Dados de Um Aluno");
             System.out.println("[5] - Presença de Um Aluno");
-            System.out.println("[6] - ir para o menu de Treino");
+            System.out.println("[6] - Treino");
             System.out.println("[7] - Voltar ao Menu Principal");
             System.out.print("Escolha uma opção: ");
             int op;
@@ -73,5 +73,21 @@ public class GuiAluno {
 
 
 
+    }
+
+    public void menuDoAluno(){
+        int opc = 1;
+        while(opc != 0){
+
+            System.out.println("-------------MENU ALUNO-------------");
+
+            System.out.println("[1] - Check-in Diario");
+            System.out.println("[2] - Treino");
+            System.out.println("[3] - Escolher Plano Pra Comprar");
+            System.out.println("[3] - Alterar Tipo De PLano");
+            System.out.println("[0] - Voltar ao Menu Principal");
+            System.out.print("Escolha uma opção: ");
+
+        }
     }
 }

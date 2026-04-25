@@ -25,10 +25,10 @@ public class GuiTreino {
         // Mude de 0 para 5 aqui:
         while (opc != 5) {
             System.out.println("\n========== MENU TREINOS ==========");
-            System.out.println(" [1] Cadastrar Treino. ");
-            System.out.println(" [2] Listar Treinos. ");
-            System.out.println(" [3] Remover Treino. ");
-            System.out.println(" [4] Alterar Treino. ");
+            System.out.println(" [1] Cadastrar Lista De Treino. ");
+            System.out.println(" [2] Listar Fichas De Treinos. ");
+            System.out.println(" [3] Remover Ficha De trinoTreino. ");
+            System.out.println(" [4] Alterar Ficha deTreino. ");
             System.out.println(" [5] Voltar para o menuInicial Principal. ");
             System.out.println("==================================");
 

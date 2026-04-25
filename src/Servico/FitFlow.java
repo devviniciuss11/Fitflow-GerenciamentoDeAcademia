@@ -11,7 +11,7 @@ import Repositorio.TreinoRepositorio;
 import java.util.Scanner;
 
 public class FitFlow {
-    public static void main(String[] args) {
+    public void main() {
         Scanner sc = new Scanner(System.in);
         int opc2 = 1;
         while (opc2 == 1) {
@@ -21,12 +21,12 @@ public class FitFlow {
             System.out.println("[4] - Gerenciar Planos");
             System.out.println("[5] - Gerenciar Pagamentos");
             System.out.println("[6] - Gerenciar Desempenho");
-            System.out.println("[7] - Sair");
+            System.out.println("[7] - Voltar");
             int opc = sc.nextInt();
             switch (opc) {
                 case 1:
                     GuiAluno guiAluno = new GuiAluno();
-                    guiAluno.menu();
+                    guiAluno.menuDoAlunoAdm();
                     break;
                 case 2:
                     GuiPersonal guiPersonal = new GuiPersonal();
