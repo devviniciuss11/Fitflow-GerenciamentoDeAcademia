@@ -2,6 +2,7 @@ package Gui;
 
 
 import Entidade.Treino;
+import Repositorio.TreinoRepositorio;
 import Servico.TreinoServico;
 import java.util.List;
 import java.util.Scanner;
@@ -17,7 +18,8 @@ public class GuiTreino {
     }
 
     public GuiTreino() {
-        this.servico = servico;
+        TreinoRepositorio repositorio = new TreinoRepositorio();
+        this.servico = new TreinoServico(repositorio);
     }
 
     public  void menuTreino() {

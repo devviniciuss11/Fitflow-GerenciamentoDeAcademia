@@ -1,4 +1,5 @@
 package Gui;
+import Servico.DesempenhoServico;
 import Servico.PersonalServico;
 import java.util.Scanner;
 
@@ -7,8 +8,9 @@ public class GuiPersonal {
     Scanner sc = new Scanner(System.in);
     PersonalServico servico = new PersonalServico();
     GuiTreino GuiTreino = new GuiTreino();
+    GuiDesempenho GuiDesempenho = new GuiDesempenho();
 
-    public void menu(){
+    public void menuPAdm(){
         int op = -1;
         while (op != 7){
             System.out.println("-------------MENU PERSONAL-------------");
@@ -40,6 +42,40 @@ public class GuiPersonal {
                 case 5 -> servico.vincularAlunoAoPersonal();
                 case 6 -> servico.listarAlunosDoPersonal();
                 case 7 -> GuiTreino.menuTreino();
+                case 8 -> { return; }
+                default -> System.out.println("Opção Inválida! Tente Novamente. ");
+
+            }
+
+        }
+
+    }
+
+    public void menuPersoal(){
+        int op = -1;
+        while (op != 7){
+            System.out.println("[1] - Vicnular Aluno ao Personal");
+            System.out.println("[2] - Ver Alunos de um Personal");
+            System.out.println("[3] - Ir Para o Menu de Treino");
+            System.out.println("[4] - Ir Para o menu de Desenpenho");
+            System.out.println("[0] - Voltar ao Menu Principal");
+            System.out.println("Escolha uma opção: ");
+
+            try {
+                op =sc.nextInt();
+                sc.nextLine();
+            } catch (java.util.InputMismatchException e) {
+                System.out.println("ERRO: Digite apenas números!");
+                sc.nextLine();
+                continue;
+
+            }
+
+            switch(op){
+                case 1 -> servico.vincularAlunoAoPersonal();
+                case 2 -> servico.listarAlunosDoPersonal();
+                case 3 -> GuiTreino.menuTreino();
+                case 4 -> GuiDesempenho.menu();
                 case 8 -> { return; }
                 default -> System.out.println("Opção Inválida! Tente Novamente. ");
 

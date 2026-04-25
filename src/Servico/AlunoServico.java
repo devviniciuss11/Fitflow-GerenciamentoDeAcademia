@@ -82,7 +82,7 @@ public class AlunoServico {
                 System.out.println("Digite apenas numeros.");
                 continue;
             }
-
+            menuPresenca:
             switch (opc) {
                 case 1:
                     marcarPresenca(alunoEncontrado);

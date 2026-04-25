@@ -69,7 +69,7 @@ public class MenuInicial {
         }
 
         System.out.println("Login realizado com sucesso! Bem-vindo(a), " + encontrado.getNome() + ".");
-        new GuiFuncionario().menuf();
+        new GuiFuncionario().meunuFuncionarios();
     }
     private void loginAluno() {
         System.out.println("Login de Aluno");
@@ -83,7 +83,7 @@ public class MenuInicial {
         }
 
         System.out.println("Login realizado com sucesso! Bem-vindo(a), " + encontrado.getNome() + ".");
-        new GuiAluno().menuDoAlunoAdm();
+        new GuiAluno().menuDoAluno();
     }
 
     private void loginPersonal() {
@@ -99,7 +99,7 @@ public class MenuInicial {
         }
 
         System.out.println("Login realizado com sucesso! Bem-vindo(a), " + encontrado.getNome() + ".");
-        new GuiPersonal().menu();
+        new GuiPersonal().menuPersoal();
     }
 
 

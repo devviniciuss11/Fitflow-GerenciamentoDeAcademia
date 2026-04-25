@@ -30,7 +30,7 @@ public class FitFlow {
                     break;
                 case 2:
                     GuiPersonal guiPersonal = new GuiPersonal();
-                    guiPersonal.menu();
+                    guiPersonal.menuPAdm();
                     break;
                 case 3:
                     TreinoRepositorio repositorio = new TreinoRepositorio();

@@ -1,6 +1,7 @@
 package Gui;
 
 import Servico.AlunoServico;
+import Servico.PagamentoServico;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -71,8 +72,6 @@ public class GuiAluno {
         }
 
 
-
-
     }
 
     public void menuDoAluno(){
@@ -84,10 +83,36 @@ public class GuiAluno {
             System.out.println("[1] - Check-in Diario");
             System.out.println("[2] - Treino");
             System.out.println("[3] - Escolher Plano Pra Comprar");
-            System.out.println("[3] - Alterar Tipo De PLano");
             System.out.println("[0] - Voltar ao Menu Principal");
             System.out.print("Escolha uma opção: ");
 
+            int op;
+            try {
+                op =sc1.nextInt();
+            }catch (InputMismatchException e){
+                System.out.println("digite apenas numeros");
+                sc1.nextLine();
+                return;
+            }try{
+                switch (op){
+                    case 1:
+                        AlunoServico alunoServico4 = new AlunoServico();
+                        alunoServico4.presencaAluno();
+                        break;
+                    case 2:
+                        GuiTreino guiTreino = new GuiTreino();
+                        guiTreino.menuTreino();
+                        break;
+                    case 3:
+                        PagamentoServico pagamentoServico = new PagamentoServico();
+                        pagamentoServico.realizarPagamento();
+                        break;
+                    case 0:opc = 0;
+                }
+
+        } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 }

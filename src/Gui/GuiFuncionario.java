@@ -7,7 +7,7 @@ public class GuiFuncionario {
     Scanner sc = new Scanner(System.in);
     FuncionarioServico funcionarioServico = new FuncionarioServico();
 
-    public void menuf() {
+    public void menufAdm() {
 
         int opcao = -1;
 
@@ -57,5 +57,37 @@ public class GuiFuncionario {
                     System.out.println("Opção inválida!");
             }
         }
+    }
+
+    public void meunuFuncionarios(){
+        int opcao = -1;
+
+        while (opcao != 0) {
+
+            System.out.println("------------MENU FUNCIONÁRIO-------------");
+            System.out.println(" [1] - Registrar Prescença do Funcionário");
+            System.out.println(" [0] - Sair do Menu");
+            System.out.println("-----------------------------------------");
+
+
+            System.out.print("Escolha uma opção: ");
+            opcao = sc.nextInt();
+            sc.nextLine();
+
+            switch (opcao) {
+
+                case 1:
+                    System.out.println("Registrar Presenca do Funcionario");
+                    break;
+
+                case 0:
+                    System.out.println("Saindo...");
+                    return;
+
+                default:
+                    System.out.println("Opção inválida!");
+            }
+        }
+
     }
 }
