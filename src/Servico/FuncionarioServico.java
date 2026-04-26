@@ -205,7 +205,7 @@ public class FuncionarioServico {
             System.out.println("Não há Funcionarios Cadastrados!!");
         }else {
             for (Funcionario f : funcionarios) {
-                System.out.println(" ID : " + f.getId() + " / Nome: " + f.getNome() + " Cargo: " + f.getCargo());
+                System.out.println(funcionarios);
             }
         }
     }

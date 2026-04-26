@@ -13,7 +13,7 @@ public class PlanoRepositorio {
         carregarPlanosPadrao(); // ← carrega automático
     }
 
-    // PLANOS INICIAIS DO SISTEMA
+
     private void carregarPlanosPadrao(){
         planorepositorio.add(
                 new Plano(1, "Frango", 79.90, "Acesso á Musculação", 30));

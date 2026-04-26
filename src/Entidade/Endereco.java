@@ -7,6 +7,17 @@ public class Endereco {
     private String complemento;
     private int NumCasa;
 
+    @Override
+    public String toString() {
+        return "Endereco{" +
+                "Cep='" + Cep +
+                ", Bairro='" + Bairro +
+                ", NomeRua='" + NomeRua +
+                ", complemento='" + complemento +
+                ", NumCasa=" + NumCasa +
+                '}';
+    }
+
     public Endereco(String cep, String bairro, String nomeRua, String complemento, int numCasa) {
         Cep = cep;
         Bairro = bairro;

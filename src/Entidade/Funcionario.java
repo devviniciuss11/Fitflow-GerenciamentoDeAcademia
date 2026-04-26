@@ -14,10 +14,14 @@ public class Funcionario extends Pessoa {
         System.out.println("Email para realizar o login:"+this.getSenha());
         System.out.println("Senha para realizar o login:"+this.getSenha());
     }
+    @Override
+    public String toString() {
+        return "ID: " + getId() + ", Nome: " + getNome() + ",CPF: "+getCpf() + ",Data de Nascimento: "+getDataNascimento() + ",Email: "+getEmail() + ",Telefone: "+getTelefone() + ",Senha: "+getSenha() + ",Cargo: "+getCargo() + ",Salario: "+getSalario() + ",Horario de Trabalho: "+getHorarioTrabalho()+ "Endereco : "+getEndereco();
+    }
 
     public Funcionario(
-            int id, String nome, String cpf, LocalDate dataNascimento, String email, String telefone, String senha, String cargo, Double salario, Double horarioTrabalho,Endereco endereco){
-        super(id, nome, cpf, dataNascimento, email, telefone, senha, new Endereco());
+            int id, String nome, String cpf, LocalDate dataNascimento, String email, String telefone, String senha, String cargo, Double salario, Double horarioTrabalho, Endereco endereco){
+        super(id, nome, cpf, dataNascimento, email, telefone, senha,endereco);
         this.cargo = cargo;
         this.salario = salario;
         this.horarioTrabalho = horarioTrabalho;

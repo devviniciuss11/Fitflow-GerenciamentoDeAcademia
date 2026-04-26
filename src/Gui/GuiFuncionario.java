@@ -80,7 +80,8 @@ public class GuiFuncionario {
             switch (opcao) {
 
                 case 1:
-                    System.out.println("Registrar Presenca do Funcionario");
+                    FuncionarioServico funcionarioServico1 = new FuncionarioServico();
+                    funcionarioServico1.presencaFuncionario();
                     break;
 
                 case 0:
