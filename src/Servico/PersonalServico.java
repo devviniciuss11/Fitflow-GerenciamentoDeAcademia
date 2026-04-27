@@ -249,5 +249,8 @@ public class PersonalServico {
 
     }
 
+    public Personal buscarPorIdPer(int id){
+        return personalRepositorio.buscarPorIdper(id);
+    }
 
 }

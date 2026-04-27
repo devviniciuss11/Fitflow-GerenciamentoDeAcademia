@@ -18,6 +18,7 @@ public class AlunoServico {
     AlunoRepositorio alunoRepositorio = new AlunoRepositorio();
     Instancia instancia = new Instancia();
 
+
     public static void marcarPresenca(Aluno aluno){
         if (aluno == null) {
             System.out.println("Aluno invalido.");
@@ -344,6 +345,9 @@ public class AlunoServico {
             }
         }
 
+    }
+    public Aluno buscarPorId(int id) {
+        return alunoRepositorio.buscarPorId(id);
     }
 
 

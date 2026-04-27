@@ -12,6 +12,14 @@ public class AlunoRepositorio {
         alunos.add(aluno);
     }
 
+    public Aluno buscarPorId(int id) {
+        for (Aluno a : alunos) {
+            if (a.getId() == id) {
+                return a;
+            }
+        }
+        return null;
+    }
 
 }
 

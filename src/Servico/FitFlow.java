@@ -1,6 +1,7 @@
 package Servico;
 
 import Gui.*;
+import Repositorio.AlunoRepositorio;
 import Repositorio.TreinoRepositorio;
 
 import java.util.Scanner;
@@ -30,7 +31,9 @@ public class FitFlow {
                     break;
                 case 3:
                     TreinoRepositorio repositorio = new TreinoRepositorio();
-                    TreinoServico treinoServico = new TreinoServico(repositorio);
+                    PersonalServico personalServico = new PersonalServico();
+                    AlunoRepositorio alunoRepositorio = new AlunoRepositorio();
+                    TreinoServico treinoServico = new TreinoServico(repositorio,personalServico,alunoRepositorio );
                     GuiTreino guiTreino = new GuiTreino(treinoServico);
                     guiTreino.menuTreino();
                     break;
