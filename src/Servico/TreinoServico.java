@@ -9,83 +9,78 @@ import java.util.Random;
 import Repositorio.AlunoRepositorio;
 import Repositorio.TreinoRepositorio;
 
-public class TreinoServico {
-    private TreinoRepositorio repositorio;
-    private AlunoRepositorio alunoServico;
+public class TreinoServico{
+
+    private TreinoRepositorio treinoRepositorio;
+    private AlunoRepositorio alunoRepositorio;
     private PersonalServico personalServico;
 
-    public TreinoServico(TreinoRepositorio repositorio, PersonalServico personalServico, AlunoRepositorio alunoServico) {
-        this.repositorio = repositorio;
+    public TreinoServico(TreinoRepositorio repositorio, PersonalServico personalServico, AlunoRepositorio alunoRepositorio) {
+        this.treinoRepositorio = repositorio;
         this.personalServico = personalServico;
-        this.alunoServico = alunoServico;
+        this.alunoRepositorio = alunoRepositorio;
     }
-    public int geradorID() {
-        HashSet<Integer> idsUsados = new HashSet<>();
-        Random random = new Random();
-        int novoID;
 
+    private final HashSet<Integer> idsUsados = new HashSet<>();
+    private final Random random = new Random();
+
+    public int geradorID() {
+        int novoID;
         do {
             novoID = random.nextInt(10000);
         } while (idsUsados.contains(novoID));
-
         idsUsados.add(novoID);
         return novoID;
     }
 
-    public String cadastrarTreino(Treino treino) {
-        try {
-            StringBuilder erros = new StringBuilder();
-
-            if (alunoServico.buscarPorId(treino.getIdAluno()) == null) {
-                erros.append("Aluno não encontrado!\n");
-            }
-
-            if (personalServico.buscarPorIdPer(treino.getIdPersonal()) == null) {
-                erros.append("Personal não encontrado!\n");
-            }
-
-            if (erros.length() > 0) {
-                return erros.toString().trim();
-            }
-
-            treino.setId(geradorID());
-            repositorio.salvar(treino);
-            return "Treino cadastrado com sucesso!";
-
-        } catch (NullPointerException e) {
-            return "Erro: serviço de aluno ou personal não foi inicializado.";
-        } catch (Exception e) {
-            return "Erro inesperado ao cadastrar treino.";
+    private String validarTreino(Treino treino) {
+        if (treino == null) {
+            return "Treino não pode ser nulo.";
         }
+
+        StringBuilder erros = new StringBuilder();
+
+        if (alunoRepositorio.buscarPorId(treino.getIdAluno()) == null) {
+            erros.append("Aluno não encontrado!\n");
+        }
+
+        if (personalServico.buscarPorIdPer(treino.getIdPersonal()) == null) {
+            erros.append("Personal não encontrado!\n");
+        }
+
+        return erros.length() > 0 ? erros.toString().trim() : null;
+    }
+
+    public String cadastrarTreino(Treino treino) {
+        String erro = validarTreino(treino);
+        if (erro != null) {
+            return erro;
+        }
+
+        treino.setId(geradorID());
+        treinoRepositorio.salvar(treino);
+        return "Treino cadastrado com sucesso!";
     }
 
     public List<Treino> listarTreinos() {
-        return repositorio.listarTodos();
+        return treinoRepositorio.listarTodos();
     }
 
     public boolean removerTreino(int id) {
-        return repositorio.remover(id);
+        return treinoRepositorio.remover(id);
     }
+
 
     public String atualizarTreino(int id, Treino treinoAtualizado) {
         try {
-            StringBuilder erros = new StringBuilder();
-
-            if (alunoServico.buscarPorId(treinoAtualizado.getIdAluno()) == null) {
-                erros.append("Aluno não encontrado!\n");
-            }
-
-            if (personalServico.buscarPorIdPer(treinoAtualizado.getIdPersonal()) == null) {
-                erros.append("Personal não encontrado!\n");
-            }
-
-            if (erros.length() > 0) {
-                return erros.toString().trim();
+            String erro = validarTreino(treinoAtualizado);
+            if (erro != null) {
+                return erro;
             }
 
             treinoAtualizado.setId(id);
 
-            if (repositorio.atualizar(treinoAtualizado)) {
+            if (treinoRepositorio.atualizar(treinoAtualizado)) {
                 return "Treino atualizado com sucesso!";
             }
 
