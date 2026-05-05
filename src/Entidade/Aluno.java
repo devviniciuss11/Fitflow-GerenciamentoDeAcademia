@@ -21,7 +21,7 @@ public class Aluno extends Pessoa{
     public String toString() {
         DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         String dataFmt = (getDataNascimento() == null) ? "N/A" : getDataNascimento().format(fmt);
-        return "ID: " + getId() + ", Nome: " + getNome() + ",CPF: "+getCpf() + ",Data de Nascimento: "+dataFmt + ",Email: "+getEmail() + ",Telefone: "+getTelefone() + ",Senha: "+getSenha();
+        return "ID: " + getId() + ", Nome: " + getNome() + ",CPF: "+getCpf() + ",Data de Nascimento: "+dataFmt + ",Email: "+getEmail() + ",Telefone: "+getTelefone() + ",Senha: "+getSenha() + ",Endereço:"+getEndereco();
     }
     public Aluno(int id, String nome, String cpf, LocalDate dataNascimento, String email, String telefone, String senha,ArrayList<Plano> AlunoPlano, ArrayList<Treino> fichaDeTreino, Endereco endereco){
         super(id,nome,cpf,dataNascimento,email,telefone,senha,new Endereco());
