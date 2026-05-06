@@ -1,14 +1,16 @@
 package Servico;
 
 import Entidade.Aluno;
-import Repositorio.AlunoRepositorio;
+import Entidade.Endereco;
 import Entidade.Personal;
+import Repositorio.AlunoRepositorio;
 import Repositorio.PersonalRepositorio;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Scanner;
-import java.util.Random;
 import java.util.InputMismatchException;
+import java.util.Random;
+import java.util.Scanner;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
@@ -165,8 +167,36 @@ public class PersonalServico {
 
         sc.nextLine();
 
+        System.out.println("CEP: ");
+        String cep = sc.nextLine();
+
+        System.out.println("Bairro: ");
+        String bairro = sc.nextLine();
+
+        System.out.println("Nome da Rua: ");
+        String nomeRua = sc.nextLine();
+
+        System.out.println("Complemento: ");
+        String complemento = sc.nextLine();
+
+        int numCasa;
+        while (true) {
+            System.out.println("Numero da Casa: ");
+            String entrada = sc.nextLine().trim();
+            try {
+                numCasa = Integer.parseInt(entrada);
+                break;
+            } catch (NumberFormatException e) {
+                System.out.println("Digite apenas números para o número da casa!");
+            }
+        }
+
+        Endereco endereco = new Endereco(cep, bairro, nomeRua, complemento, numCasa);
+
         Personal novo = new Personal(
-                id, nome, cpf, dataNascimento, email, telefone, senha, craf, salario, horas, new ArrayList<>()
+                id, nome, cpf, dataNascimento, email, telefone, senha,
+                craf, salario, horas, new ArrayList<>(),
+                endereco
         );
         personalRepositorio.save(novo);
 
@@ -225,6 +255,7 @@ public class PersonalServico {
             System.out.println("Personal encontrado: " + encontrado.getNome());
             System.out.println("1- Alterar nome");
             System.out.println("2- Alterar salário");
+            System.out.println("3- Alterar endereço");
             System.out.println("Escolha uma opção");
             int op = sc.nextInt();
             sc.nextLine();
@@ -234,15 +265,42 @@ public class PersonalServico {
                 encontrado.setNome(sc.nextLine());
                 System.out.println("  Nome atualizado  ");
 
-            }else if (op ==2){
+            } else if (op == 2) {
                 System.out.println(" Novo salário: ");
                 encontrado.setSalario(sc.nextDouble());
                 sc.nextLine();
                 System.out.println(" Salario Atualizado ");
 
-            }else{
-                System.out.println(" Personal nao encontrado ");
+            } else if (op == 3) {
+                System.out.println("CEP: ");
+                String cep = sc.nextLine();
 
+                System.out.println("Bairro: ");
+                String bairro = sc.nextLine();
+
+                System.out.println("Nome da Rua: ");
+                String nomeRua = sc.nextLine();
+
+                System.out.println("Complemento: ");
+                String complemento = sc.nextLine();
+
+                int numCasa;
+                while (true) {
+                    System.out.println("Numero da Casa: ");
+                    String entrada = sc.nextLine().trim();
+                    try {
+                        numCasa = Integer.parseInt(entrada);
+                        break;
+                    } catch (NumberFormatException e) {
+                        System.out.println("Digite apenas números para o número da casa!");
+                    }
+                }
+
+                encontrado.setEndereco(new Endereco(cep, bairro, nomeRua, complemento, numCasa));
+                System.out.println(" Endereço atualizado ");
+
+            } else {
+                System.out.println(" Opção inválida ");
             }
 
         }

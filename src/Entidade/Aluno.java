@@ -1,5 +1,4 @@
 package Entidade;
-
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -23,14 +22,13 @@ public class Aluno extends Pessoa{
         String dataFmt = (getDataNascimento() == null) ? "N/A" : getDataNascimento().format(fmt);
         return "ID: " + getId() + ", Nome: " + getNome() + ",CPF: "+getCpf() + ",Data de Nascimento: "+dataFmt + ",Email: "+getEmail() + ",Telefone: "+getTelefone() + ",Senha: "+getSenha() + ",Endereço:"+getEndereco();
     }
-    public Aluno(int id, String nome, String cpf, LocalDate dataNascimento, String email, String telefone, String senha,ArrayList<Plano> AlunoPlano, ArrayList<Treino> fichaDeTreino, Endereco endereco){
-        super(id,nome,cpf,dataNascimento,email,telefone,senha,new Endereco());
-        this.fichaDeTreino = new ArrayList<>();
-        this.planos = new ArrayList<>();
 
+    public Aluno(int id, String nome, String cpf, LocalDate dataNascimento, String email, String telefone, String senha,
+                 ArrayList<Plano> AlunoPlano, ArrayList<Treino> fichaDeTreino, Endereco endereco) {
+        super(id, nome, cpf, dataNascimento, email, telefone, senha, endereco);
+        this.fichaDeTreino = (fichaDeTreino == null) ? new ArrayList<>() : new ArrayList<>(fichaDeTreino);
+        this.planos = (AlunoPlano == null) ? new ArrayList<>() : new ArrayList<>(AlunoPlano);
     }
-
-
 
     public Set<LocalDate> getDiasTreino() {
         return diasTreino;
@@ -55,5 +53,4 @@ public class Aluno extends Pessoa{
     public void setFichaDeTreino(ArrayList<Treino> fichaDeTreino) {
         this.fichaDeTreino = fichaDeTreino;
     }
-
 }

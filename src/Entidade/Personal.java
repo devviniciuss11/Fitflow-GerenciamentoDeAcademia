@@ -22,8 +22,22 @@ public class Personal extends Pessoa {
         super(id, nome, cpf, dataNascimento, email, telefone, senha, new Endereco());
     }
 
-    public Personal(int id, String nome, String cpf, LocalDate dataNascimento, String email, String telefone, String senha,String craf, double salario, double horarioTrabalho, ArrayList<String> alunosdele) {
+    public Personal(int id, String nome, String cpf, LocalDate dataNascimento, String email, String telefone, String senha, Endereco endereco) {
+        super(id, nome, cpf, dataNascimento, email, telefone, senha, endereco);
+    }
+
+    public Personal(int id, String nome, String cpf, LocalDate dataNascimento, String email, String telefone, String senha,
+                    String craf, double salario, double horarioTrabalho, ArrayList<String> alunosdele) {
         super(id, nome, cpf, dataNascimento, email, telefone, senha, new Endereco());
+        this.craf = craf;
+        this.salario = salario;
+        this.horarioTrabalho = horarioTrabalho;
+        Alunosdele = alunosdele;
+    }
+
+    public Personal(int id, String nome, String cpf, LocalDate dataNascimento, String email, String telefone, String senha,
+                    String craf, double salario, double horarioTrabalho, ArrayList<String> alunosdele, Endereco endereco) {
+        super(id, nome, cpf, dataNascimento, email, telefone, senha, endereco);
         this.craf = craf;
         this.salario = salario;
         this.horarioTrabalho = horarioTrabalho;

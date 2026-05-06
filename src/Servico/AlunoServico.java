@@ -84,7 +84,6 @@ public class AlunoServico {
                 System.out.println("Digite apenas numeros.");
                 continue;
             }
-            menuPresenca:
             switch (opc) {
                 case 1:
                     marcarPresenca(alunoEncontrado);
@@ -178,19 +177,31 @@ public class AlunoServico {
                 System.out.println("Complemento Do Responsavel: ");
                 String complemento = sc.nextLine();
 
-                System.out.println("Numero da Casa Do Responsavel: ");
-                Integer numCasa = sc.nextInt();
+                int numCasa;
+                while (true) {
+                    System.out.println("Numero da Casa Do Responsavel: ");
+                    String entrada = sc.nextLine().trim();
+                    try {
+                        numCasa = Integer.parseInt(entrada);
+                        break;
+                    } catch (NumberFormatException e) {
+                        System.out.println("Digite apenas números para o número da casa!");
+                    }
+                }
 
                 ArrayList FichaDeTreino = new ArrayList();
-                ArrayList AlunoPlano= new ArrayList();
+                ArrayList AlunoPlano = new ArrayList();
 
-                Aluno aluno = new Aluno(id, nome, cpf, dataNascimento, email, telefone, senha,FichaDeTreino, AlunoPlano,new Endereco(cep,bairro,nomeRua,complemento,numCasa));
+                Aluno aluno = new Aluno(
+                        id, nome, cpf, dataNascimento, email, telefone, senha,
+                        FichaDeTreino, AlunoPlano,
+                        new Endereco(cep, bairro, nomeRua, complemento, numCasa)
+                );
                 alunoRepositorio.save(aluno);
                 instancia.adicionar();
                 return;
-
-                }
-                break;
+            }
+            break;
         }
 
         System.out.println("CPF: ");
@@ -221,18 +232,31 @@ public class AlunoServico {
         System.out.println("Complemento: ");
         String complemento = sc.nextLine();
 
-        System.out.println("Numero da Casa: ");
-        Integer numCasa = sc.nextInt();
+        int numCasa;
+        while (true) {
+            System.out.println("Numero da Casa: ");
+            String entrada = sc.nextLine().trim();
+            try {
+                numCasa = Integer.parseInt(entrada);
+                break;
+            } catch (NumberFormatException e) {
+                System.out.println("Digite apenas números para o número da casa!");
+            }
+        }
 
         ArrayList FichaDeTreino = new ArrayList();
-        ArrayList AlunoPlano= new ArrayList();
+        ArrayList AlunoPlano = new ArrayList();
 
-        Aluno aluno = new Aluno(id, nome, cpf, dataNascimento, email, telefone, senha,FichaDeTreino, AlunoPlano,new Endereco(cep,bairro,nomeRua,complemento,numCasa));
+        Aluno aluno = new Aluno(
+                id, nome, cpf, dataNascimento, email, telefone, senha,
+                FichaDeTreino, AlunoPlano,
+                new Endereco(cep, bairro, nomeRua, complemento, numCasa)
+        );
         alunoRepositorio.save(aluno);
         instancia.adicionar();
     }
 
-    public void MostrarAlunos(){
+    public void MostrarAlunos() {
         if(alunos.isEmpty()){
             System.out.println("Nenhum aluno cadastrado ainda !!!");
         }
@@ -290,9 +314,17 @@ public class AlunoServico {
             System.out.println("4- Alterar Email");
             System.out.println("5- Alterar Telefone");
             System.out.println("6- Alterar Senha");
-            System.out.println("7- Sair");
-            Scanner sc1 = new Scanner(System.in);
-            int opc= sc1.nextInt();
+            System.out.println("7- Alterar Endereço");
+            System.out.println("8- Sair");
+
+            int opc;
+            try {
+                opc = Integer.parseInt(sc.nextLine().trim());
+            } catch (NumberFormatException e) {
+                System.out.println("Digite apenas números.");
+                continue;
+            }
+
             switch (opc) {
                 case 1:
                     System.out.println("Digite o novo nome: ");
@@ -340,12 +372,43 @@ public class AlunoServico {
                     instancia.alterar();
                     break;
                 case 7:
+                    System.out.println("CEP: ");
+                    String cep = sc.nextLine();
+
+                    System.out.println("Bairro: ");
+                    String bairro = sc.nextLine();
+
+                    System.out.println("Nome da Rua: ");
+                    String nomeRua = sc.nextLine();
+
+                    System.out.println("Complemento: ");
+                    String complemento = sc.nextLine();
+
+                    int numCasa;
+                    while (true) {
+                        System.out.println("Numero da Casa: ");
+                        String entrada = sc.nextLine().trim();
+                        try {
+                            numCasa = Integer.parseInt(entrada);
+                            break;
+                        } catch (NumberFormatException e) {
+                            System.out.println("Digite apenas números para o número da casa!");
+                        }
+                    }
+
+                    aluno.setEndereco(new Endereco(cep, bairro, nomeRua, complemento, numCasa));
+                    instancia.alterar();
+                    System.out.println("Endereço atualizado.");
+                    break;
+                case 8:
                     opcao = 'n';
                     break;
+                default:
+                    System.out.println("Opcao inválida.");
             }
         }
-
     }
+
     public Aluno buscarPorId(int id) {
         return alunoRepositorio.buscarPorId(id);
     }

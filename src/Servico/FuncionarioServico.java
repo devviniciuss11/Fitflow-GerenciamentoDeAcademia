@@ -192,13 +192,26 @@ public class FuncionarioServico {
         String Complemento = sc.nextLine();
 
         System.out.println("Digite o Numero da Casa: ");
-        Integer numCasa = sc.nextInt();
+        int numCasa;
+        while (true) {
+            System.out.println("Digite o Numero da Casa: ");
+            String entrada = sc.nextLine().trim();
+            try {
+                numCasa = Integer.parseInt(entrada);
+                break;
+            } catch (NumberFormatException e) {
+                System.out.println("Digite apenas números para o número da casa!");
+            }
+        }
 
-        Funcionario funcionario = new Funcionario(id, nome, Cpf, datadeNascimento, Email, telefone, senha, cargo, salario, horario,new Endereco(cep,bairro,nomeRua,Complemento,numCasa));
+        Funcionario funcionario = new Funcionario(
+                id, nome, Cpf, datadeNascimento, Email, telefone, senha,
+                cargo, salario, horario,
+                new Endereco(cep, bairro, nomeRua, Complemento, numCasa)
+        );
         funcionariosRepositorio.Save(funcionario);
         instancia.adicionar();
     }
-
 
     public void ListarFuncionarios() {
         if (funcionarios.isEmpty()) {
@@ -251,10 +264,12 @@ public class FuncionarioServico {
             System.out.println("7- Alterar Cargo");
             System.out.println("8- Alterar Salario");
             System.out.println("9- Alterar Horario de Trabalho");
-            System.out.println("10- Sair");
+            System.out.println("10- Alterar Endereço");
+            System.out.println("11- Sair");
+
             int opc = sc.nextInt();
             sc.nextLine();
-            switch (opc){
+            switch (opc) {
                 case 1:
                     System.out.println("Digite o novo nome: ");
                     String novoNome = sc.nextLine();
@@ -316,16 +331,45 @@ public class FuncionarioServico {
                 case 9:
                     System.out.println("Digite o novo Horario de trabalho do Funcionario: ");
                     Double novoHorario = sc.nextDouble();
+                    sc.nextLine();
                     funcionario.setHorarioTrabalho(novoHorario);
                     instancia.alterar();
                     break;
                 case 10:
+                    System.out.println("CEP: ");
+                    String cep = sc.nextLine();
+
+                    System.out.println("Bairro: ");
+                    String bairro = sc.nextLine();
+
+                    System.out.println("Nome da Rua: ");
+                    String nomeRua = sc.nextLine();
+
+                    System.out.println("Complemento: ");
+                    String complemento = sc.nextLine();
+
+                    int numCasa;
+                    while (true) {
+                        System.out.println("Numero da Casa: ");
+                        String entrada = sc.nextLine().trim();
+                        try {
+                            numCasa = Integer.parseInt(entrada);
+                            break;
+                        } catch (NumberFormatException e) {
+                            System.out.println("Digite apenas números para o número da casa!");
+                        }
+                    }
+
+                    funcionario.setEndereco(new Endereco(cep, bairro, nomeRua, complemento, numCasa));
+                    instancia.alterar();
+                    System.out.println("Endereço atualizado.");
+                    break;
+                case 11:
                     opcao = '1';
                     break;
+                default:
+                    System.out.println("Opção inválida!");
             }
         }
-
     }
-
-
 }
