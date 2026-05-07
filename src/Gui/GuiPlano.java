@@ -55,7 +55,7 @@ public class GuiPlano {
         System.out.println("\n ======== LISTA DE PLANOS ========");
 
         if (planos.isEmpty()) {
-            System.out.println("NÃO ENCONTRADO!❌");
+            System.out.println("NÃO ENCONTRADO!");
             return;
         }
         for (Plano p : planos) {
@@ -87,7 +87,7 @@ public class GuiPlano {
         servico.cadastrarPlano(plano);
         System.out.println("Qtd depois de cadastrar: "
                 + servico.listarPlano().size());
-        System.out.println("CADASTRO REALIZADO! ✅");
+        System.out.println("CADASTRO REALIZADO!");
     }
     private void remover(){
         System.out.print("ID do plano: ");
@@ -96,9 +96,9 @@ public class GuiPlano {
         boolean removido = servico.removerPlano(id);
 
         if (removido) {
-            System.out.println("PLANO REMOVIDO COM SUCESSO! ✅");
+            System.out.println("PLANO REMOVIDO COM SUCESSO! ");
         } else {
-            System.out.println("NÃO ENCONTRADO!❌");
+            System.out.println("NÃO ENCONTRADO!");
         }
     }
 
@@ -124,9 +124,9 @@ public class GuiPlano {
         boolean atualizado = servico.atualizarPlano(plano);
 
         if (atualizado) {
-            System.out.println("PLANO ATUALIZADO COM SUCESSO!✅");
+            System.out.println("PLANO ATUALIZADO COM SUCESSO!");
         } else {
-            System.out.println("NÃO ENCONTRADO!❌");
+            System.out.println("NÃO ENCONTRADO!");
         }
     }
 }

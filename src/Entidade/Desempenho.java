@@ -42,13 +42,13 @@ public class Desempenho {
     public double getPeso() { return peso; }
     public void setPeso(double peso) {
         this.peso = peso;
-        this.imc = calcularImc(this.peso, this.altura); // Atualiza IMC automaticamente
+        this.imc = calcularImc(this.peso, this.altura);
     }
 
     public double getAltura() { return altura; }
     public void setAltura(double altura) {
         this.altura = altura;
-        this.imc = calcularImc(this.peso, this.altura); // Atualiza IMC automaticamente
+        this.imc = calcularImc(this.peso, this.altura);
     }
 
     public double getImc() { return imc; }

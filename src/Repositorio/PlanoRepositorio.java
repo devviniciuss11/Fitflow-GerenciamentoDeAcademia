@@ -10,7 +10,7 @@ public class PlanoRepositorio {
 
     public PlanoRepositorio(){
         planorepositorio = new ArrayList<>();
-        carregarPlanosPadrao(); // ← carrega automático
+        carregarPlanosPadrao();
     }
 
 
