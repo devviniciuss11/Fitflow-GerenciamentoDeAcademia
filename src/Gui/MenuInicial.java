@@ -151,12 +151,12 @@ public class MenuInicial {
         String senha = lerLinhaNaoVazia("Digite a senha do AcessoAdm: ");
 
         while (!senha.equals(acessoAdm.getSenha())) {
-            System.out.println("Senha incorreta. Acesso negado!");
+            System.out.println("Opção Inválida");
             senha = lerLinhaNaoVazia("Digite a senha do AcessoAdm: ");
         }
         String email = lerLinhaNaoVazia("Digite o email do AcessoAdm: ");
         while (!email.equals(acessoAdm.getEmail())) {
-            System.out.println("email incorreto. Acesso negado!");
+            System.out.println("Opção Inválida");
             email = lerLinhaNaoVazia("Digite a email do AcessoAdm: ");
         }
         System.out.println("Acesso liberado! Bem-vindo(a), ADM.");

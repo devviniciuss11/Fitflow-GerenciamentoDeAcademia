@@ -15,6 +15,7 @@ import java.util.Scanner;
 import java.util.Set;
 
 public class AlunoServico {
+    private static final String MSG_CAMPOS_OBRIGATORIOS = "Preencha todos os campos obrigatórios.";
     Scanner sc = new Scanner(System.in);
     AlunoRepositorio alunoRepositorio = new AlunoRepositorio();
     Instancia instancia = new Instancia();
@@ -98,13 +99,11 @@ public class AlunoServico {
         LocalDate dataNascimento = LocalDate.now();
         System.out.println("Cadastrar Aluno");
 
-        System.out.println("Nome: ");
-        String nome = sc.nextLine();
+        String nome = lerCampoObrigatorio("Nome: ");
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/uuuu");
         while (true) {
-            System.out.println("Digite a Data de Nascimento do Aluno (formato dd/MM/yyyy): ");
-            String dataNasimento = sc.nextLine().trim();
+            String dataNasimento = lerCampoObrigatorio("Digite a Data de Nascimento do Aluno (formato dd/MM/yyyy): ");
 
             try {
                 dataNascimento = LocalDate.parse(dataNasimento, formatter);
@@ -133,24 +132,18 @@ public class AlunoServico {
             if (idade <= 10 && idade >= 5) {
                 System.out.println("Aluno com " + idade + " anos: e obrigatorio informar os dados do responsavel.");
 
-                System.out.println("Cpf Do Responsavel: ");
-                String cpf = sc.nextLine();
+                String cpf = lerCampoObrigatorio("Cpf Do Responsavel: ");
 
                 if (alunoRepositorio.existePorCpf(cpf)) {
                     System.out.println("Cpf ja cadastrado. Tente novamente com outro CPF.");
                     return;
                 }
 
-                System.out.println("Email Do Responsavel: ");
-                String email = sc.nextLine();
+                String email = lerCampoObrigatorio("Email Do Responsavel: ");
+                String telefone = lerCampoObrigatorio("Telefone Do Responsavel: ");
+                String senha = lerCampoObrigatorio("Senha Do Responsavel: ");
 
-                System.out.println("Telefone Do Responsavel: ");
-                String telefone = sc.nextLine();
-
-                System.out.println("Senha Do Responsavel: ");
-                String senha = sc.nextLine();
-
-                Endereco endereco = lerEndereco("Do Responsavel");
+                Endereco endereco = lerEnderecoObrigatorio("Do Responsavel");
 
                 ArrayList<Entidade.Treino> fichaDeTreino = new ArrayList<>();
                 ArrayList<Entidade.Plano> alunoPlano = new ArrayList<>();
@@ -167,23 +160,17 @@ public class AlunoServico {
             break;
         }
 
-        System.out.println("CPF: ");
-        String cpf = sc.nextLine();
+        String cpf = lerCampoObrigatorio("CPF: ");
         if (alunoRepositorio.existePorCpf(cpf)) {
             System.out.println("Cpf ja cadastrado. Tente novamente com outro CPF.");
             return;
         }
 
-        System.out.println("Email: ");
-        String email = sc.nextLine();
+        String email = lerCampoObrigatorio("Email: ");
+        String telefone = lerCampoObrigatorio("Telefone: ");
+        String senha = lerCampoObrigatorio("Senha: ");
 
-        System.out.println("Telefone: ");
-        String telefone = sc.nextLine();
-
-        System.out.println("Senha: ");
-        String senha = sc.nextLine();
-
-        Endereco endereco = lerEndereco("");
+        Endereco endereco = lerEnderecoObrigatorio("");
 
         ArrayList<Entidade.Treino> fichaDeTreino = new ArrayList<>();
         ArrayList<Entidade.Plano> alunoPlano = new ArrayList<>();
@@ -216,9 +203,9 @@ public class AlunoServico {
 
         if (alunoRepositorio.removerPorCpf(cpf)) {
             System.out.println("Procurando Aluno....");
-            System.out.println("O Aluno foi excluido com sucesso.\n");
+            System.out.println("Aluno Removido com Sucesso!\n");
         } else {
-            System.out.println("Aluno nao encontrado. Tente novamente!\n");
+            System.out.println("Aluno não encontrado.\n");
         }
     }
 
@@ -229,7 +216,7 @@ public class AlunoServico {
 
         Aluno aluno = alunoRepositorio.buscarPorCpf(cpf);
         if (aluno == null) {
-            System.out.println("Aluno nao foi encontrado. Voltando para o menuInicial...");
+            System.out.println("Aluno não encontrado.");
             return;
         }
 
@@ -348,5 +335,44 @@ public class AlunoServico {
         }
 
         return new Endereco(cep, bairro, nomeRua, complemento, numCasa);
+    }
+
+    private Endereco lerEnderecoObrigatorio(String sufixo) {
+        String label = sufixo == null || sufixo.isBlank() ? "" : " " + sufixo;
+
+        String cep = lerCampoObrigatorio("CEP" + label + ": ");
+        String bairro = lerCampoObrigatorio("Bairro" + label + ": ");
+        String nomeRua = lerCampoObrigatorio("Nome da Rua" + label + ": ");
+        String complemento = lerCampoObrigatorio("Complemento" + label + ": ");
+        int numCasa = lerNumeroCasaObrigatorio("Numero da Casa" + label + ": ");
+
+        return new Endereco(cep, bairro, nomeRua, complemento, numCasa);
+    }
+
+    private String lerCampoObrigatorio(String prompt) {
+        while (true) {
+            System.out.println(prompt);
+            String valor = sc.nextLine().trim();
+            if (!valor.isEmpty()) {
+                return valor;
+            }
+            System.out.println(MSG_CAMPOS_OBRIGATORIOS);
+        }
+    }
+
+    private int lerNumeroCasaObrigatorio(String prompt) {
+        while (true) {
+            System.out.println(prompt);
+            String entrada = sc.nextLine().trim();
+            if (entrada.isEmpty()) {
+                System.out.println(MSG_CAMPOS_OBRIGATORIOS);
+                continue;
+            }
+            try {
+                return Integer.parseInt(entrada);
+            } catch (NumberFormatException e) {
+                System.out.println("Digite apenas numeros para o numero da casa!");
+            }
+        }
     }
 }
