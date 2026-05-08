@@ -1,74 +1,112 @@
-<div align="center">
-  <h1>FitFlow — Gerenciamento de Academia</h1>
-  <p>
-    Sistema em <b>Java</b> para gerenciamento de academia via console, com cadastro e administração de alunos, planos e treinos.
-  </p>
+﻿# FitFlow - Gerenciamento de Academia
 
-  <!-- Badges (opcionais) -->
-  <p>
-    <img alt="Java" src="https://img.shields.io/badge/Java-21-007396?logo=openjdk&logoColor=white">
-    <img alt="Status" src="https://img.shields.io/badge/Status-Em%20desenvolvimento-blue">
-    <img alt="License" src="https://img.shields.io/badge/License-MIT-green">
-  </p>
-</div>
+Sistema de gerenciamento de academia em Java puro (console), com persistencia em PostgreSQL via Hibernate ORM.
 
+## Especificacoes do projeto
 
+- Linguagem: Java 21
+- Paradigma: POO
+- Tipo: Aplicacao console
+- Build: Maven
+- Persistencia: Hibernate ORM + PostgreSQL
+- API de persistencia: Jakarta Persistence (JPA)
 
-<div class="card">
-  <h2>Visão Geral</h2>
-  <p class="muted">
-    O <b>FitFlow</b> é um projeto acadêmico de gerenciamento de academia organizado em camadas simples:
-    <b>Entidades</b> (modelos), <b>Repositórios</b> (armazenamento em memória), <b>Serviços</b> (regras de negócio)
-    e <b>GUI</b> (menus de console).
-  </p>
+## Funcionalidades principais
 
-  <div>
-    <span class="tag">Java 21</span>
-    <span class="tag">Console App</span>
-    <span class="tag">CRUD</span>
-    <span class="tag">POO</span>
-  </div>
-</div>
+- Gestao de alunos (cadastrar, listar, alterar, remover)
+- Gestao de personais
+- Gestao de funcionarios
+- Gestao de planos
+- Gestao de treinos
+- Gestao de pagamentos
+- Gestao de desempenho fisico (IMC)
+- Login por perfil (aluno, personal e funcionario)
 
-<div class="grid">
-  <div class="card">
-    <h3>Principais Funcionalidades</h3>
-    <ul>
-      <li><b>Alunos</b>: cadastro, listagem, alteração e remoção</li>
-      <li><b>Presença</b>: marcação de presença por aluno e histórico</li>
-      <li><b>Planos</b>: estrutura para cadastro e gerenciamento</li>
-      <li><b>Personal</b>: estrutura para cadastro e gerenciamento</li>
-      <li><b>Treinos</b>: estrutura para ficha/treinos</li>
-    </ul>
-  </div>
+## Estrutura de pastas
 
-  <div class="card">
-    <h3>Arquitetura (Pastas)</h3>
-    <ul>
-      <li><span class="k">src/Entidade</span> — classes de domínio (Aluno, Plano, Treino, ...)</li>
-      <li><span class="k">src/Repositorio</span> — armazenamento em memória (ex.: listas)</li>
-      <li><span class="k">src/Servico</span> — regras e operações do sistema</li>
-      <li><span class="k">src/Gui</span> — menus e interação via terminal</li>
-      <li><span class="k">src/Interfacess</span> — contratos/ações (adicionar/remover/alterar)</li>
-    </ul>
-  </div>
-</div>
+- `src/Entidade`: modelos de dominio e entidades JPA
+- `src/Repositorio`: acesso a dados (Hibernate Session)
+- `src/Servico`: regras de negocio
+- `src/Gui`: menus e fluxo da aplicacao
+- `src/Infra`: infraestrutura (HibernateUtil)
+- `src/main/resources`: configuracoes (`hibernate.cfg.xml`)
+- `sql`: scripts SQL de criacao do banco e schema
 
-<div class="card">
-  <h2>Como Executar</h2>
-  <p class="muted">
-    Você pode rodar o projeto pela IDE (IntelliJ/Eclipse) ou pelo terminal.
-  </p>
+## Entidades persistidas
 
-  <h3>Pré-requisitos</h3>
-  <ul>
-    <li>Java <b>21</b> instalado</li>
-    <li>Git (opcional)</li>
-  </ul>
+- `Aluno`
+- `Personal`
+- `Funcionario`
+- `Plano`
+- `Treino`
+- `Pagamento`
+- `Desempenho`
 
-  <h3>Executando pela IDE</h3>
-  <ol>
-    <li>Abra a pasta do projeto na IDE</li>
-    <li>Localize a classe principal em <b>src/Servico</b> (ex.: <code>FitFlow</code>)</li>
-    <li>Execute (Run)</li>
-  </ol>
+## Pre-requisitos para rodar na sua maquina
+
+- JDK 21 instalado e configurado
+- PostgreSQL instalado e em execucao
+- Maven instalado (ou IntelliJ com suporte Maven)
+- IntelliJ IDEA (recomendado)
+
+## Configuracao do banco
+
+1. Crie o banco `fitflow` e o schema com os scripts:
+   - `sql/01_create_database.sql`
+   - `sql/02_create_schema.sql`
+2. Ajuste usuario/senha/URL em `src/main/resources/hibernate.cfg.xml`:
+   - `hibernate.connection.url`
+   - `hibernate.connection.username`
+   - `hibernate.connection.password`
+
+Exemplo de URL:
+
+```text
+jdbc:postgresql://localhost:5432/fitflow
+```
+
+## Como rodar o projeto (IntelliJ)
+
+1. Abra a pasta do projeto.
+2. Aguarde o IntelliJ reconhecer o `pom.xml`.
+3. Em `Project Structure`:
+   - `Project SDK`: JDK 21
+   - `Modules`: pasta `src` marcada como `Sources`
+4. Crie/edite a configuracao de execucao:
+   - Main class: `Gui.MenuInicial`
+   - Module: `fitflow-gerenciamento-de-academia` (ou o modulo do projeto)
+5. Execute `Run`.
+
+## Como rodar com Maven (opcional)
+
+Compilar:
+
+```bash
+mvn -DskipTests compile
+```
+
+Executar pela IDE usando a classe principal `Gui.MenuInicial`.
+
+## Como verificar dados no PostgreSQL (pgAdmin)
+
+1. Abra `Databases > fitflow > Schemas > public > Tables`.
+2. Clique com botao direito na tabela (ex.: `aluno`).
+3. Selecione `View/Edit Data > All Rows`.
+
+Ou use Query Tool:
+
+```sql
+SELECT * FROM aluno;
+SELECT * FROM personal;
+SELECT * FROM funcionario;
+SELECT * FROM plano;
+SELECT * FROM treino;
+SELECT * FROM pagamento;
+SELECT * FROM desempenho;
+```
+
+## Observacoes
+
+- O projeto nao usa Spring Boot.
+- A criacao/atualizacao de schema no Hibernate esta configurada por `hibernate.hbm2ddl.auto`.
+- Se aparecer muito log no console, ajuste `show_sql` e `format_sql` no `hibernate.cfg.xml`.
