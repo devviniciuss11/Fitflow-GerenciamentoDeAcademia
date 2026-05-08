@@ -47,7 +47,7 @@ public class GuiTreino {
                     System.out.println("Voltando para o Menu Principal...");
                     break;
                 default:
-                    System.out.println("Opção inválida!");
+                    System.out.println("OpÃ§Ã£o invÃ¡lida!");
             }
         }
     }
@@ -68,8 +68,8 @@ public class GuiTreino {
                 System.out.println("Aluno: "     + t.getIdAluno());
                 System.out.println("Personal: "  + t.getIdPersonal());
                 System.out.println("Dia: "       + t.getData());
-                System.out.println("Horário: "   + t.getHorario());
-                System.out.println("Descrição: " + t.getDescricao());
+                System.out.println("HorÃ¡rio: "   + t.getHorario());
+                System.out.println("DescriÃ§Ã£o: " + t.getDescricao());
                 System.out.println("----------------------");
             }
 
@@ -87,15 +87,15 @@ public class GuiTreino {
         int idPersonal = sc.nextInt();
         sc.nextLine();
 
-        System.out.println("Escolha o Dia que você deseja colocar esse treino:");
-        System.out.println("Segunda | Terça | Quarta | Quinta | Sexta ");
+        System.out.println("Escolha o Dia que vocÃª deseja colocar esse treino:");
+        System.out.println("Segunda | TerÃ§a | Quarta | Quinta | Sexta ");
         String data = sc.nextLine();
-        System.out.print("Horário: ");
+        System.out.print("HorÃ¡rio: ");
         String horario = sc.nextLine();
         System.out.print("Musculo(s): ");
         String descricao = sc.nextLine();
 
-        Treino treino = new Treino(0, idAluno, idPersonal, data, horario, descricao);
+        Treino treino = new Treino(null, idAluno, idPersonal, data, horario, descricao);
 
         String resultado = servico.cadastrarTreino(treino);
         System.out.println(resultado);
@@ -108,7 +108,7 @@ public class GuiTreino {
         if (servico.removerTreino(id)) {
             System.out.println("TREINO REMOVIDO!");
         } else {
-            System.out.println("TREINO NÃO ENCONTRADO!");
+            System.out.println("TREINO NÃƒO ENCONTRADO!");
         }
     }
 
@@ -125,7 +125,7 @@ public class GuiTreino {
         System.out.print("Nova Data: ");
         String data = sc.nextLine();
 
-        System.out.print("Novo Horário: ");
+        System.out.print("Novo HorÃ¡rio: ");
         String horario = sc.nextLine();
 
         System.out.print("Novo Treino: ");

@@ -1,61 +1,85 @@
 package Entidade;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
+
+@Embeddable
 public class Endereco {
-    private String Cep;
-    private String Bairro;
-    private String NomeRua;
+
+    @Column(name = "cep", length = 12)
+    private String cep;
+
+    @Column(name = "bairro", length = 120)
+    private String bairro;
+
+    @Column(name = "nome_rua", length = 120)
+    private String nomeRua;
+
+    @Column(name = "complemento", length = 120)
     private String complemento;
-    private int NumCasa;
+
+    @Column(name = "num_casa")
+    private Integer numCasa;
 
     @Override
     public String toString() {
         return "Endereco{" +
-                "Cep='" + Cep +
-                ", Bairro='" + Bairro +
-                ", NomeRua='" + NomeRua +
-                ", complemento='" + complemento +
-                ", NumCasa=" + NumCasa +
+                "cep='" + cep + '\'' +
+                ", bairro='" + bairro + '\'' +
+                ", nomeRua='" + nomeRua + '\'' +
+                ", complemento='" + complemento + '\'' +
+                ", numCasa=" + numCasa +
                 '}';
     }
 
-    public Endereco(String cep, String bairro, String nomeRua, String complemento, int numCasa) {
-        Cep = cep;
-        Bairro = bairro;
-        NomeRua = nomeRua;
+    public Endereco(String cep, String bairro, String nomeRua, String complemento, Integer numCasa) {
+        this.cep = cep;
+        this.bairro = bairro;
+        this.nomeRua = nomeRua;
         this.complemento = complemento;
-        NumCasa = numCasa;
+        this.numCasa = numCasa;
     }
+
     public Endereco() {
     }
 
     public String getCep() {
-        return Cep;
+        return cep;
     }
+
     public void setCep(String cep) {
-        Cep = cep;
+        this.cep = cep;
     }
+
     public String getBairro() {
-        return Bairro;
+        return bairro;
     }
+
     public void setBairro(String bairro) {
-        Bairro = bairro;
+        this.bairro = bairro;
     }
+
     public String getNomeRua() {
-        return NomeRua;
+        return nomeRua;
     }
+
     public void setNomeRua(String nomeRua) {
-        NomeRua = nomeRua;
+        this.nomeRua = nomeRua;
     }
+
     public String getComplemento() {
         return complemento;
     }
+
     public void setComplemento(String complemento) {
         this.complemento = complemento;
     }
-    public int getNumCasa() {
-        return NumCasa;
+
+    public Integer getNumCasa() {
+        return numCasa;
     }
-    public void setNumCasa(int numCasa) {
-        NumCasa = numCasa;
+
+    public void setNumCasa(Integer numCasa) {
+        this.numCasa = numCasa;
     }
 }

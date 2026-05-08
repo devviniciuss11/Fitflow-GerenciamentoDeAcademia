@@ -1,18 +1,46 @@
 package Entidade;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+@Entity
+@Table(name = "desempenho")
 public class Desempenho {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Integer id;
+
+    @Column(name = "nome", nullable = false, length = 120)
     private String nome;
-    private int id;
+
+    @Column(name = "cpf", nullable = false, length = 14)
     private String cpf;
+
+    @Column(name = "peso", nullable = false)
     private double peso;
+
+    @Column(name = "altura", nullable = false)
     private double altura;
+
+    @Column(name = "imc", nullable = false)
     private double imc;
+
+    @Column(name = "data_avaliacao", nullable = false)
     private LocalDate dataAvaliacao;
 
-    public Desempenho(int id, String cpf, double peso, double altura, String nome) {
+    public Desempenho() {
+    }
+
+    public Desempenho(Integer id, String cpf, double peso, double altura, String nome) {
         this.nome = nome;
         this.id = id;
         this.cpf = cpf;
@@ -36,23 +64,59 @@ public class Desempenho {
         return "Obesidade";
     }
 
-    public int getId() { return id; }
-    public String getCpf() { return cpf; }
+    public Integer getId() {
+        return id;
+    }
 
-    public double getPeso() { return peso; }
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getCpf() {
+        return cpf;
+    }
+
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
+    }
+
+    public double getPeso() {
+        return peso;
+    }
+
     public void setPeso(double peso) {
         this.peso = peso;
         this.imc = calcularImc(this.peso, this.altura);
     }
 
-    public double getAltura() { return altura; }
+    public double getAltura() {
+        return altura;
+    }
+
     public void setAltura(double altura) {
         this.altura = altura;
         this.imc = calcularImc(this.peso, this.altura);
     }
 
-    public double getImc() { return imc; }
-    public LocalDate getDataAvaliacao() { return dataAvaliacao; }
+    public double getImc() {
+        return imc;
+    }
+
+    public LocalDate getDataAvaliacao() {
+        return dataAvaliacao;
+    }
+
+    public void setDataAvaliacao(LocalDate dataAvaliacao) {
+        this.dataAvaliacao = dataAvaliacao;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
 
     @Override
     public String toString() {

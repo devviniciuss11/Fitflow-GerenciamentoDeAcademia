@@ -1,13 +1,37 @@
 package Entidade;
 
-public class Plano {
-    private String nome;
-    private double valor;
-    private int duracao;
-    private String descricao;
-    private int id;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
-    public Plano(int id, String nome, double valor, String descricao, int duracao) {
+@Entity
+@Table(name = "plano")
+public class Plano {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Integer id;
+
+    @Column(name = "nome", nullable = false, length = 100)
+    private String nome;
+
+    @Column(name = "valor", nullable = false)
+    private double valor;
+
+    @Column(name = "duracao", nullable = false)
+    private int duracao;
+
+    @Column(name = "descricao", nullable = false, length = 255)
+    private String descricao;
+
+    public Plano() {
+    }
+
+    public Plano(Integer id, String nome, double valor, String descricao, int duracao) {
         this.nome = nome;
         this.valor = valor;
         this.duracao = duracao;
@@ -43,19 +67,24 @@ public class Plano {
         return descricao;
     }
 
-    public int getId(){
+    public Integer getId() {
         return id;
     }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     public void setDescricao(String descricao) {
         this.descricao = descricao;
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         return "ID: " + id +
                 "| Nome: " + nome +
                 "| Valor: R$ " + valor +
-                "| Duração: " + duracao +
-                "| Descrição: " + descricao;
+                "| Duracao: " + duracao +
+                "| Descricao: " + descricao;
     }
 }

@@ -7,7 +7,7 @@ import Repositorio.AlunoRepositorio;
 import Repositorio.PagamentoRepositorio;
 
 import java.time.LocalDate;
-import java.util.Random;
+import java.util.List;
 import java.util.Scanner;
 
 public class PagamentoServico {
@@ -15,26 +15,21 @@ public class PagamentoServico {
     Scanner sc = new Scanner(System.in);
     PagamentoRepositorio pagamentoRepositorio = new PagamentoRepositorio();
     PlanoServico planoServico = new PlanoServico();
+    AlunoRepositorio alunoRepositorio = new AlunoRepositorio();
 
     public void realizarPagamento() {
         System.out.println("      REALIZAR PAGAMENTO      ");
         System.out.println(" Digite o CPF do Aluno: ");
         String cpfAluno = sc.nextLine();
 
-        Aluno alunoEncontrado = null;
-        for (Aluno a : AlunoRepositorio.alunos) {
-            if (a.getCpf().equals(cpfAluno)){
-                alunoEncontrado = a;
-                break;
-            }
-        }
+        Aluno alunoEncontrado = alunoRepositorio.buscarPorCpf(cpfAluno);
 
-        if(alunoEncontrado == null) {
-            System.out.println(" O Aluno não foi encontrado. Por favor, verifique o CPF. ");
+        if (alunoEncontrado == null) {
+            System.out.println(" O Aluno nao foi encontrado. Por favor, verifique o CPF. ");
             return;
         }
 
-        System.out.println("    PLANOS DISPONÍVEIS    ");
+        System.out.println("    PLANOS DISPONIVEIS    ");
         for (Plano p : planoServico.listarPlano()) {
             System.out.println(p.getId() + " - " + p.getNome() + " (R$ " + p.getValor() + ")");
         }
@@ -46,19 +41,19 @@ public class PagamentoServico {
         Plano planoEncontrado = planoServico.buscarPorId(idPlano);
 
         if (planoEncontrado == null) {
-            System.out.println("  PLANO NÃO ENCONTRADO  ");
+            System.out.println("  PLANO NAO ENCONTRADO  ");
             return;
         }
 
-        System.out.println("  Escolha o método de pagamento: ");
+        System.out.println("  Escolha o metodo de pagamento: ");
         System.out.println(" [1] - PIX");
         System.out.println(" [2] - Boleto");
-        System.out.println(" [3] - Cartão de Crédito/Débito");
-        System.out.print(" Opção: ");
+        System.out.println(" [3] - Cartao de Credito/Debito");
+        System.out.print(" Opcao: ");
         int opcMetodo = sc.nextInt();
         sc.nextLine();
 
-        String metodoEscolhido = "";
+        String metodoEscolhido;
         switch (opcMetodo) {
             case 1:
                 metodoEscolhido = "PIX";
@@ -68,39 +63,37 @@ public class PagamentoServico {
             case 2:
                 metodoEscolhido = "Boleto";
                 System.out.println("    Pagamento via Boleto    ");
-                System.out.println("Código de Barras: 123456");
+                System.out.println("Codigo de Barras: 123456");
                 break;
             case 3:
-                metodoEscolhido = "Cartão";
-                System.out.println("      Pagamento via Cartão    ");
-                System.out.print("Digite o número do cartão: ");
+                metodoEscolhido = "Cartao";
+                System.out.println("      Pagamento via Cartao    ");
+                System.out.print("Digite o numero do cartao: ");
                 sc.nextLine();
                 System.out.print("Digite o CVV: ");
                 sc.nextLine();
                 break;
             default:
-                System.out.println("Opção inválida, definindo como PIX por padrão.");
+                System.out.println("Opcao invalida, definindo como PIX por padrao.");
                 metodoEscolhido = "PIX";
         }
 
         System.out.println(" O pagamento foi efetivado com sucesso agora?");
-        System.out.println("[1] Sim (Ficará ATIVO/PAGO)");
-        System.out.println("[2] Não (Ficará PENDENTE)");
-        System.out.print("Opção: ");
+        System.out.println("[1] Sim (Ficara ATIVO/PAGO)");
+        System.out.println("[2] Nao (Ficara PENDENTE)");
+        System.out.print("Opcao: ");
         int opcStatus = sc.nextInt();
         sc.nextLine();
 
         Pagamento.StatusPagamento statusDefinido = (opcStatus == 1) ? Pagamento.StatusPagamento.PAGO : Pagamento.StatusPagamento.PENDENTE;
 
-        if(statusDefinido == Pagamento.StatusPagamento.PAGO) {
+        if (statusDefinido == Pagamento.StatusPagamento.PAGO) {
             System.out.println("  Pagamento efetuado!");
         } else {
-            System.out.println("  Pagamento não efetuado. Status ficará como PENDENTE.");
+            System.out.println("  Pagamento nao efetuado. Status ficara como PENDENTE.");
         }
 
-        int idPagamento = new Random().nextInt(10000);
-
-        Pagamento novoPagamento = new Pagamento(idPagamento, alunoEncontrado, planoEncontrado, statusDefinido, metodoEscolhido);
+        Pagamento novoPagamento = new Pagamento(null, alunoEncontrado, planoEncontrado, statusDefinido, metodoEscolhido);
 
         pagamentoRepositorio.salvar(novoPagamento);
 
@@ -108,14 +101,15 @@ public class PagamentoServico {
         System.out.println(novoPagamento);
     }
 
-    public void listarPagamento(){
+    public void listarPagamento() {
         atualizarRegraSeisMeses();
 
-        System.out.println("    HISTÓRICO DE PAGAMENTOS    ");
-        if (pagamentoRepositorio.listarTodos().isEmpty()){
+        System.out.println("    HISTORICO DE PAGAMENTOS    ");
+        List<Pagamento> pagamentos = pagamentoRepositorio.listarTodos();
+        if (pagamentos.isEmpty()) {
             System.out.println("Nenhum pagamento foi registrado ainda.");
-        }else {
-            for (Pagamento p : pagamentoRepositorio.listarTodos()) {
+        } else {
+            for (Pagamento p : pagamentos) {
                 System.out.println(p);
             }
         }
@@ -127,6 +121,7 @@ public class PagamentoServico {
             if (p.getStatus() == Pagamento.StatusPagamento.PENDENTE) {
                 if (p.getDataVencimento().plusMonths(6).isBefore(hoje)) {
                     p.setStatus(Pagamento.StatusPagamento.CANCELADO);
+                    pagamentoRepositorio.atualizar(p);
                 }
             }
         }
@@ -152,7 +147,7 @@ public class PagamentoServico {
         if (pagamentoRepositorio.remover(id)) {
             System.out.println(" Pagamento removido com sucesso!");
         } else {
-            System.out.println(" Pagamento não encontrado!");
+            System.out.println(" Pagamento nao encontrado!");
         }
     }
 
@@ -161,18 +156,12 @@ public class PagamentoServico {
         int id = sc.nextInt();
         sc.nextLine();
 
-        Pagamento encontrado = null;
-        for (Pagamento p : pagamentoRepositorio.listarTodos()) {
-            if (p.getId() == id) {
-                encontrado = p;
-                break;
-            }
-        }
+        Pagamento encontrado = pagamentoRepositorio.buscarPorId(id);
 
         if (encontrado != null) {
             System.out.println("Status atual: " + encontrado.getStatus());
             System.out.println("Novo status: [1] PENDENTE  [2] PAGO  [3] CANCELADO");
-            System.out.print("Opção: ");
+            System.out.print("Opcao: ");
             int opc = sc.nextInt();
             sc.nextLine();
 
@@ -180,11 +169,12 @@ public class PagamentoServico {
                 case 1 -> encontrado.setStatus(Pagamento.StatusPagamento.PENDENTE);
                 case 2 -> encontrado.setStatus(Pagamento.StatusPagamento.PAGO);
                 case 3 -> encontrado.setStatus(Pagamento.StatusPagamento.CANCELADO);
-                default -> System.out.println("Opção inválida.");
+                default -> System.out.println("Opcao invalida.");
             }
+            pagamentoRepositorio.atualizar(encontrado);
             System.out.println("  Status atualizado!");
         } else {
-            System.out.println("  Pagamento não encontrado.");
+            System.out.println("  Pagamento nao encontrado.");
         }
     }
 }

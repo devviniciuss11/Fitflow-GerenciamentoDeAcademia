@@ -2,12 +2,12 @@ package Servico;
 
 import Entidade.Aluno;
 import Entidade.Desempenho;
-import Repositorio.DesempenhoRepositorio;
 import Interfacess.Instancia;
 import Repositorio.AlunoRepositorio;
+import Repositorio.DesempenhoRepositorio;
 
 import java.util.InputMismatchException;
-import java.util.Random;
+import java.util.List;
 import java.util.Scanner;
 
 public class DesempenhoServico {
@@ -18,7 +18,6 @@ public class DesempenhoServico {
 
     public void cadastrarDesempenho() {
         System.out.println("\n--- CADASTRO DE DESEMPENHO ---");
-        int id = new Random().nextInt(10000);
 
         System.out.print("Digite o CPF do Aluno: ");
         String cpf = sc.nextLine().trim();
@@ -28,13 +27,7 @@ public class DesempenhoServico {
             return;
         }
 
-        Aluno alunoEncontrado = null;
-        for (Aluno a : AlunoRepositorio.alunos) {
-            if (a.getCpf() != null && a.getCpf().equals(cpf)) {
-                alunoEncontrado = a;
-                break;
-            }
-        }
+        Aluno alunoEncontrado = alunoRepositorio.buscarPorCpf(cpf);
 
         if (alunoEncontrado == null) {
             System.out.println("Aluno nao encontrado! Verifique o CPF.");
@@ -74,7 +67,7 @@ public class DesempenhoServico {
         }
         sc.nextLine();
 
-        Desempenho desempenho = new Desempenho(id, cpf, peso, altura, alunoEncontrado.getNome());
+        Desempenho desempenho = new Desempenho(null, cpf, peso, altura, alunoEncontrado.getNome());
         repositorio.save(desempenho);
 
         System.out.println("Desempenho salvo! O IMC calculado foi: " + String.format("%.2f", desempenho.getImc()));
@@ -82,13 +75,14 @@ public class DesempenhoServico {
     }
 
     public void listarDesempenhos() {
-        if (DesempenhoRepositorio.desempenhos.isEmpty()) {
+        List<Desempenho> desempenhos = repositorio.listarTodos();
+        if (desempenhos.isEmpty()) {
             System.out.println("Nenhum desempenho registrado no momento!");
             return;
         }
         System.out.println("\n--- LISTA DE DESEMPENHOS ---");
-        for (Desempenho d : DesempenhoRepositorio.desempenhos) {
-            System.out.println(d.toString());
+        for (Desempenho d : desempenhos) {
+            System.out.println(d);
         }
     }
 
@@ -106,7 +100,7 @@ public class DesempenhoServico {
             return;
         }
 
-        boolean removido = DesempenhoRepositorio.desempenhos.removeIf(d -> d.getId() == id);
+        boolean removido = repositorio.remover(id);
 
         if (removido) {
             instancia.remover();
@@ -129,13 +123,7 @@ public class DesempenhoServico {
             return;
         }
 
-        Desempenho encontrado = null;
-        for (Desempenho d : DesempenhoRepositorio.desempenhos) {
-            if (d.getId() == id) {
-                encontrado = d;
-                break;
-            }
-        }
+        Desempenho encontrado = repositorio.buscarPorId(id);
 
         if (encontrado != null) {
             System.out.println("Desempenho encontrado para o CPF: " + encontrado.getCpf());
@@ -170,6 +158,7 @@ public class DesempenhoServico {
                 }
 
                 encontrado.setPeso(novoPeso);
+                repositorio.atualizar(encontrado);
                 System.out.println("Peso atualizado! Novo IMC: " + String.format("%.2f", encontrado.getImc()));
                 instancia.alterar();
             } else if (op == 2) {
@@ -190,6 +179,7 @@ public class DesempenhoServico {
                 }
 
                 encontrado.setAltura(novaAltura);
+                repositorio.atualizar(encontrado);
                 System.out.println("Altura atualizada! Novo IMC: " + String.format("%.2f", encontrado.getImc()));
                 instancia.alterar();
             } else {

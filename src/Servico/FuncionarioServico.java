@@ -1,19 +1,17 @@
 package Servico;
+
 import Entidade.Endereco;
 import Entidade.Funcionario;
 import Interfacess.Instancia;
 import Repositorio.FuncionarioRepositorio;
+
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.HashSet;
-import java.util.Random;
+import java.util.List;
 import java.util.Scanner;
-import java.util.*;
-
-import static Repositorio.FuncionarioRepositorio.funcionarios;
-
+import java.util.Set;
 
 public class FuncionarioServico {
     Scanner sc = new Scanner(System.in);
@@ -21,66 +19,59 @@ public class FuncionarioServico {
     Instancia instancia = new Instancia();
 
     public static void mostrarDiasTrabalhados(Funcionario funcionario) {
-        if (funcionario == null){
-            System.out.println("Funcionario não encontrado!");
+        if (funcionario == null) {
+            System.out.println("Funcionario nao encontrado!");
             return;
         }
         Set<LocalDate> diasTrabalhados = funcionario.getDiasTrabalhados();
 
         if (diasTrabalhados.isEmpty()) {
-            System.out.println("O funcionario não possui nenhuma presença marcada!");
-        }else {
-            System.out.println("Historico de presenças do Funcionario: ");
+            System.out.println("O funcionario nao possui nenhuma presenca marcada!");
+        } else {
+            System.out.println("Historico de presencas do Funcionario: ");
             for (LocalDate data : diasTrabalhados) {
                 System.out.println("Dias Presentes --- " + data);
             }
-
         }
-
     }
 
     public static void marcarPresenca(Funcionario funcionario) {
         if (funcionario == null) {
-            System.out.println("Funcionario Não encontrado!!");
+            System.out.println("Funcionario nao encontrado!!");
             return;
         }
         LocalDate hoje = LocalDate.now();
         Set<LocalDate> diasTrabalhados = funcionario.getDiasTrabalhados();
         if (!diasTrabalhados.add(hoje)) {
-            System.out.println("O funcionario já consta como presente nesse dia!");
-        }else {
+            System.out.println("O funcionario ja consta como presente nesse dia!");
+        } else {
             System.out.println("Presenca marcada com sucesso! " + hoje);
         }
-
     }
 
     public void presencaFuncionario() {
-        System.out.println("Digite o Cpf do Funcionario que deseja Marcar Presença: ");
-        String Cpf = sc.nextLine().trim();
+        System.out.println("Digite o Cpf do Funcionario que deseja Marcar Presenca: ");
+        String cpf = sc.nextLine().trim();
 
-        Funcionario funcionarioPresente = null;
-        for (Funcionario f: funcionarios) {
-            if (f.getCpf() != null && f.getCpf().equals(Cpf))
-                funcionarioPresente = f;
-            break;
-        }
+        Funcionario funcionarioPresente = funcionariosRepositorio.buscarPorCpf(cpf);
+
         if (funcionarioPresente == null) {
-            System.out.println("Funcionario não encontrado!!");
+            System.out.println("Funcionario nao encontrado!!");
             return;
         }
 
         while (true) {
-            System.out.println("Presença do Funcionario: "+ funcionarioPresente.getNome());
+            System.out.println("Presenca do Funcionario: " + funcionarioPresente.getNome());
             System.out.println("==========================================================");
-            System.out.println("Qual opção deseja executar: ");
-            System.out.println("1 - Ver historico de presença do Funcionario.");
-            System.out.println("2 - Marcar Presença do Funcionario.");
+            System.out.println("Qual opcao deseja executar: ");
+            System.out.println("1 - Ver historico de presenca do Funcionario.");
+            System.out.println("2 - Marcar Presenca do Funcionario.");
             System.out.println("3 - Voltar.");
 
             int opc;
             try {
                 opc = Integer.parseInt(sc.nextLine().trim());
-            }catch (NumberFormatException e) {
+            } catch (NumberFormatException e) {
                 System.out.println("Digite apenas Numeros: ");
                 continue;
             }
@@ -90,42 +81,25 @@ public class FuncionarioServico {
                     break;
                 case 2:
                     marcarPresenca(funcionarioPresente);
+                    funcionarioPresente = funcionariosRepositorio.atualizar(funcionarioPresente);
                     break;
                 case 3:
                     return;
                 default:
-                    System.out.println("Opção invalida!");
+                    System.out.println("Opcao invalida!");
             }
-        }
-    }
-
-
-    public int GeradorID() {
-        {
-
-            HashSet<Integer> IdsUsados = new HashSet<>();
-            Random random = new Random();
-            int novoID;
-            do {
-
-                novoID = random.nextInt(10000);
-            } while (IdsUsados.contains(novoID));
-            IdsUsados.add(novoID);
-            return novoID;
-
         }
     }
 
     public void cadastrarFuncionarios() {
         LocalDate datadeNascimento = LocalDate.now();
         System.out.println("Area de Cadastro de Funcionario!!!");
-        int id = GeradorID();
 
         System.out.println("Digite o nome do Funcionario: ");
         String nome = sc.nextLine();
 
         System.out.println("Digite o Cpf do Funcionario: ");
-        String Cpf = sc.nextLine();
+        String cpf = sc.nextLine();
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/uuuu");
         while (true) {
@@ -141,7 +115,7 @@ public class FuncionarioServico {
             int idade = Period.between(datadeNascimento, LocalDate.now()).getYears();
 
             if (idade < 0) {
-                System.out.println("A Idade esta errada!! Tente novamente. ");
+                System.out.println("A Idade esta errada!! Tente novamente.");
                 continue;
             }
             if (idade > 120) {
@@ -149,18 +123,15 @@ public class FuncionarioServico {
                 continue;
             }
             if (idade <= 17) {
-                System.out.println("Funcionarios precisam ter mais de 18 anos. Tente novamente ");
+                System.out.println("Funcionarios precisam ter mais de 18 anos. Tente novamente");
                 continue;
             }
-            if (idade > 17) {
-                System.out.println("Idade Cadastrada com sucesso!!");
-            }
+            System.out.println("Idade Cadastrada com sucesso!!");
             break;
-
         }
 
         System.out.println("Digite seu Email: ");
-        String Email = sc.nextLine();
+        String email = sc.nextLine();
 
         System.out.println("Digite seu telefone: ");
         String telefone = sc.nextLine();
@@ -179,80 +150,54 @@ public class FuncionarioServico {
         Double horario = sc.nextDouble();
         sc.nextLine();
 
-        System.out.println("Digite o CEP: ");
-        String cep = sc.nextLine();
-
-        System.out.println("Digite o Bairro: ");
-        String bairro = sc.nextLine();
-
-        System.out.println("Digite o Nome da Rua: ");
-        String nomeRua = sc.nextLine();
-
-        System.out.println("Digite o Complemento: ");
-        String Complemento = sc.nextLine();
-
-        System.out.println("Digite o Numero da Casa: ");
-        int numCasa;
-        while (true) {
-            System.out.println("Digite o Numero da Casa: ");
-            String entrada = sc.nextLine().trim();
-            try {
-                numCasa = Integer.parseInt(entrada);
-                break;
-            } catch (NumberFormatException e) {
-                System.out.println("Digite apenas números para o número da casa!");
-            }
-        }
+        Endereco endereco = lerEndereco();
 
         Funcionario funcionario = new Funcionario(
-                id, nome, Cpf, datadeNascimento, Email, telefone, senha,
+                null, nome, cpf, datadeNascimento, email, telefone, senha,
                 cargo, salario, horario,
-                new Endereco(cep, bairro, nomeRua, Complemento, numCasa)
+                endereco
         );
         funcionariosRepositorio.Save(funcionario);
         instancia.adicionar();
     }
 
     public void ListarFuncionarios() {
+        List<Funcionario> funcionarios = funcionariosRepositorio.listarTodos();
         if (funcionarios.isEmpty()) {
-            System.out.println("Não há Funcionarios Cadastrados!!");
-        }else {
+            System.out.println("Nao ha Funcionarios Cadastrados!!");
+        } else {
             for (Funcionario f : funcionarios) {
-                System.out.println(funcionarios);
+                System.out.println(f);
             }
         }
     }
-    public void RemoverFuncionario(){
-        System.out.println("Aba de Remoção de Funcionarios!!");
+
+    public void RemoverFuncionario() {
+        System.out.println("Aba de Remocao de Funcionarios!!");
         System.out.println("Digite o CPF do Funcionario que deseja Remover");
         String buscaCpf = sc.nextLine();
-        boolean removido = funcionarios.removeIf(Funcionario -> Funcionario.getCpf().equals(buscaCpf));
+        boolean removido = funcionariosRepositorio.removerPorCpf(buscaCpf);
 
-        if (removido){
+        if (removido) {
             System.out.println("Funcionario com CPF: " + buscaCpf + " Removido");
-        }else {
+        } else {
             System.out.println("Nenhum Funcionario com o Cpf: " + buscaCpf + " Encontrado!");
         }
     }
 
     public void AlterarFuncionario() {
-        System.out.println("Pagina de Alteração de dados do Funcionario!!");
+        System.out.println("Pagina de Alteracao de dados do Funcionario!!");
         System.out.println("Digite o Cpf do funcionario");
-        String Cpf = sc.nextLine();
-        Funcionario funcionario = null;
-        for (Funcionario funcionario1 : funcionarios) {
-            if (funcionario1.getCpf().equals(Cpf)){
-                funcionario = funcionario1;
-                System.out.println("Funcionario " + funcionario.getNome() + " Encontrada com sucesso.");
-                break;
-            }
-        }
+        String cpf = sc.nextLine();
+
+        Funcionario funcionario = funcionariosRepositorio.buscarPorCpf(cpf);
         if (funcionario == null) {
-            System.out.println("Funcionario não encontrado. Voltando ao menuInicial.");
+            System.out.println("Funcionario nao encontrado. Voltando ao menuInicial.");
             return;
         }
 
-        System.out.println("Escolha qual alteração gostaria de fazer nos dados do Funcionario(a): " + funcionario.getNome());
+        System.out.println("Funcionario " + funcionario.getNome() + " encontrado com sucesso.");
+
         char opcao = '2';
         while (opcao != '1') {
             System.out.println("1- Alterar Nome");
@@ -264,7 +209,7 @@ public class FuncionarioServico {
             System.out.println("7- Alterar Cargo");
             System.out.println("8- Alterar Salario");
             System.out.println("9- Alterar Horario de Trabalho");
-            System.out.println("10- Alterar Endereço");
+            System.out.println("10- Alterar Endereco");
             System.out.println("11- Sair");
 
             int opc = sc.nextInt();
@@ -272,14 +217,14 @@ public class FuncionarioServico {
             switch (opc) {
                 case 1:
                     System.out.println("Digite o novo nome: ");
-                    String novoNome = sc.nextLine();
-                    funcionario.setNome(novoNome);
+                    funcionario.setNome(sc.nextLine());
+                    funcionario = funcionariosRepositorio.atualizar(funcionario);
                     instancia.alterar();
                     break;
                 case 2:
                     System.out.println("Digite o novo CPF: ");
-                    String novoCpf = sc.nextLine();
-                    funcionario.setCpf(novoCpf);
+                    funcionario.setCpf(sc.nextLine());
+                    funcionario = funcionariosRepositorio.atualizar(funcionario);
                     instancia.alterar();
                     break;
                 case 3:
@@ -290,9 +235,10 @@ public class FuncionarioServico {
                         try {
                             LocalDate dataNascimentoAlterada = LocalDate.parse(dataNascimento, formatter);
                             funcionario.setDataNascimento(dataNascimentoAlterada);
+                            funcionario = funcionariosRepositorio.atualizar(funcionario);
                             instancia.alterar();
                             break;
-                        }catch (DateTimeParseException e) {
+                        } catch (DateTimeParseException e) {
                             System.out.println("Voce nao digitou a data no formato certo. Tente novamente (exemplo: 02/08/2007).");
                         }
                     }
@@ -300,32 +246,34 @@ public class FuncionarioServico {
 
                 case 4:
                     System.out.println("Digite o novo email: ");
-                    String novoEmail = sc.nextLine();
-                    funcionario.setEmail(novoEmail);
+                    funcionario.setEmail(sc.nextLine());
+                    funcionario = funcionariosRepositorio.atualizar(funcionario);
                     instancia.alterar();
                     break;
                 case 5:
-                    System.out.println("Digite o novo número: ");
-                    String novoTelefone = sc.nextLine();
-                    funcionario.setTelefone(novoTelefone);
+                    System.out.println("Digite o novo numero: ");
+                    funcionario.setTelefone(sc.nextLine());
+                    funcionario = funcionariosRepositorio.atualizar(funcionario);
                     instancia.alterar();
                     break;
                 case 6:
                     System.out.println("Digite a nova senha: ");
-                    String novaSenha = sc.nextLine();
-                    funcionario.setSenha(novaSenha);
+                    funcionario.setSenha(sc.nextLine());
+                    funcionario = funcionariosRepositorio.atualizar(funcionario);
                     instancia.alterar();
                     break;
                 case 7:
                     System.out.println("Digite o novo cargo ocupado pelo Funcionario: ");
-                    String novoCargo = sc.nextLine();
-                    funcionario.setCargo(novoCargo);
+                    funcionario.setCargo(sc.nextLine());
+                    funcionario = funcionariosRepositorio.atualizar(funcionario);
                     instancia.alterar();
                     break;
                 case 8:
                     System.out.println("Digite o novo salario do Funcionario: ");
                     Double novoSalario = sc.nextDouble();
+                    sc.nextLine();
                     funcionario.setSalario(novoSalario);
+                    funcionario = funcionariosRepositorio.atualizar(funcionario);
                     instancia.alterar();
                     break;
                 case 9:
@@ -333,43 +281,49 @@ public class FuncionarioServico {
                     Double novoHorario = sc.nextDouble();
                     sc.nextLine();
                     funcionario.setHorarioTrabalho(novoHorario);
+                    funcionario = funcionariosRepositorio.atualizar(funcionario);
                     instancia.alterar();
                     break;
                 case 10:
-                    System.out.println("CEP: ");
-                    String cep = sc.nextLine();
-
-                    System.out.println("Bairro: ");
-                    String bairro = sc.nextLine();
-
-                    System.out.println("Nome da Rua: ");
-                    String nomeRua = sc.nextLine();
-
-                    System.out.println("Complemento: ");
-                    String complemento = sc.nextLine();
-
-                    int numCasa;
-                    while (true) {
-                        System.out.println("Numero da Casa: ");
-                        String entrada = sc.nextLine().trim();
-                        try {
-                            numCasa = Integer.parseInt(entrada);
-                            break;
-                        } catch (NumberFormatException e) {
-                            System.out.println("Digite apenas números para o número da casa!");
-                        }
-                    }
-
-                    funcionario.setEndereco(new Endereco(cep, bairro, nomeRua, complemento, numCasa));
+                    funcionario.setEndereco(lerEndereco());
+                    funcionario = funcionariosRepositorio.atualizar(funcionario);
                     instancia.alterar();
-                    System.out.println("Endereço atualizado.");
+                    System.out.println("Endereco atualizado.");
                     break;
                 case 11:
                     opcao = '1';
                     break;
                 default:
-                    System.out.println("Opção inválida!");
+                    System.out.println("Opcao invalida!");
             }
         }
+    }
+
+    private Endereco lerEndereco() {
+        System.out.println("Digite o CEP: ");
+        String cep = sc.nextLine();
+
+        System.out.println("Digite o Bairro: ");
+        String bairro = sc.nextLine();
+
+        System.out.println("Digite o Nome da Rua: ");
+        String nomeRua = sc.nextLine();
+
+        System.out.println("Digite o Complemento: ");
+        String complemento = sc.nextLine();
+
+        int numCasa;
+        while (true) {
+            System.out.println("Digite o Numero da Casa: ");
+            String entrada = sc.nextLine().trim();
+            try {
+                numCasa = Integer.parseInt(entrada);
+                break;
+            } catch (NumberFormatException e) {
+                System.out.println("Digite apenas numeros para o numero da casa!");
+            }
+        }
+
+        return new Endereco(cep, bairro, nomeRua, complemento, numCasa);
     }
 }

@@ -1,31 +1,32 @@
 package Gui;
-import Servico.PlanoServico;
-import java.util.Scanner;
+
 import Entidade.Plano;
+import Servico.PlanoServico;
+
 import java.util.List;
+import java.util.Scanner;
 
 public class GuiPlano {
     private Scanner sc = new Scanner(System.in);
     private PlanoServico servico;
 
-    public GuiPlano(PlanoServico servico){
+    public GuiPlano(PlanoServico servico) {
         this.servico = servico;
     }
 
-    public void menuPlano(){
+    public void menuPlano() {
         int opc = -1;
-        while(opc != 0){
+        while (opc != 0) {
             System.out.println("-------------MENU PLANO-------------");
-            System.out.println("[1] Cadastra Plano personalizado. ");
-            System.out.println("[2] Listar Planos disponiveis. ");
-            System.out.println("[3] Remover Planos. ");
-            System.out.println("[4] Alterar Planos. ");
-            System.out.println("[0] Sair. ");
+            System.out.println("[1] Cadastrar Plano personalizado.");
+            System.out.println("[2] Listar Planos disponiveis.");
+            System.out.println("[3] Remover Planos.");
+            System.out.println("[4] Alterar Planos.");
+            System.out.println("[0] Sair.");
 
             opc = sc.nextInt();
 
             switch (opc) {
-
                 case 1:
                     cadastrar();
                     break;
@@ -41,21 +42,19 @@ public class GuiPlano {
                 case 0:
                     System.out.println("Saindo...");
                     break;
-
                 default:
-                    System.out.println("Opção inválida!");
+                    System.out.println("Opcao invalida!");
             }
         }
     }
 
-    private void listar(){
-
+    private void listar() {
         List<Plano> planos = servico.listarPlano();
 
         System.out.println("\n ======== LISTA DE PLANOS ========");
 
         if (planos.isEmpty()) {
-            System.out.println("NÃO ENCONTRADO!");
+            System.out.println("NAO ENCONTRADO!");
             return;
         }
         for (Plano p : planos) {
@@ -63,33 +62,30 @@ public class GuiPlano {
         }
     }
 
-    private void cadastrar(){
+    private void cadastrar() {
         System.out.println("\n ======== CADASTRO DO PLANO ========");
 
-        System.out.print("ID: ");
-        int id = sc.nextInt();
         sc.nextLine();
-
         System.out.print("Nome: ");
         String nome = sc.nextLine();
 
         System.out.print("Valor: ");
         double valor = sc.nextDouble();
 
-        System.out.println("Duração: ");
+        System.out.println("Duracao: ");
         int duracao = sc.nextInt();
+        sc.nextLine();
 
-        System.out.println("Descricao ");
+        System.out.println("Descricao: ");
         String descricao = sc.nextLine();
 
-        Plano plano = new Plano(id, nome, valor, descricao, duracao);
+        Plano plano = new Plano(null, nome, valor, descricao, duracao);
 
         servico.cadastrarPlano(plano);
-        System.out.println("Qtd depois de cadastrar: "
-                + servico.listarPlano().size());
         System.out.println("CADASTRO REALIZADO!");
     }
-    private void remover(){
+
+    private void remover() {
         System.out.print("ID do plano: ");
         int id = sc.nextInt();
 
@@ -98,11 +94,11 @@ public class GuiPlano {
         if (removido) {
             System.out.println("PLANO REMOVIDO COM SUCESSO! ");
         } else {
-            System.out.println("NÃO ENCONTRADO!");
+            System.out.println("NAO ENCONTRADO!");
         }
     }
 
-    private void atualizar(){
+    private void atualizar() {
         System.out.print("ID do plano: ");
         int id = sc.nextInt();
         sc.nextLine();
@@ -113,10 +109,11 @@ public class GuiPlano {
         System.out.print("Novo Valor: ");
         double valor = sc.nextDouble();
 
-        System.out.println("Novo Duração: ");
+        System.out.println("Nova Duracao: ");
         int duracao = sc.nextInt();
+        sc.nextLine();
 
-        System.out.println("Nova Descrição: ");
+        System.out.println("Nova Descricao: ");
         String descricao = sc.nextLine();
 
         Plano plano = new Plano(id, nome, valor, descricao, duracao);
@@ -126,7 +123,7 @@ public class GuiPlano {
         if (atualizado) {
             System.out.println("PLANO ATUALIZADO COM SUCESSO!");
         } else {
-            System.out.println("NÃO ENCONTRADO!");
+            System.out.println("NAO ENCONTRADO!");
         }
     }
 }

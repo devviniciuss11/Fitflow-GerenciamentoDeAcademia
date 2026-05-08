@@ -1,76 +1,85 @@
 package Gui;
 
+import Entidade.AcessoAdm;
 import Entidade.Aluno;
 import Entidade.Funcionario;
 import Entidade.Personal;
+import Infra.HibernateUtil;
 import Repositorio.AlunoRepositorio;
 import Repositorio.FuncionarioRepositorio;
 import Repositorio.PersonalRepositorio;
 import Servico.FitFlow;
-import Entidade.AcessoAdm;
+
 import java.util.Scanner;
 
 public class MenuInicial {
     FitFlow fitFlow = new FitFlow();
 
     private final Scanner sc = new Scanner(System.in);
+    private final FuncionarioRepositorio funcionarioRepositorio = new FuncionarioRepositorio();
+    private final AlunoRepositorio alunoRepositorio = new AlunoRepositorio();
+    private final PersonalRepositorio personalRepositorio = new PersonalRepositorio();
 
     public void menuInicial() {
         int opcao = -1;
 
         while (opcao != 0) {
             System.out.println("Bem-vindo ao Sistema FitFlow!!");
-            System.out.println("Escolha Uma Das Opções Abaixo");
+            System.out.println("Escolha Uma Das Opcoes Abaixo");
             System.out.println("============= FITFLOW =============");
             System.out.println(" [1] - Login");
             System.out.println(" [0] - Sair");
             System.out.println("==================================");
-            opcao = lerOpcaoInt("Escolha uma opção: ");
+            opcao = lerOpcaoInt("Escolha uma opcao: ");
 
             switch (opcao) {
                 case 1 -> menuLogin();
                 case 0 -> System.out.println("Saindo...");
-                default -> System.out.println("Opção inválida!");
+                default -> System.out.println("Opcao invalida!");
             }
         }
     }
+
     private void menuLogin() {
         int opcao = -1;
 
         while (opcao != 0) {
             System.out.println("--------------- LOGIN --------------");
-            System.out.println(" [1] - Login de Funcionário");
+            System.out.println(" [1] - Login de Funcionario");
             System.out.println(" [2] - Login de Personal");
             System.out.println(" [3] - Login de Aluno");
-            System.out.println(" [4] - Administração (ADM)");
+            System.out.println(" [4] - Administracao (ADM)");
             System.out.println(" [0] - Voltar");
             System.out.println("------------------------------------");
-            opcao = lerOpcaoInt("Escolha uma opção: ");
+            opcao = lerOpcaoInt("Escolha uma opcao: ");
 
             switch (opcao) {
                 case 1 -> loginFuncionario();
                 case 2 -> loginPersonal();
                 case 3 -> loginAluno();
                 case 4 -> acessoAdm();
-                case 0 -> { /* voltar */ }
-                default -> System.out.println("Opção inválida!");
+                case 0 -> {
+                }
+                default -> System.out.println("Opcao invalida!");
             }
         }
     }
+
     private void loginFuncionario() {
-        System.out.println("Login de Funcionário");
+        System.out.println("Login de Funcionario");
         String cpf = lerLinhaNaoVazia("CPF: ");
         String senha = lerLinhaNaoVazia("Senha: ");
 
         Funcionario encontrado = autenticarFuncionario(cpf, senha);
         if (encontrado == null) {
-            System.out.println("Credenciais inválidas.");
+            System.out.println("Credenciais invalidas.");
             return;
         }
 
         System.out.println("Login realizado com sucesso! Bem-vindo(a), " + encontrado.getNome() + ".");
         new GuiFuncionario().meunuFuncionarios();
     }
+
     private void loginAluno() {
         System.out.println("Login de Aluno");
         String cpf = lerLinhaNaoVazia("CPF: ");
@@ -78,7 +87,7 @@ public class MenuInicial {
 
         Aluno encontrado = autenticarAluno(cpf, senha);
         if (encontrado == null) {
-            System.out.println("Credenciais inválidas.");
+            System.out.println("Credenciais invalidas.");
             return;
         }
 
@@ -88,13 +97,13 @@ public class MenuInicial {
 
     private void loginPersonal() {
         System.out.println("Login de Personal");
-        System.out.println("Você pode informar CPF ou CRAF.");
+        System.out.println("Voce pode informar CPF ou CRAF.");
         String identificador = lerLinhaNaoVazia("CPF/CRAF: ");
         String senha = lerLinhaNaoVazia("Senha: ");
 
         Personal encontrado = autenticarPersonalPorCpfOuCraf(identificador, senha);
         if (encontrado == null) {
-            System.out.println("Credenciais inválidas.");
+            System.out.println("Credenciais invalidas.");
             return;
         }
 
@@ -102,33 +111,16 @@ public class MenuInicial {
         new GuiPersonal().menuPersoal();
     }
 
-
     private Funcionario autenticarFuncionario(String cpf, String senha) {
-        for (Funcionario f : FuncionarioRepositorio.funcionarios) {
-            if (cpf.equals(f.getCpf()) && senha.equals(f.getSenha())) {
-                return f;
-            }
-        }
-        return null;
+        return funcionarioRepositorio.autenticar(cpf, senha);
     }
 
     private Aluno autenticarAluno(String cpf, String senha) {
-        for (Aluno a : AlunoRepositorio.alunos) {
-            if (cpf.equals(a.getCpf()) && senha.equals(a.getSenha())) {
-                return a;
-            }
-        }
-        return null;
+        return alunoRepositorio.autenticar(cpf, senha);
     }
 
     private Personal autenticarPersonalPorCpfOuCraf(String cpfOuCraf, String senha) {
-        for (Personal p : PersonalRepositorio.personais) {
-            boolean idOk = cpfOuCraf.equals(p.getCpf()) || cpfOuCraf.equals(p.getCraf());
-            if (idOk && senha.equals(p.getSenha())) {
-                return p;
-            }
-        }
-        return null;
+        return personalRepositorio.autenticarPorCpfOuCraf(cpfOuCraf, senha);
     }
 
     private int lerOpcaoInt(String prompt) {
@@ -138,7 +130,7 @@ public class MenuInicial {
             try {
                 return Integer.parseInt(linha);
             } catch (NumberFormatException e) {
-                System.out.println("Digite apenas números.");
+                System.out.println("Digite apenas numeros.");
             }
         }
     }
@@ -148,10 +140,10 @@ public class MenuInicial {
             System.out.print(prompt);
             String linha = sc.nextLine().trim();
             if (!linha.isEmpty()) return linha;
-            System.out.println("Campo obrigatório. Tente novamente.");
+            System.out.println("Campo obrigatorio. Tente novamente.");
         }
     }
-    
+
     public void acessoAdm() {
         AcessoAdm acessoAdm = AcessoAdm.ADM_MASTER;
         System.out.println("Acesso AcessoAdm");
@@ -166,13 +158,16 @@ public class MenuInicial {
         while (!email.equals(acessoAdm.getEmail())) {
             System.out.println("email incorreto. Acesso negado!");
             email = lerLinhaNaoVazia("Digite a email do AcessoAdm: ");
-
         }
         System.out.println("Acesso liberado! Bem-vindo(a), ADM.");
         fitFlow.main();
     }
 
     public static void main(String[] args) {
-        new MenuInicial().menuInicial();
+        try {
+            new MenuInicial().menuInicial();
+        } finally {
+            HibernateUtil.shutdown();
+        }
     }
 }

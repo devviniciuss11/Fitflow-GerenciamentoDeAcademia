@@ -1,15 +1,12 @@
 package Servico;
 
 import Entidade.Treino;
-
-import java.util.HashSet;
-import java.util.List;
-import java.util.Random;
-
 import Repositorio.AlunoRepositorio;
 import Repositorio.TreinoRepositorio;
 
-public class TreinoServico{
+import java.util.List;
+
+public class TreinoServico {
 
     private TreinoRepositorio treinoRepositorio;
     private AlunoRepositorio alunoRepositorio;
@@ -21,31 +18,19 @@ public class TreinoServico{
         this.alunoRepositorio = alunoRepositorio;
     }
 
-    private final HashSet<Integer> idsUsados = new HashSet<>();
-    private final Random random = new Random();
-
-    public int geradorID() {
-        int novoID;
-        do {
-            novoID = random.nextInt(10000);
-        } while (idsUsados.contains(novoID));
-        idsUsados.add(novoID);
-        return novoID;
-    }
-
     private String validarTreino(Treino treino) {
         if (treino == null) {
-            return "Treino não pode ser nulo.";
+            return "Treino nao pode ser nulo.";
         }
 
         StringBuilder erros = new StringBuilder();
 
         if (alunoRepositorio.buscarPorId(treino.getIdAluno()) == null) {
-            erros.append("Aluno não encontrado!\n");
+            erros.append("Aluno nao encontrado!\n");
         }
 
         if (personalServico.buscarPorIdPer(treino.getIdPersonal()) == null) {
-            erros.append("Personal não encontrado!\n");
+            erros.append("Personal nao encontrado!\n");
         }
 
         return erros.length() > 0 ? erros.toString().trim() : null;
@@ -57,7 +42,7 @@ public class TreinoServico{
             return erro;
         }
 
-        treino.setId(geradorID());
+        treino.setId(null);
         treinoRepositorio.salvar(treino);
         return "Treino cadastrado com sucesso!";
     }
@@ -69,7 +54,6 @@ public class TreinoServico{
     public boolean removerTreino(int id) {
         return treinoRepositorio.remover(id);
     }
-
 
     public String atualizarTreino(int id, Treino treinoAtualizado) {
         try {
@@ -84,10 +68,10 @@ public class TreinoServico{
                 return "Treino atualizado com sucesso!";
             }
 
-            return "Treino não encontrado!";
+            return "Treino nao encontrado!";
 
         } catch (NullPointerException e) {
-            return "Erro: serviço não inicializado.";
+            return "Erro: servico nao inicializado.";
         } catch (Exception e) {
             return "Erro inesperado ao atualizar treino.";
         }

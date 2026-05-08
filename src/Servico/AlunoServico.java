@@ -9,17 +9,17 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.*;
-
-import static Repositorio.AlunoRepositorio.alunos;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+import java.util.Set;
 
 public class AlunoServico {
     Scanner sc = new Scanner(System.in);
     AlunoRepositorio alunoRepositorio = new AlunoRepositorio();
     Instancia instancia = new Instancia();
 
-
-    public static void marcarPresenca(Aluno aluno){
+    public static void marcarPresenca(Aluno aluno) {
         if (aluno == null) {
             System.out.println("Aluno invalido.");
             return;
@@ -35,7 +35,7 @@ public class AlunoServico {
         }
     }
 
-    public static void mostrarHistorico(Aluno aluno){
+    public static void mostrarHistorico(Aluno aluno) {
         if (aluno == null) {
             System.out.println("Aluno invalido.");
             return;
@@ -43,11 +43,11 @@ public class AlunoServico {
 
         Set<LocalDate> diasTreino = aluno.getDiasTreino();
 
-        if(diasTreino.isEmpty()){
+        if (diasTreino.isEmpty()) {
             System.out.println("Nenhuma presenca marcada");
-        }else{
+        } else {
             System.out.println("Historico de presenca: ");
-            for(LocalDate data : diasTreino){
+            for (LocalDate data : diasTreino) {
                 System.out.println("Presente - " + data);
             }
         }
@@ -57,13 +57,7 @@ public class AlunoServico {
         System.out.println("Digite o CPF do aluno para marcar/ver presenca:");
         String cpf = sc.nextLine().trim();
 
-        Aluno alunoEncontrado = null;
-        for (Aluno a : alunos) {
-            if (a.getCpf() != null && a.getCpf().equals(cpf)) {
-                alunoEncontrado = a;
-                break;
-            }
-        }
+        Aluno alunoEncontrado = alunoRepositorio.buscarPorCpf(cpf);
 
         if (alunoEncontrado == null) {
             System.out.println("Aluno nao encontrado.");
@@ -87,6 +81,7 @@ public class AlunoServico {
             switch (opc) {
                 case 1:
                     marcarPresenca(alunoEncontrado);
+                    alunoEncontrado = alunoRepositorio.atualizar(alunoEncontrado);
                     break;
                 case 2:
                     mostrarHistorico(alunoEncontrado);
@@ -99,27 +94,12 @@ public class AlunoServico {
         }
     }
 
-    public int GeradorId() {
-        {
-            Set<Integer> idsUsados = new HashSet<>();
-            Random random = new Random();
-            int novoId;
-            do {
-                novoId = random.nextInt(10000);
-            } while (idsUsados.contains(novoId));
-            idsUsados.add(novoId);
-            return novoId;
-        }
-    }
-
     public void cadastrarAluno() {
         LocalDate dataNascimento = LocalDate.now();
         System.out.println("Cadastrar Aluno");
-        int id = GeradorId();
 
         System.out.println("Nome: ");
         String nome = sc.nextLine();
-
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/uuuu");
         while (true) {
@@ -136,66 +116,49 @@ public class AlunoServico {
             int idade = Period.between(dataNascimento, LocalDate.now()).getYears();
 
             if (idade < 0) {
-                System.out.println("Idade está errada (data no futuro). Tente novamente.");
+                System.out.println("Idade esta errada (data no futuro). Tente novamente.");
                 continue;
             }
 
             if (idade > 120) {
-                System.out.println("Idade está errada (maior que 120 anos). Verifique a data e tente novamente.");
+                System.out.println("Idade esta errada (maior que 120 anos). Verifique a data e tente novamente.");
                 continue;
             }
 
-            if (idade >=0 && idade < 5 ){
-                System.out.println("A academia nao da Suporte a Crianças nessa idade");
+            if (idade >= 0 && idade < 5) {
+                System.out.println("A academia nao da suporte a criancas nessa idade");
                 continue;
             }
 
-            if (idade <= 10&& idade >= 5) {
-                System.out.println("Aluno com " + idade + " anos: é obrigatório informar os Dados Do Responsavel.");
+            if (idade <= 10 && idade >= 5) {
+                System.out.println("Aluno com " + idade + " anos: e obrigatorio informar os dados do responsavel.");
 
                 System.out.println("Cpf Do Responsavel: ");
-                String cpf=sc.nextLine();
+                String cpf = sc.nextLine();
 
-                System.out.println("Email Do Responsavel: ");
-                String email=sc.nextLine();
-
-                System.out.println("Telefone Do Responsavel: ");
-                String telefone=sc.nextLine();
-
-                System.out.println("Senha Do Responsavel: ");
-                String senha=sc.nextLine();
-
-                System.out.println("CEP Do Responsavel: ");
-                String cep = sc.nextLine();
-
-                System.out.println("Bairro Do Responsavel: ");
-                String bairro = sc.nextLine();
-
-                System.out.println("Nome da Rua Do Responsavel: ");
-                String nomeRua = sc.nextLine();
-
-                System.out.println("Complemento Do Responsavel: ");
-                String complemento = sc.nextLine();
-
-                int numCasa;
-                while (true) {
-                    System.out.println("Numero da Casa Do Responsavel: ");
-                    String entrada = sc.nextLine().trim();
-                    try {
-                        numCasa = Integer.parseInt(entrada);
-                        break;
-                    } catch (NumberFormatException e) {
-                        System.out.println("Digite apenas números para o número da casa!");
-                    }
+                if (alunoRepositorio.existePorCpf(cpf)) {
+                    System.out.println("Cpf ja cadastrado. Tente novamente com outro CPF.");
+                    return;
                 }
 
-                ArrayList FichaDeTreino = new ArrayList();
-                ArrayList AlunoPlano = new ArrayList();
+                System.out.println("Email Do Responsavel: ");
+                String email = sc.nextLine();
+
+                System.out.println("Telefone Do Responsavel: ");
+                String telefone = sc.nextLine();
+
+                System.out.println("Senha Do Responsavel: ");
+                String senha = sc.nextLine();
+
+                Endereco endereco = lerEndereco("Do Responsavel");
+
+                ArrayList<Entidade.Treino> fichaDeTreino = new ArrayList<>();
+                ArrayList<Entidade.Plano> alunoPlano = new ArrayList<>();
 
                 Aluno aluno = new Aluno(
-                        id, nome, cpf, dataNascimento, email, telefone, senha,
-                        FichaDeTreino, AlunoPlano,
-                        new Endereco(cep, bairro, nomeRua, complemento, numCasa)
+                        null, nome, cpf, dataNascimento, email, telefone, senha,
+                        alunoPlano, fichaDeTreino,
+                        endereco
                 );
                 alunoRepositorio.save(aluno);
                 instancia.adicionar();
@@ -206,7 +169,7 @@ public class AlunoServico {
 
         System.out.println("CPF: ");
         String cpf = sc.nextLine();
-        if (AlunoRepositorio.alunos.stream().anyMatch(a -> a.getCpf().equals(cpf))) {
+        if (alunoRepositorio.existePorCpf(cpf)) {
             System.out.println("Cpf ja cadastrado. Tente novamente com outro CPF.");
             return;
         }
@@ -220,45 +183,25 @@ public class AlunoServico {
         System.out.println("Senha: ");
         String senha = sc.nextLine();
 
-        System.out.println("CEP: ");
-        String cep = sc.nextLine();
+        Endereco endereco = lerEndereco("");
 
-        System.out.println("Bairro: ");
-        String bairro = sc.nextLine();
-
-        System.out.println("Nome da Rua: ");
-        String nomeRua = sc.nextLine();
-
-        System.out.println("Complemento: ");
-        String complemento = sc.nextLine();
-
-        int numCasa;
-        while (true) {
-            System.out.println("Numero da Casa: ");
-            String entrada = sc.nextLine().trim();
-            try {
-                numCasa = Integer.parseInt(entrada);
-                break;
-            } catch (NumberFormatException e) {
-                System.out.println("Digite apenas números para o número da casa!");
-            }
-        }
-
-        ArrayList FichaDeTreino = new ArrayList();
-        ArrayList AlunoPlano = new ArrayList();
+        ArrayList<Entidade.Treino> fichaDeTreino = new ArrayList<>();
+        ArrayList<Entidade.Plano> alunoPlano = new ArrayList<>();
 
         Aluno aluno = new Aluno(
-                id, nome, cpf, dataNascimento, email, telefone, senha,
-                FichaDeTreino, AlunoPlano,
-                new Endereco(cep, bairro, nomeRua, complemento, numCasa)
+                null, nome, cpf, dataNascimento, email, telefone, senha,
+                alunoPlano, fichaDeTreino,
+                endereco
         );
         alunoRepositorio.save(aluno);
         instancia.adicionar();
     }
 
     public void MostrarAlunos() {
-        if(alunos.isEmpty()){
+        List<Aluno> alunos = alunoRepositorio.listarTodos();
+        if (alunos.isEmpty()) {
             System.out.println("Nenhum aluno cadastrado ainda !!!");
+            return;
         }
         for (Aluno a : alunos) {
             System.out.println("Dados do Aluno(a): " + a.getNome());
@@ -268,44 +211,30 @@ public class AlunoServico {
 
     public void excluirAluno() {
         Scanner sc1 = new Scanner(System.in);
-        System.out.println("Qual Aluno você deseja excluir do cadastro? Digite o CPF:");
+        System.out.println("Qual Aluno voce deseja excluir do cadastro? Digite o CPF:");
         String cpf = sc1.nextLine();
-        Aluno exluirAluno = null;
-        for (Aluno aluno : alunos) {
-            if (aluno.getCpf().equals(cpf)) {
-                exluirAluno = aluno;
 
-            }
-        }
-        if (exluirAluno != null) {
+        if (alunoRepositorio.removerPorCpf(cpf)) {
             System.out.println("Procurando Aluno....");
-            alunos.remove(exluirAluno);
-            System.out.println("O Aluno foi excluído com sucesso.\n");
+            System.out.println("O Aluno foi excluido com sucesso.\n");
         } else {
-            System.out.println("Aluno não encontrado. Tente novamente!\n");
+            System.out.println("Aluno nao encontrado. Tente novamente!\n");
         }
-
-
     }
 
     public void alteraAluno() {
         System.out.println("Alterar Dados Do Aluno");
         System.out.println("Digite o CPF do Aluno que deseja alterar: ");
         String cpf = sc.nextLine();
-        Aluno aluno = null;
-        for (Aluno aluno1 : alunos) {
-            if (aluno1.getCpf().equals(cpf)) {
-                aluno = aluno1;
-                System.out.println("Aluno "+aluno.getNome()+" encontrado com sucesso.");
-                break;
-            }
-        }
+
+        Aluno aluno = alunoRepositorio.buscarPorCpf(cpf);
         if (aluno == null) {
             System.out.println("Aluno nao foi encontrado. Voltando para o menuInicial...");
             return;
         }
 
-        System.out.println("Escolha o que voce quer fazer no aluno(a):" + aluno.getNome());
+        System.out.println("Aluno " + aluno.getNome() + " encontrado com sucesso.");
+
         char opcao = 's';
         while (opcao != 'n') {
             System.out.println("1- Alterar Nome");
@@ -314,28 +243,28 @@ public class AlunoServico {
             System.out.println("4- Alterar Email");
             System.out.println("5- Alterar Telefone");
             System.out.println("6- Alterar Senha");
-            System.out.println("7- Alterar Endereço");
+            System.out.println("7- Alterar Endereco");
             System.out.println("8- Sair");
 
             int opc;
             try {
                 opc = Integer.parseInt(sc.nextLine().trim());
             } catch (NumberFormatException e) {
-                System.out.println("Digite apenas números.");
+                System.out.println("Digite apenas numeros.");
                 continue;
             }
 
             switch (opc) {
                 case 1:
                     System.out.println("Digite o novo nome: ");
-                    String novoNome = sc.nextLine();
-                    aluno.setNome(novoNome);
+                    aluno.setNome(sc.nextLine());
+                    aluno = alunoRepositorio.atualizar(aluno);
                     instancia.alterar();
                     break;
                 case 2:
                     System.out.println("Digite o novo CPF: ");
-                    String NovoCpf = sc.nextLine();
-                    aluno.setCpf(NovoCpf);
+                    aluno.setCpf(sc.nextLine());
+                    aluno = alunoRepositorio.atualizar(aluno);
                     instancia.alterar();
                     break;
                 case 3:
@@ -346,6 +275,7 @@ public class AlunoServico {
                         try {
                             LocalDate dataNascimentoFormatada = LocalDate.parse(dataNascimento, formatter);
                             aluno.setDataNascimento(dataNascimentoFormatada);
+                            aluno = alunoRepositorio.atualizar(aluno);
                             instancia.alterar();
                             break;
                         } catch (DateTimeParseException e) {
@@ -355,56 +285,33 @@ public class AlunoServico {
                     break;
                 case 4:
                     System.out.println("Digite o novo email: ");
-                    String NovoEmail = sc.nextLine();
-                    aluno.setEmail(NovoEmail);
+                    aluno.setEmail(sc.nextLine());
+                    aluno = alunoRepositorio.atualizar(aluno);
                     instancia.alterar();
                     break;
                 case 5:
                     System.out.println("Digite o novo telefone: ");
-                    String NovoTelefone = sc.nextLine();
-                    aluno.setTelefone(NovoTelefone);
+                    aluno.setTelefone(sc.nextLine());
+                    aluno = alunoRepositorio.atualizar(aluno);
                     instancia.alterar();
                     break;
                 case 6:
                     System.out.println("Digite a nova senha: ");
-                    String NovaSenha = sc.nextLine();
-                    aluno.setSenha(NovaSenha);
+                    aluno.setSenha(sc.nextLine());
+                    aluno = alunoRepositorio.atualizar(aluno);
                     instancia.alterar();
                     break;
                 case 7:
-                    System.out.println("CEP: ");
-                    String cep = sc.nextLine();
-
-                    System.out.println("Bairro: ");
-                    String bairro = sc.nextLine();
-
-                    System.out.println("Nome da Rua: ");
-                    String nomeRua = sc.nextLine();
-
-                    System.out.println("Complemento: ");
-                    String complemento = sc.nextLine();
-
-                    int numCasa;
-                    while (true) {
-                        System.out.println("Numero da Casa: ");
-                        String entrada = sc.nextLine().trim();
-                        try {
-                            numCasa = Integer.parseInt(entrada);
-                            break;
-                        } catch (NumberFormatException e) {
-                            System.out.println("Digite apenas números para o número da casa!");
-                        }
-                    }
-
-                    aluno.setEndereco(new Endereco(cep, bairro, nomeRua, complemento, numCasa));
+                    aluno.setEndereco(lerEndereco(""));
+                    aluno = alunoRepositorio.atualizar(aluno);
                     instancia.alterar();
-                    System.out.println("Endereço atualizado.");
+                    System.out.println("Endereco atualizado.");
                     break;
                 case 8:
                     opcao = 'n';
                     break;
                 default:
-                    System.out.println("Opcao inválida.");
+                    System.out.println("Opcao invalida.");
             }
         }
     }
@@ -413,5 +320,33 @@ public class AlunoServico {
         return alunoRepositorio.buscarPorId(id);
     }
 
+    private Endereco lerEndereco(String sufixo) {
+        String label = sufixo == null || sufixo.isBlank() ? "" : " " + sufixo;
 
+        System.out.println("CEP" + label + ": ");
+        String cep = sc.nextLine();
+
+        System.out.println("Bairro" + label + ": ");
+        String bairro = sc.nextLine();
+
+        System.out.println("Nome da Rua" + label + ": ");
+        String nomeRua = sc.nextLine();
+
+        System.out.println("Complemento" + label + ": ");
+        String complemento = sc.nextLine();
+
+        int numCasa;
+        while (true) {
+            System.out.println("Numero da Casa" + label + ": ");
+            String entrada = sc.nextLine().trim();
+            try {
+                numCasa = Integer.parseInt(entrada);
+                break;
+            } catch (NumberFormatException e) {
+                System.out.println("Digite apenas numeros para o numero da casa!");
+            }
+        }
+
+        return new Endereco(cep, bairro, nomeRua, complemento, numCasa);
+    }
 }
