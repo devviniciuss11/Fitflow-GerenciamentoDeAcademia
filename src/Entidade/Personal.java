@@ -102,8 +102,25 @@ public class Personal extends Pessoa {
         this.alunosDele = (alunosdele == null) ? new ArrayList<>() : new ArrayList<>(alunosdele);
     }
 
-    public void adicionarAluno(String nome) {
-        alunosDele.add(nome);
+    public boolean adicionarAluno(String nome) {
+        if (nome == null) {
+            return false;
+        }
+
+        String nomeNormalizado = nome.trim();
+        if (nomeNormalizado.isEmpty()) {
+            return false;
+        }
+
+        boolean jaExiste = alunosDele.stream()
+                .anyMatch(aluno -> aluno != null && aluno.equalsIgnoreCase(nomeNormalizado));
+
+        if (jaExiste) {
+            return false;
+        }
+
+        alunosDele.add(nomeNormalizado);
+        return true;
     }
 
     public void removerAluno(String nome) {

@@ -1,5 +1,4 @@
--- Script 2: criar schema da aplicacao FitFlow
--- Execute apos criar o banco, conectado em: fitflow
+
 
 CREATE TABLE IF NOT EXISTS aluno (
     id BIGSERIAL PRIMARY KEY,

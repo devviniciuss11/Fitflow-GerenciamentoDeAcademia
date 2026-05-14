@@ -8,7 +8,7 @@ public class Instancia implements Adicionando,Removendo,Alterando{
     }
     @Override
     public void remover() {
-        System.out.println("Cadatro Removido com Sucesso!");
+        System.out.println("Cadastro Removido com Sucesso!");
     }
     @Override
     public void alterar() {

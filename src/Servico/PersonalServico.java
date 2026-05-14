@@ -43,9 +43,19 @@ public class PersonalServico {
             return;
         }
 
-        personalEncontrado.adicionarAluno(alunoEncontrado.getNome());
-        personalRepositorio.atualizar(personalEncontrado);
-        System.out.println("Sucesso! O Aluno " + alunoEncontrado.getNome() + " agora treina com o Personal " + personalEncontrado.getNome() + ".");
+        boolean vinculoCriado = personalEncontrado.adicionarAluno(alunoEncontrado.getNome());
+
+        if (!vinculoCriado) {
+            System.out.println("Este aluno ja esta vinculado a este personal.");
+            return;
+        }
+
+        try {
+            personalRepositorio.atualizar(personalEncontrado);
+            System.out.println("Sucesso! O Aluno " + alunoEncontrado.getNome() + " agora treina com o Personal " + personalEncontrado.getNome() + ".");
+        } catch (RuntimeException e) {
+            System.out.println("Nao foi possivel concluir o vinculo. Este aluno ja pode estar vinculado a este personal.");
+        }
     }
 
     public void listarAlunosDoPersonal() {

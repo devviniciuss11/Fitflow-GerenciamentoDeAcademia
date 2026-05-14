@@ -17,10 +17,10 @@ public class PagamentoRepositorio {
             tx = session.beginTransaction();
             pagamento.setId(null);
 
-            Aluno alunoRef = session.getReference(Aluno.class, pagamento.getAluno().getId());
-            Plano planoRef = session.getReference(Plano.class, pagamento.getPlano().getId());
-            pagamento.setAluno(alunoRef);
-            pagamento.setPlano(planoRef);
+            Aluno aluno = session.get(Aluno.class, pagamento.getAluno().getId());
+            Plano plano = session.get(Plano.class, pagamento.getPlano().getId());
+            pagamento.setAluno(aluno);
+            pagamento.setPlano(plano);
 
             session.persist(pagamento);
             tx.commit();
@@ -32,13 +32,24 @@ public class PagamentoRepositorio {
 
     public List<Pagamento> listarTodos() {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session.createQuery("from Pagamento", Pagamento.class).list();
+            return session.createQuery(
+                    "select p from Pagamento p " +
+                            "left join fetch p.aluno " +
+                            "left join fetch p.plano", Pagamento.class
+            ).list();
         }
     }
 
     public Pagamento buscarPorId(int id) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session.get(Pagamento.class, id);
+            return session.createQuery(
+                            "select p from Pagamento p " +
+                                    "left join fetch p.aluno " +
+                                    "left join fetch p.plano " +
+                                    "where p.id = :id", Pagamento.class
+                    )
+                    .setParameter("id", id)
+                    .uniqueResult();
         }
     }
 
@@ -70,10 +81,10 @@ public class PagamentoRepositorio {
                 return false;
             }
 
-            Aluno alunoRef = session.getReference(Aluno.class, pagamentoAtualizado.getAluno().getId());
-            Plano planoRef = session.getReference(Plano.class, pagamentoAtualizado.getPlano().getId());
-            pagamento.setAluno(alunoRef);
-            pagamento.setPlano(planoRef);
+            Aluno aluno = session.get(Aluno.class, pagamentoAtualizado.getAluno().getId());
+            Plano plano = session.get(Plano.class, pagamentoAtualizado.getPlano().getId());
+            pagamento.setAluno(aluno);
+            pagamento.setPlano(plano);
             pagamento.setStatus(pagamentoAtualizado.getStatus());
             pagamento.setMetodoPagamento(pagamentoAtualizado.getMetodoPagamento());
             pagamento.setValor(pagamentoAtualizado.getValor());

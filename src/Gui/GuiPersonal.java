@@ -76,7 +76,7 @@ public class GuiPersonal {
                 case 2 -> servico.listarAlunosDoPersonal();
                 case 3 -> GuiTreino.menuTreino();
                 case 4 -> GuiDesempenho.menu();
-                case 8 -> { return; }
+                case 0 -> { return; }
                 default -> System.out.println("Opção Inválida! Tente Novamente. ");
 
             }

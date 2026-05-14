@@ -98,7 +98,16 @@ public class PagamentoServico {
         pagamentoRepositorio.salvar(novoPagamento);
 
         System.out.println("  Registro criado no sistema com sucesso!  ");
-        System.out.println(novoPagamento);
+        System.out.println(
+                " ID: " + novoPagamento.getId() +
+                        " | Aluno: " + alunoEncontrado.getNome() +
+                        " | Plano: " + planoEncontrado.getNome() +
+                        " | Valor: R$ " + novoPagamento.getValor() +
+                        " | Metodo: " + novoPagamento.getMetodoPagamento() +
+                        " | Pagamento: " + novoPagamento.getDataPagamento() +
+                        " | Vencimento: " + novoPagamento.getDataVencimento() +
+                        " | Status: " + novoPagamento.getStatus()
+        );
     }
 
     public void listarPagamento() {
