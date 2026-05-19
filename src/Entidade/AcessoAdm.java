@@ -1,6 +1,6 @@
 package Entidade;
 
-public class AcessoAdm {
+public class AcessoAdm extends Pessoa {
     private String senha;
     private String email;
     public AcessoAdm(String senha, String email) {
@@ -10,6 +10,13 @@ public class AcessoAdm {
     public String getSenha() {
         return senha;
     }
+
+    @Override
+    public void VerLogin() {
+        System.out.println("Email para realizar o login:" + this.getEmail());
+        System.out.println("Senha para realizar o login:" + this.getSenha());
+    }
+
     public String getEmail() {
         return email;
     }

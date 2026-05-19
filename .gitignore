@@ -1,31 +1,62 @@
-### IntelliJ IDEA ###
-out/
-!**/src/main/**/out/
-!**/src/test/**/out/
-.kotlin
+# =============================
+# Java / Maven build artifacts
+# =============================
+/target/
+/out/
+/build/
+/.gradle/
 
-### Eclipse ###
-.apt_generated
+# Compiled bytecode and package artifacts
+*.class
+*.jar
+*.war
+*.ear
+
+# =============================
+# IDEs and editors
+# =============================
+# IntelliJ IDEA
+/.idea/
+*.iml
+*.ipr
+*.iws
+
+# Eclipse / STS
 .classpath
-.factorypath
 .project
-.settings
+.settings/
+.factorypath
+.apt_generated/
 .springBeans
-.sts4-cache
-bin/
-!**/src/main/**/bin/
-!**/src/test/**/bin/
+.sts4-cache/
 
-### NetBeans ###
+# NetBeans
 /nbproject/private/
 /nbbuild/
 /dist/
 /nbdist/
 /.nb-gradle/
 
-### VS Code ###
-.vscode/
+# VS Code
+/.vscode/
 
-### Mac OS ###
-.DS_Store.idea/
-.idea/
+# =============================
+# Logs and temporary files
+# =============================
+*.log
+*.tmp
+*.swp
+*.swo
+
+# =============================
+# OS files
+# =============================
+.DS_Store
+Thumbs.db
+
+# =============================
+# Local environment files
+# =============================
+.env
+.env.*
+!.env.example
