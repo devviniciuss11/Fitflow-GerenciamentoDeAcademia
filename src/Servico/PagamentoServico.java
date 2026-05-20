@@ -113,10 +113,10 @@ public class PagamentoServico {
     public void listarPagamento() {
         atualizarRegraSeisMeses();
 
-        System.out.println("    HISTORICO DE PAGAMENTOS    ");
+        System.out.println("Listar Histórico de Pagamentos");
         List<Pagamento> pagamentos = pagamentoRepositorio.listarTodos();
         if (pagamentos.isEmpty()) {
-            System.out.println("Nenhum pagamento foi registrado ainda.");
+            System.out.println("Nenhum pagamento foi Registrado ainda");
         } else {
             for (Pagamento p : pagamentos) {
                 System.out.println(p);
@@ -174,16 +174,25 @@ public class PagamentoServico {
             int opc = sc.nextInt();
             sc.nextLine();
 
+            boolean opcaoValida = true;
+
             switch (opc) {
                 case 1 -> encontrado.setStatus(Pagamento.StatusPagamento.PENDENTE);
                 case 2 -> encontrado.setStatus(Pagamento.StatusPagamento.PAGO);
                 case 3 -> encontrado.setStatus(Pagamento.StatusPagamento.CANCELADO);
-                default -> System.out.println("Opcao invalida.");
+                default -> {
+                    System.out.println("Informação inválida, Tente novamente!");
+                    opcaoValida = false;
+                }
             }
-            pagamentoRepositorio.atualizar(encontrado);
-            System.out.println("  Status atualizado!");
+
+            if (opcaoValida) {
+                pagamentoRepositorio.atualizar(encontrado);
+                System.out.println("Pagamento Alterado Com Sucesso!");
+            }
+
         } else {
-            System.out.println("  Pagamento nao encontrado.");
+            System.out.println("Informação inválida, Tente novamente!");
         }
     }
 }
