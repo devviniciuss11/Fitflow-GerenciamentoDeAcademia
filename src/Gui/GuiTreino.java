@@ -112,9 +112,9 @@ public class GuiTreino {
         int id = lerInteiro("ID do treino a remover: ");
 
         if (servico.removerTreino(id)) {
-            System.out.println("TREINO REMOVIDO!");
+            System.out.println("A FICHA DE TREINO ESTA SENDO REMOVIDA!");
         } else {
-            System.out.println("TREINO NAO ENCONTRADO!");
+            System.out.println("FICHA DE TREINO NAO ENCONTRADA! TENTE NOVAMENTE");
         }
     }
 
@@ -145,6 +145,7 @@ public class GuiTreino {
         Treino treinoAtualizado = new Treino(id, idAluno, idPersonal, data, horario, descricao);
 
         String resultado = servico.atualizarTreino(id, treinoAtualizado);
+        System.out.println("Treino atualizado com sucesso");
         System.out.println(resultado);
     }
 
