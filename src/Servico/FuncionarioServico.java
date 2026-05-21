@@ -37,15 +37,15 @@ public class FuncionarioServico {
 
     public static void marcarPresenca(Funcionario funcionario) {
         if (funcionario == null) {
-            System.out.println("Funcionario nao encontrado!!");
+            System.out.println("Funcionario nao encontrado!");
             return;
         }
         LocalDate hoje = LocalDate.now();
         Set<LocalDate> diasTrabalhados = funcionario.getDiasTrabalhados();
         if (!diasTrabalhados.add(hoje)) {
-            System.out.println("O funcionario ja consta como presente nesse dia!");
+            System.out.println("Presença ja marcada hoje");
         } else {
-            System.out.println("Presenca marcada com sucesso! " + hoje);
+            System.out.println("Check-in do Funcionario Realizado com Sucesso! " + hoje);
         }
     }
 
@@ -126,7 +126,7 @@ public class FuncionarioServico {
                 System.out.println("Funcionarios precisam ter mais de 18 anos. Tente novamente");
                 continue;
             }
-            System.out.println("Idade Cadastrada com sucesso!!");
+            System.out.println("Funcionario Cadastrado com sucesso!!");
             break;
         }
 
@@ -176,15 +176,21 @@ public class FuncionarioServico {
         System.out.println("Aba de Remocao de Funcionarios!!");
         System.out.println("Digite o CPF do Funcionario que deseja Remover");
         String buscaCpf = sc.nextLine();
-        boolean removido = funcionariosRepositorio.removerPorCpf(buscaCpf);
 
-        if (removido) {
-            System.out.println("Funcionario com CPF: " + buscaCpf + " Removido");
+        System.out.println("Deseja realmente remover este funcionario (Digite 1 para Sim ou qualquer tecla para continuar): ");
+        int escolha = sc.nextInt();
+
+        if (escolha == 1) {
+            boolean removido = funcionariosRepositorio.removerPorCpf(buscaCpf);
+            if (removido) {
+                System.out.println("Funcionario com o CPF: " + buscaCpf + " Removido com sucesso");
+            } else {
+                System.out.println("Nenhum funcionario com o CPF: " + buscaCpf + " Encontrado");
+            }
         } else {
-            System.out.println("Nenhum Funcionario com o Cpf: " + buscaCpf + " Encontrado!");
+            System.out.println("Remoção cancelada.");
         }
     }
-
     public void AlterarFuncionario() {
         System.out.println("Pagina de Alteracao de dados do Funcionario!!");
         System.out.println("Digite o Cpf do funcionario");
@@ -192,7 +198,7 @@ public class FuncionarioServico {
 
         Funcionario funcionario = funcionariosRepositorio.buscarPorCpf(cpf);
         if (funcionario == null) {
-            System.out.println("Funcionario nao encontrado. Voltando ao menuInicial.");
+            System.out.println("Funcionario nao encontrado.");
             return;
         }
 
