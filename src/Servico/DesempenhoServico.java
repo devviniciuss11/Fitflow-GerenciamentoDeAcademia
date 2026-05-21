@@ -2,11 +2,9 @@ package Servico;
 
 import Entidade.Aluno;
 import Entidade.Desempenho;
-import Interfacess.Instancia;
 import Repositorio.AlunoRepositorio;
 import Repositorio.DesempenhoRepositorio;
 
-import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -14,7 +12,6 @@ public class DesempenhoServico {
     Scanner sc = new Scanner(System.in);
     AlunoRepositorio alunoRepositorio = new AlunoRepositorio();
     DesempenhoRepositorio repositorio = new DesempenhoRepositorio();
-    Instancia instancia = new Instancia();
 
     public void cadastrarDesempenho() {
         System.out.println("\n--- CADASTRO DE DESEMPENHO ---");
@@ -30,165 +27,167 @@ public class DesempenhoServico {
         Aluno alunoEncontrado = alunoRepositorio.buscarPorCpf(cpf);
 
         if (alunoEncontrado == null) {
-            System.out.println("Aluno nao encontrado! Verifique o CPF.");
+            System.out.println("Aluno Não Encontrado! Verifique o cpf");
             return;
         }
 
-        double peso;
-        try {
-            System.out.print("Digite o Peso (kg) - ex: 70,5: ");
-            peso = sc.nextDouble();
-        } catch (InputMismatchException e) {
-            System.out.println("Digite apenas numeros para o peso.");
-            sc.nextLine();
+        Double peso = lerDoublePositivo(
+                "Digite o Peso (kg) - ex: 70,5: ",
+                "Digite apenas numeros para o peso.",
+                "Peso invalido. Informe um valor maior que zero."
+        );
+        if (peso == null) {
             return;
         }
 
-        if (peso <= 0) {
-            System.out.println("Peso invalido. Informe um valor maior que zero.");
-            sc.nextLine();
+        Double altura = lerDoublePositivo(
+                "Digite a Altura (m) - ex: 1,75: ",
+                "Digite apenas numeros para a altura.",
+                "Altura invalida. Informe um valor maior que zero."
+        );
+        if (altura == null) {
             return;
         }
-
-        double altura;
-        try {
-            System.out.print("Digite a Altura (m) - ex: 1,75: ");
-            altura = sc.nextDouble();
-        } catch (InputMismatchException e) {
-            System.out.println("Digite apenas numeros para a altura.");
-            sc.nextLine();
-            return;
-        }
-
-        if (altura <= 0) {
-            System.out.println("Altura invalida. Informe um valor maior que zero.");
-            sc.nextLine();
-            return;
-        }
-        sc.nextLine();
 
         Desempenho desempenho = new Desempenho(null, cpf, peso, altura, alunoEncontrado.getNome());
         repositorio.save(desempenho);
 
-        System.out.println("Desempenho salvo! O IMC calculado foi: " + String.format("%.2f", desempenho.getImc()));
-        instancia.adicionar();
+        System.out.println("Valor do imc Calculado: " + String.format("%.2f", desempenho.getImc()));
+        System.out.println("Cadastro realizado com Sucesso.");
     }
 
     public void listarDesempenhos() {
         List<Desempenho> desempenhos = repositorio.listarTodos();
         if (desempenhos.isEmpty()) {
-            System.out.println("Nenhum desempenho registrado no momento!");
+            System.out.println("Nenhum desempenho Registrado no momento.");
             return;
         }
-        System.out.println("\n--- LISTA DE DESEMPENHOS ---");
-        for (Desempenho d : desempenhos) {
-            System.out.println(d);
+
+        Integer idBusca = lerId(
+                "Digite o ID para busca (0 para listar todos): ",
+                "Digite Apenas Numeros para o id."
+        );
+        if (idBusca == null) {
+            return;
         }
+
+        System.out.println("\n--- LISTA DE DESEMPENHOS ---");
+
+        if (idBusca == 0) {
+            for (Desempenho d : desempenhos) {
+                System.out.println(d);
+            }
+            System.out.println("Exibir Lista de Desempenhos cadastrados!.");
+            return;
+        }
+
+        Desempenho encontrado = repositorio.buscarPorId(idBusca);
+        if (encontrado == null) {
+            System.out.println("Registro não Encontrado.");
+            return;
+        }
+
+        System.out.println(encontrado);
+        System.out.println("Exibir Lista de Desempenhos cadastrados!.");
     }
 
     public void excluirDesempenho() {
         System.out.println("\n--- REMOVER DESEMPENHO ---");
-        System.out.print("Digite o ID do desempenho que deseja remover: ");
-
-        int id;
-        try {
-            id = sc.nextInt();
-            sc.nextLine();
-        } catch (InputMismatchException e) {
-            System.out.println("Digite apenas numeros para o ID.");
-            sc.nextLine();
+        Integer id = lerId(
+                "Digite o ID do desempenho que deseja remover: ",
+                "Registro não Encontrado."
+        );
+        if (id == null) {
             return;
         }
 
         boolean removido = repositorio.remover(id);
 
         if (removido) {
-            instancia.remover();
+            System.out.println("Desempenho Excluido com Sucesso!.");
         } else {
-            System.out.println("Registro nao encontrado!");
+            System.out.println("Registro não Encontrado.");
         }
     }
 
     public void alterarDesempenho() {
         System.out.println("\n--- ALTERAR DADOS DE DESEMPENHO ---");
-        System.out.print("Digite o ID do desempenho: ");
-
-        int id;
-        try {
-            id = sc.nextInt();
-            sc.nextLine();
-        } catch (InputMismatchException e) {
-            System.out.println("Digite apenas numeros para o ID.");
-            sc.nextLine();
+        Integer id = lerId("Digite o ID do desempenho: ", "Digite Apenas Numeros para o id.");
+        if (id == null) {
             return;
         }
 
         Desempenho encontrado = repositorio.buscarPorId(id);
 
-        if (encontrado != null) {
-            System.out.println("Desempenho encontrado para o CPF: " + encontrado.getCpf());
-            System.out.println("1- Alterar Peso");
-            System.out.println("2- Alterar Altura");
-            System.out.print("Escolha uma opcao: ");
+        if (encontrado == null) {
+            System.out.println("Registro não Encontrado.");
+            return;
+        }
 
-            int op;
-            try {
-                op = sc.nextInt();
-            } catch (InputMismatchException e) {
-                System.out.println("Digite apenas numeros para a opcao.");
-                sc.nextLine();
+        System.out.println("Desempenho encontrado para o CPF: " + encontrado.getCpf());
+        System.out.println("1- Alterar Peso");
+        System.out.println("2- Alterar Altura");
+
+        Integer op = lerId("Escolha uma opcao: ", "Digite apenas numeros para a opcao.");
+        if (op == null) {
+            return;
+        }
+
+        if (op == 1) {
+            Double novoPeso = lerDoublePositivo(
+                    "Novo peso (kg): ",
+                    "Digite apenas numeros para o peso.",
+                    "Peso invalido. Informe um valor maior que zero."
+            );
+            if (novoPeso == null) {
                 return;
             }
-
-            if (op == 1) {
-                double novoPeso;
-                try {
-                    System.out.print("Novo peso (kg): ");
-                    novoPeso = sc.nextDouble();
-                } catch (InputMismatchException e) {
-                    System.out.println("Digite apenas numeros para o peso.");
-                    sc.nextLine();
-                    return;
-                }
-
-                if (novoPeso <= 0) {
-                    System.out.println("Peso invalido. Informe um valor maior que zero.");
-                    sc.nextLine();
-                    return;
-                }
-
-                encontrado.setPeso(novoPeso);
-                repositorio.atualizar(encontrado);
-                System.out.println("Peso atualizado! Novo IMC: " + String.format("%.2f", encontrado.getImc()));
-                instancia.alterar();
-            } else if (op == 2) {
-                double novaAltura;
-                try {
-                    System.out.print("Nova altura (m): ");
-                    novaAltura = sc.nextDouble();
-                } catch (InputMismatchException e) {
-                    System.out.println("Digite apenas numeros para a altura.");
-                    sc.nextLine();
-                    return;
-                }
-
-                if (novaAltura <= 0) {
-                    System.out.println("Altura invalida. Informe um valor maior que zero.");
-                    sc.nextLine();
-                    return;
-                }
-
-                encontrado.setAltura(novaAltura);
-                repositorio.atualizar(encontrado);
-                System.out.println("Altura atualizada! Novo IMC: " + String.format("%.2f", encontrado.getImc()));
-                instancia.alterar();
-            } else {
-                System.out.println("Opcao invalida.");
+            encontrado.setPeso(novoPeso);
+        } else if (op == 2) {
+            Double novaAltura = lerDoublePositivo(
+                    "Nova altura (m): ",
+                    "Digite apenas numeros para a altura.",
+                    "Altura invalida. Informe um valor maior que zero."
+            );
+            if (novaAltura == null) {
+                return;
             }
-
-            sc.nextLine();
+            encontrado.setAltura(novaAltura);
         } else {
-            System.out.println("ID nao encontrado. Tente novamente.");
+            System.out.println("Opcao invalida.");
+            return;
         }
+
+        repositorio.atualizar(encontrado);
+        System.out.println("Desempenho atualizado com sucesso!.");
+    }
+
+    private Integer lerId(String prompt, String mensagemErro) {
+        System.out.print(prompt);
+        String entrada = sc.nextLine().trim();
+        try {
+            return Integer.parseInt(entrada);
+        } catch (NumberFormatException e) {
+            System.out.println(mensagemErro);
+            return null;
+        }
+    }
+
+    private Double lerDoublePositivo(String prompt, String mensagemErroFormato, String mensagemErroNegativo) {
+        System.out.print(prompt);
+        String entrada = sc.nextLine().trim().replace(',', '.');
+        double valor;
+        try {
+            valor = Double.parseDouble(entrada);
+        } catch (NumberFormatException e) {
+            System.out.println(mensagemErroFormato);
+            return null;
+        }
+
+        if (valor <= 0) {
+            System.out.println(mensagemErroNegativo);
+            return null;
+        }
+        return valor;
     }
 }
