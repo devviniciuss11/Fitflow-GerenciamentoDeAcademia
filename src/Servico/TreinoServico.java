@@ -23,6 +23,10 @@ public class TreinoServico {
             return "Treino nao pode ser nulo.";
         }
 
+        if (campoVazio(treino.getData()) || campoVazio(treino.getHorario()) || campoVazio(treino.getDescricao())) {
+            return "Campos vazios. Tente novamente";
+        }
+
         StringBuilder erros = new StringBuilder();
 
         if (alunoRepositorio.buscarPorId(treino.getIdAluno()) == null) {
@@ -34,6 +38,10 @@ public class TreinoServico {
         }
 
         return erros.length() > 0 ? erros.toString().trim() : null;
+    }
+
+    private boolean campoVazio(String valor) {
+        return valor == null || valor.trim().isEmpty();
     }
 
     public String cadastrarTreino(Treino treino) {

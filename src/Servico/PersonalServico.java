@@ -109,8 +109,16 @@ public class PersonalServico {
         System.out.println("Senha: ");
         String senha = sc.nextLine();
 
-        System.out.print("CRAF: ");
-        String craf = sc.nextLine();
+        String craf;
+        while (true) {
+            System.out.print("CRAF: ");
+            craf = sc.nextLine().trim();
+            if (craf.isEmpty()) {
+                System.out.println("Campos vazios, tente novamente!");
+            } else {
+                break;
+            }
+        }
 
         double salario = 0;
         boolean salarioValido = false;
@@ -157,8 +165,9 @@ public class PersonalServico {
     public void listarPersonais() {
         List<Personal> personais = personalRepositorio.listarTodos();
         if (personais.isEmpty()) {
-            System.out.println("Nenhum Personal foi cadastrado.");
+            System.out.println("Personal não encontrado!");
         } else {
+            System.out.println("Personal encontrado com Sucesso!");
             for (Personal p : personais) {
                 System.out.println(p);
             }
@@ -200,23 +209,25 @@ public class PersonalServico {
                 System.out.println("Novo nome: ");
                 encontrado.setNome(sc.nextLine());
                 personalRepositorio.atualizar(encontrado);
-                System.out.println("Nome atualizado");
+                System.out.println("Dados do personal atualizados com sucesso");
 
             } else if (op == 2) {
                 System.out.println("Novo salario: ");
                 encontrado.setSalario(sc.nextDouble());
                 sc.nextLine();
                 personalRepositorio.atualizar(encontrado);
-                System.out.println("Salario atualizado");
+                System.out.println("Dados do personal atualizados com sucesso");
 
             } else if (op == 3) {
                 encontrado.setEndereco(lerEndereco());
                 personalRepositorio.atualizar(encontrado);
-                System.out.println("Endereco atualizado");
+                System.out.println("Dados do personal atualizados com sucesso");
 
             } else {
                 System.out.println("Opcao invalida");
             }
+        } else {
+            System.out.println("Personal não encontrado");
         }
     }
 
