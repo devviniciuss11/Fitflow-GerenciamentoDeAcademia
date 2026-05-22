@@ -20,7 +20,7 @@ public class FuncionarioServico {
 
     public static void mostrarDiasTrabalhados(Funcionario funcionario) {
         if (funcionario == null) {
-            System.out.println("Funcionario nao encontrado!");
+            System.out.println("Funcionário não encontrado");
             return;
         }
         Set<LocalDate> diasTrabalhados = funcionario.getDiasTrabalhados();
@@ -37,15 +37,15 @@ public class FuncionarioServico {
 
     public static void marcarPresenca(Funcionario funcionario) {
         if (funcionario == null) {
-            System.out.println("Funcionario nao encontrado!");
+            System.out.println("Funcionário não encontrado");
             return;
         }
         LocalDate hoje = LocalDate.now();
         Set<LocalDate> diasTrabalhados = funcionario.getDiasTrabalhados();
         if (!diasTrabalhados.add(hoje)) {
-            System.out.println("Presença ja marcada hoje");
+            System.out.println("Presença já Marcada Hoje");
         } else {
-            System.out.println("Check-in do Funcionario Realizado com Sucesso! " + hoje);
+            System.out.println("Check-in Do Funcionário Realizado Com Sucesso!");
         }
     }
 
@@ -56,7 +56,7 @@ public class FuncionarioServico {
         Funcionario funcionarioPresente = funcionariosRepositorio.buscarPorCpf(cpf);
 
         if (funcionarioPresente == null) {
-            System.out.println("Funcionario nao encontrado!!");
+            System.out.println("Funcionário não encontrado");
             return;
         }
 
@@ -123,10 +123,10 @@ public class FuncionarioServico {
                 continue;
             }
             if (idade <= 17) {
-                System.out.println("Funcionarios precisam ter mais de 18 anos. Tente novamente");
+                System.out.println("Funcionarios precisam ter mais de 18 anos. Tente Novamente");
                 continue;
             }
-            System.out.println("Funcionario Cadastrado com sucesso!!");
+            System.out.println("Funcionário cadastrado com Sucesso!");
             break;
         }
 
@@ -164,7 +164,7 @@ public class FuncionarioServico {
     public void ListarFuncionarios() {
         List<Funcionario> funcionarios = funcionariosRepositorio.listarTodos();
         if (funcionarios.isEmpty()) {
-            System.out.println("Nao ha Funcionarios Cadastrados!!");
+            System.out.println("Não há funcionários cadastrados!");
         } else {
             for (Funcionario f : funcionarios) {
                 System.out.println(f);
@@ -183,12 +183,12 @@ public class FuncionarioServico {
         if (escolha == 1) {
             boolean removido = funcionariosRepositorio.removerPorCpf(buscaCpf);
             if (removido) {
-                System.out.println("Funcionario com o CPF: " + buscaCpf + " Removido com sucesso");
+                System.out.println("Funcionario com o CPF: " + buscaCpf + " Removido com Sucesso!");
             } else {
                 System.out.println("Nenhum funcionario com o CPF: " + buscaCpf + " Encontrado");
             }
         } else {
-            System.out.println("Remoção cancelada.");
+            System.out.println("Remoção cancelada");
         }
     }
     public void AlterarFuncionario() {
@@ -198,7 +198,7 @@ public class FuncionarioServico {
 
         Funcionario funcionario = funcionariosRepositorio.buscarPorCpf(cpf);
         if (funcionario == null) {
-            System.out.println("Funcionario nao encontrado.");
+            System.out.println("Funcionário não encontrado");
             return;
         }
 

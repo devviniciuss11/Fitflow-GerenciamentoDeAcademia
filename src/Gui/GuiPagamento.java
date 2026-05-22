@@ -10,13 +10,14 @@ public class GuiPagamento {
     public void menuPagamento() {
         int opc = -1;
         while (opc != 0) {
-            System.out.println("      MENU PAGAMENTO     ");
+            System.out.println("========== MENU PAGAMENTO ==========");
             System.out.println(" [1] - Realizar Novo Pagamento");
             System.out.println(" [2] - Ver Histórico de Pagamentos");
             System.out.println(" [3] - Remover Pagamento (Deletar)");
             System.out.println(" [4] - Alterar Status de Pagamento (Atualizar)");
             System.out.println(" [5] - Extrato dos Pagamentos (Soma)");
             System.out.println(" [0] - Voltar ao Menu Principal");
+            System.out.println("====================================");
             System.out.print(" Escolha uma opção: ");
 
             try {
@@ -48,7 +49,7 @@ public class GuiPagamento {
                     System.out.println("Voltando ao Menu Principal...");
                     break;
                 default:
-                    System.out.println("Opção inválida, tente novamente.");
+                    System.out.println("Opção inválida! Tente novamente.");
             }
         }
     }

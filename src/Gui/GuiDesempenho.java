@@ -33,7 +33,7 @@ public class GuiDesempenho {
                 case 3 -> servico.excluirDesempenho();
                 case 4 -> servico.alterarDesempenho();
                 case 5 -> System.out.println("Voltando ao Menu Principal...");
-                default -> System.out.println("Opção Inválida! Tente Novamente.");
+                default -> System.out.println("Opção inválida! Tente novamente.");
             }
         }
     }

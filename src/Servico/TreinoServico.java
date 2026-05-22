@@ -24,7 +24,7 @@ public class TreinoServico {
         }
 
         if (campoVazio(treino.getData()) || campoVazio(treino.getHorario()) || campoVazio(treino.getDescricao())) {
-            return "Campos vazios. Tente novamente";
+            return "Campos vazios. Tente novamente!";
         }
 
         StringBuilder erros = new StringBuilder();
@@ -52,7 +52,7 @@ public class TreinoServico {
 
         treino.setId(null);
         treinoRepositorio.salvar(treino);
-        return "Treino cadastrado com sucesso!";
+        return "Treino Cadastrado com Sucesso!";
     }
 
     public List<Treino> listarTreinos() {
@@ -73,10 +73,10 @@ public class TreinoServico {
             treinoAtualizado.setId(id);
 
             if (treinoRepositorio.atualizar(treinoAtualizado)) {
-                return "Treino atualizado com sucesso!";
+                return "Treino Cadastrado com Sucesso!";
             }
 
-            return "Treino nao encontrado!";
+            return "Nenhum treino Encontrado!";
 
         } catch (NullPointerException e) {
             return "Erro: servico nao inicializado.";

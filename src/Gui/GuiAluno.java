@@ -12,7 +12,7 @@ public class GuiAluno {
     public void menuDoAlunoAdm() {
         int opc1 = 1;
         while (opc1 == 1) {
-            System.out.println("-------------MENU ALUNO-------------");
+            System.out.println("------------- MENU ALUNO -------------");
             System.out.println("[1] - Cadastrar Novo Aluno");
             System.out.println("[2] - Listar Alunos Cadastrados");
             System.out.println("[3] - Remover Aluno");
@@ -26,7 +26,7 @@ public class GuiAluno {
             try {
                 op = sc1.nextInt();
             } catch (InputMismatchException e) {
-                System.out.println("Digite apenas numeros");
+                System.out.println("Digite apenas números.");
                 sc1.nextLine();
                 return;
             }
@@ -62,11 +62,11 @@ public class GuiAluno {
                         opc1 = 0;
                         break;
                     default:
-                        throw new IllegalStateException("Opcao Invalida: " + op);
+                        throw new IllegalStateException("Opção inválida: " + op);
                 }
 
             } catch (Exception e) {
-                System.out.println("Opcao Invalida");
+                System.out.println("Opção inválida! Tente novamente.");
                 sc1.nextLine();
             }
         }
@@ -75,10 +75,10 @@ public class GuiAluno {
     public void menuDoAluno() {
         int opc = 1;
         while (opc != 0) {
-            System.out.println("-------------MENU ALUNO-------------");
-            System.out.println("[1] - Check-in Diario");
+            System.out.println("------------- MENU ALUNO -------------");
+            System.out.println("[1] - Check-in Diário");
             System.out.println("[2] - Treino");
-            System.out.println("[3] - Escolher Plano Pra Comprar");
+            System.out.println("[3] - Escolher Plano para Comprar");
             System.out.println("[0] - Voltar ao Menu Principal");
             System.out.print("Escolha uma opção: ");
 
@@ -86,7 +86,7 @@ public class GuiAluno {
             try {
                 op = sc1.nextInt();
             } catch (InputMismatchException e) {
-                System.out.println("Digite apenas numeros");
+                System.out.println("Digite apenas números.");
                 sc1.nextLine();
                 return;
             }
@@ -109,10 +109,10 @@ public class GuiAluno {
                         opc = 0;
                         break;
                     default:
-                        System.out.println("Opcao Invalida");
+                        System.out.println("Opção inválida! Tente novamente.");
                 }
             } catch (Exception e) {
-                throw new RuntimeException(e);
+                System.out.println("Opção inválida! Tente novamente.");
             }
         }
     }

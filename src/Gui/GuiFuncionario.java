@@ -13,12 +13,12 @@ public class GuiFuncionario {
 
         while (opcao != 0) {
 
-            System.out.println("------------MENU FUNCIONÁRIO-------------");
+            System.out.println("------------ MENU FUNCIONÁRIO ------------");
             System.out.println(" [1] - Cadastrar Funcionário");
             System.out.println(" [2] - Listar Funcionário");
             System.out.println(" [3] - Remover Funcionário");
-            System.out.println(" [4] - Alterar dados do Funcionário");
-            System.out.println(" [5] - Registrar Prescença do Funcionário");
+            System.out.println(" [4] - Alterar Dados do Funcionário");
+            System.out.println(" [5] - Registrar Presença do Funcionário");
             System.out.println(" [0] - Sair do Menu");
             System.out.println("-----------------------------------------");
 
@@ -57,7 +57,7 @@ public class GuiFuncionario {
                     return;
 
                 default:
-                    System.out.println("Opção inválida!");
+                    System.out.println("Opção inválida! Tente novamente.");
             }
         }
     }
@@ -67,8 +67,8 @@ public class GuiFuncionario {
 
         while (opcao != 0) {
 
-            System.out.println("------------MENU FUNCIONÁRIO-------------");
-            System.out.println(" [1] - Registrar Prescença do Funcionário");
+            System.out.println("------------ MENU FUNCIONÁRIO ------------");
+            System.out.println(" [1] - Registrar Presença do Funcionário");
             System.out.println(" [0] - Sair do Menu");
             System.out.println("-----------------------------------------");
 
@@ -89,7 +89,7 @@ public class GuiFuncionario {
                     return;
 
                 default:
-                    System.out.println("Opção inválida!");
+                    System.out.println("Opção inválida! Tente novamente.");
             }
         }
 

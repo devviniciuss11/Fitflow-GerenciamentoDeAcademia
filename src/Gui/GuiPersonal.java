@@ -13,14 +13,14 @@ public class GuiPersonal {
     public void menuPAdm(){
         int op = -1;
         while (op != 7){
-            System.out.println("-------------MENU PERSONAL-------------");
+            System.out.println("------------- MENU PERSONAL -------------");
             System.out.println("[1] - Cadastrar Novo Personal");
             System.out.println("[2] - Listar Personais Cadastrados");
             System.out.println("[3] - Remover Personal");
-            System.out.println("[4] - Alterar Dados de um Personal");
-            System.out.println("[5] - Vicnular Aluno ao Personal");
+            System.out.println("[4] - Alterar Dados de Um Personal");
+            System.out.println("[5] - Vincular Aluno ao Personal");
             System.out.println("[6] - Ver Alunos de um Personal");
-            System.out.println("[7] - Ir Para o Menu de Treino");
+            System.out.println("[7] - Ir para o Menu de Treino");
             System.out.println("[8] - Voltar ao Menu Principal");
             System.out.println("Escolha uma opção: ");
 
@@ -43,7 +43,7 @@ public class GuiPersonal {
                 case 6 -> servico.listarAlunosDoPersonal();
                 case 7 -> GuiTreino.menuTreino();
                 case 8 -> { return; }
-                default -> System.out.println("Opção Inválida! Tente Novamente. ");
+                default -> System.out.println("Opção inválida! Tente novamente.");
 
             }
 
@@ -54,10 +54,10 @@ public class GuiPersonal {
     public void menuPersoal(){
         int op = -1;
         while (op != 7){
-            System.out.println("[1] - Vicnular Aluno ao Personal");
+            System.out.println("[1] - Vincular Aluno ao Personal");
             System.out.println("[2] - Ver Alunos de um Personal");
-            System.out.println("[3] - Ir Para o Menu de Treino");
-            System.out.println("[4] - Ir Para o menu de Desenpenho");
+            System.out.println("[3] - Ir para o Menu de Treino");
+            System.out.println("[4] - Ir para o Menu de Desempenho");
             System.out.println("[0] - Voltar ao Menu Principal");
             System.out.println("Escolha uma opção: ");
 
@@ -77,7 +77,7 @@ public class GuiPersonal {
                 case 3 -> GuiTreino.menuTreino();
                 case 4 -> GuiDesempenho.menu();
                 case 0 -> { return; }
-                default -> System.out.println("Opção Inválida! Tente Novamente. ");
+                default -> System.out.println("Opção inválida! Tente novamente.");
 
             }
 

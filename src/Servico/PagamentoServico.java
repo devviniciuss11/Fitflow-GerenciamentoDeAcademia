@@ -12,6 +12,12 @@ import java.util.Scanner;
 
 public class PagamentoServico {
 
+    private static final String MSG_NENHUM_PLANO_SELECIONADO = "Nenhum Plano Selecionado. Tente Novamente!";
+    private static final String MSG_OPCAO_INVALIDA = "Informação inválida, Tente novamente!";
+    private static final String MSG_PAGAMENTO_ALTERADO = "Pagamento Alterado Com Sucesso!";
+    private static final String MSG_PAGAMENTO_REMOVIDO = "Pagamento removido com Sucesso!";
+    private static final String MSG_PAGAMENTO_NAO_ENCONTRADO = "Pagamento não Encontrado";
+
     Scanner sc = new Scanner(System.in);
     PagamentoRepositorio pagamentoRepositorio = new PagamentoRepositorio();
     PlanoServico planoServico = new PlanoServico();
@@ -34,24 +40,26 @@ public class PagamentoServico {
             System.out.println(p.getId() + " - " + p.getNome() + " (R$ " + p.getValor() + ")");
         }
 
-        System.out.println("Digite o ID do Plano que o aluno vai pagar: ");
-        int idPlano = sc.nextInt();
-        sc.nextLine();
+        Integer idPlano = lerInteiroOpcional("Digite o ID do Plano que o aluno vai pagar: ");
+        if (idPlano == null) {
+            System.out.println(MSG_NENHUM_PLANO_SELECIONADO);
+            return;
+        }
 
         Plano planoEncontrado = planoServico.buscarPorId(idPlano);
 
         if (planoEncontrado == null) {
-            System.out.println("  PLANO NAO ENCONTRADO  ");
+            System.out.println(MSG_NENHUM_PLANO_SELECIONADO);
             return;
         }
+
+        System.out.println("Otima Escolha!");
 
         System.out.println("  Escolha o metodo de pagamento: ");
         System.out.println(" [1] - PIX");
         System.out.println(" [2] - Boleto");
         System.out.println(" [3] - Cartao de Credito/Debito");
-        System.out.print(" Opcao: ");
-        int opcMetodo = sc.nextInt();
-        sc.nextLine();
+        int opcMetodo = lerInteiro(" Opcao: ");
 
         String metodoEscolhido;
         switch (opcMetodo) {
@@ -74,18 +82,18 @@ public class PagamentoServico {
                 sc.nextLine();
                 break;
             default:
-                System.out.println("Opcao invalida, definindo como PIX por padrao.");
-                metodoEscolhido = "PIX";
+                System.out.println(MSG_OPCAO_INVALIDA);
+                return;
         }
 
         System.out.println(" O pagamento foi efetivado com sucesso agora?");
         System.out.println("[1] Sim (Ficara ATIVO/PAGO)");
         System.out.println("[2] Nao (Ficara PENDENTE)");
-        System.out.print("Opcao: ");
-        int opcStatus = sc.nextInt();
-        sc.nextLine();
+        int opcStatus = lerInteiro("Opcao: ");
 
-        Pagamento.StatusPagamento statusDefinido = (opcStatus == 1) ? Pagamento.StatusPagamento.PAGO : Pagamento.StatusPagamento.PENDENTE;
+        Pagamento.StatusPagamento statusDefinido = (opcStatus == 1)
+                ? Pagamento.StatusPagamento.PAGO
+                : Pagamento.StatusPagamento.PENDENTE;
 
         if (statusDefinido == Pagamento.StatusPagamento.PAGO) {
             System.out.println("  Pagamento efetuado!");
@@ -149,30 +157,24 @@ public class PagamentoServico {
     }
 
     public void removerPagamento() {
-        System.out.print("  Digite o ID do pagamento que deseja remover: ");
-        int id = sc.nextInt();
-        sc.nextLine();
+        int id = lerInteiro("  Digite o ID do pagamento que deseja remover: ");
 
         if (pagamentoRepositorio.remover(id)) {
-            System.out.println(" Pagamento removido com sucesso!");
+            System.out.println(MSG_PAGAMENTO_REMOVIDO);
         } else {
-            System.out.println(" Pagamento nao encontrado!");
+            System.out.println(MSG_PAGAMENTO_NAO_ENCONTRADO);
         }
     }
 
     public void alterarStatusPagamento() {
-        System.out.print("  Digite o ID do pagamento para alterar o status: ");
-        int id = sc.nextInt();
-        sc.nextLine();
+        int id = lerInteiro("  Digite o ID do pagamento para alterar o status: ");
 
         Pagamento encontrado = pagamentoRepositorio.buscarPorId(id);
 
         if (encontrado != null) {
             System.out.println("Status atual: " + encontrado.getStatus());
             System.out.println("Novo status: [1] PENDENTE  [2] PAGO  [3] CANCELADO");
-            System.out.print("Opcao: ");
-            int opc = sc.nextInt();
-            sc.nextLine();
+            int opc = lerInteiro("Opcao: ");
 
             boolean opcaoValida = true;
 
@@ -181,18 +183,45 @@ public class PagamentoServico {
                 case 2 -> encontrado.setStatus(Pagamento.StatusPagamento.PAGO);
                 case 3 -> encontrado.setStatus(Pagamento.StatusPagamento.CANCELADO);
                 default -> {
-                    System.out.println("Informação inválida, Tente novamente!");
+                    System.out.println(MSG_OPCAO_INVALIDA);
                     opcaoValida = false;
                 }
             }
 
             if (opcaoValida) {
                 pagamentoRepositorio.atualizar(encontrado);
-                System.out.println("Pagamento Alterado Com Sucesso!");
+                System.out.println(MSG_PAGAMENTO_ALTERADO);
             }
 
         } else {
-            System.out.println("Informação inválida, Tente novamente!");
+            System.out.println(MSG_OPCAO_INVALIDA);
+        }
+    }
+
+    private Integer lerInteiroOpcional(String prompt) {
+        System.out.print(prompt);
+        String entrada = sc.nextLine().trim();
+
+        if (entrada.isEmpty()) {
+            return null;
+        }
+
+        try {
+            return Integer.parseInt(entrada);
+        } catch (NumberFormatException e) {
+            return null;
+        }
+    }
+
+    private int lerInteiro(String prompt) {
+        while (true) {
+            System.out.print(prompt);
+            String entrada = sc.nextLine().trim();
+            try {
+                return Integer.parseInt(entrada);
+            } catch (NumberFormatException e) {
+                System.out.println("Digite apenas numeros.");
+            }
         }
     }
 }

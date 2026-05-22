@@ -29,7 +29,7 @@ public class PersonalServico {
         Personal personalEncontrado = personalRepositorio.buscarPorCraf(crafBusca);
 
         if (personalEncontrado == null) {
-            System.out.println("Personal nao encontrado");
+            System.out.println("Personal Não Encontrado.");
             return;
         }
 
@@ -52,7 +52,7 @@ public class PersonalServico {
 
         try {
             personalRepositorio.atualizar(personalEncontrado);
-            System.out.println("Sucesso! O Aluno " + alunoEncontrado.getNome() + " agora treina com o Personal " + personalEncontrado.getNome() + ".");
+            System.out.println("Sucesso! O aluno " + alunoEncontrado.getNome() + " agora Treina com o Personal " + personalEncontrado.getNome());
         } catch (RuntimeException e) {
             System.out.println("Nao foi possivel concluir o vinculo. Este aluno ja pode estar vinculado a este personal.");
         }
@@ -68,13 +68,13 @@ public class PersonalServico {
             if (personalEncontrado.getAlunosdele().isEmpty()) {
                 System.out.println("Este Personal ainda nao possui alunos vinculados.");
             } else {
-                System.out.println("Alunos do Personal " + personalEncontrado.getNome() + ":");
+                System.out.println("Aluno do Personal \"" + personalEncontrado.getNome() + "\":");
                 for (String nomeAluno : personalEncontrado.getAlunosdele()) {
                     System.out.println(" - " + nomeAluno);
                 }
             }
         } else {
-            System.out.println("Personal nao encontrado!");
+            System.out.println("Personal Não Encontrado.");
         }
     }
 
@@ -114,7 +114,7 @@ public class PersonalServico {
             System.out.print("CRAF: ");
             craf = sc.nextLine().trim();
             if (craf.isEmpty()) {
-                System.out.println("Campos vazios, tente novamente!");
+                System.out.println("Campos vazios. Tente novamente!");
             } else {
                 break;
             }
@@ -159,7 +159,7 @@ public class PersonalServico {
         );
         personalRepositorio.save(novo);
 
-        System.out.println("Personal cadastrado com sucesso!");
+        System.out.println("Personal cadastrado com Sucesso!!");
     }
 
     public void listarPersonais() {
@@ -209,19 +209,19 @@ public class PersonalServico {
                 System.out.println("Novo nome: ");
                 encontrado.setNome(sc.nextLine());
                 personalRepositorio.atualizar(encontrado);
-                System.out.println("Dados do personal atualizados com sucesso");
+                System.out.println("Dados do Personal Atualizados com Sucesso!");
 
             } else if (op == 2) {
                 System.out.println("Novo salario: ");
                 encontrado.setSalario(sc.nextDouble());
                 sc.nextLine();
                 personalRepositorio.atualizar(encontrado);
-                System.out.println("Dados do personal atualizados com sucesso");
+                System.out.println("Dados do Personal Atualizados com Sucesso!");
 
             } else if (op == 3) {
                 encontrado.setEndereco(lerEndereco());
                 personalRepositorio.atualizar(encontrado);
-                System.out.println("Dados do personal atualizados com sucesso");
+                System.out.println("Dados do Personal Atualizados com Sucesso!");
 
             } else {
                 System.out.println("Opcao invalida");

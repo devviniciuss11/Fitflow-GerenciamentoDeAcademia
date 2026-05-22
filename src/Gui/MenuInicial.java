@@ -25,17 +25,17 @@ public class MenuInicial {
 
         while (opcao != 0) {
             System.out.println("Bem-vindo ao Sistema FitFlow!!");
-            System.out.println("Escolha Uma Das Opcoes Abaixo");
+            System.out.println("Escolha uma das opções abaixo");
             System.out.println("============= FITFLOW =============");
             System.out.println(" [1] - Login");
             System.out.println(" [0] - Sair");
             System.out.println("==================================");
-            opcao = lerOpcaoInt("Escolha uma opcao: ");
+            opcao = lerOpcaoInt("Escolha uma opção: ");
 
             switch (opcao) {
                 case 1 -> menuLogin();
                 case 0 -> System.out.println("Saindo...");
-                default -> System.out.println("Opcao invalida!");
+                default -> System.out.println("Opção inválida! Tente novamente.");
             }
         }
     }
@@ -45,13 +45,13 @@ public class MenuInicial {
 
         while (opcao != 0) {
             System.out.println("--------------- LOGIN --------------");
-            System.out.println(" [1] - Login de Funcionario");
+            System.out.println(" [1] - Login de Funcionário");
             System.out.println(" [2] - Login de Personal");
             System.out.println(" [3] - Login de Aluno");
-            System.out.println(" [4] - Administracao (ADM)");
+            System.out.println(" [4] - Administração (ADM)");
             System.out.println(" [0] - Voltar");
             System.out.println("------------------------------------");
-            opcao = lerOpcaoInt("Escolha uma opcao: ");
+            opcao = lerOpcaoInt("Escolha uma opção: ");
 
             switch (opcao) {
                 case 1 -> loginFuncionario();
@@ -60,19 +60,19 @@ public class MenuInicial {
                 case 4 -> acessoAdm();
                 case 0 -> {
                 }
-                default -> System.out.println("Opcao invalida!");
+                default -> System.out.println("Opção inválida! Tente novamente.");
             }
         }
     }
 
     private void loginFuncionario() {
-        System.out.println("Login de Funcionario");
+        System.out.println("Login de Funcionário");
         String cpf = lerLinhaNaoVazia("CPF: ");
         String senha = lerLinhaNaoVazia("Senha: ");
 
         Funcionario encontrado = autenticarFuncionario(cpf, senha);
         if (encontrado == null) {
-            System.out.println("Credenciais invalidas.");
+            System.out.println("Opção Inválida");
             return;
         }
 
@@ -87,7 +87,7 @@ public class MenuInicial {
 
         Aluno encontrado = autenticarAluno(cpf, senha);
         if (encontrado == null) {
-            System.out.println("Credenciais invalidas.");
+            System.out.println("Opção Inválida");
             return;
         }
 
@@ -97,13 +97,13 @@ public class MenuInicial {
 
     private void loginPersonal() {
         System.out.println("Login de Personal");
-        System.out.println("Voce pode informar CPF ou CRAF.");
+        System.out.println("Você pode informar CPF ou CRAF.");
         String identificador = lerLinhaNaoVazia("CPF/CRAF: ");
         String senha = lerLinhaNaoVazia("Senha: ");
 
         Personal encontrado = autenticarPersonalPorCpfOuCraf(identificador, senha);
         if (encontrado == null) {
-            System.out.println("Credenciais invalidas.");
+            System.out.println("Opção Inválida");
             return;
         }
 
@@ -130,7 +130,7 @@ public class MenuInicial {
             try {
                 return Integer.parseInt(linha);
             } catch (NumberFormatException e) {
-                System.out.println("Digite apenas numeros.");
+                System.out.println("Digite apenas números.");
             }
         }
     }
@@ -140,13 +140,13 @@ public class MenuInicial {
             System.out.print(prompt);
             String linha = sc.nextLine().trim();
             if (!linha.isEmpty()) return linha;
-            System.out.println("Campo obrigatorio. Tente novamente.");
+            System.out.println("Campo obrigatório. Tente novamente.");
         }
     }
 
     public void acessoAdm() {
         AcessoAdm acessoAdm = AcessoAdm.ADM_MASTER;
-        System.out.println("Acesso AcessoAdm");
+        System.out.println("Acesso Administrador (ADM)");
 
         String senha = lerLinhaNaoVazia("Digite a senha do AcessoAdm: ");
 
@@ -154,10 +154,10 @@ public class MenuInicial {
             System.out.println("Opção Inválida");
             senha = lerLinhaNaoVazia("Digite a senha do AcessoAdm: ");
         }
-        String email = lerLinhaNaoVazia("Digite o email do AcessoAdm: ");
+        String email = lerLinhaNaoVazia("Digite o e-mail do AcessoAdm: ");
         while (!email.equals(acessoAdm.getEmail())) {
             System.out.println("Opção Inválida");
-            email = lerLinhaNaoVazia("Digite a email do AcessoAdm: ");
+            email = lerLinhaNaoVazia("Digite o e-mail do AcessoAdm: ");
         }
         System.out.println("Acesso liberado! Bem-vindo(a), ADM.");
         fitFlow.main();

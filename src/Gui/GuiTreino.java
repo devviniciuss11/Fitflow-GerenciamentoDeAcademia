@@ -29,14 +29,14 @@ public class GuiTreino {
         int opc = -1;
         while (opc != 5) {
             System.out.println("\n========== MENU TREINOS ==========");
-            System.out.println(" [1] Cadastrar Lista De Treino.");
-            System.out.println(" [2] Listar Fichas De Treinos.");
-            System.out.println(" [3] Remover Ficha De Treino.");
-            System.out.println(" [4] Alterar Ficha de Treino.");
-            System.out.println(" [5] Voltar para o Menu Principal.");
+            System.out.println(" [1] - Cadastrar Ficha de Treino.");
+            System.out.println(" [2] - Listar Fichas de Treino.");
+            System.out.println(" [3] - Remover Ficha de Treino.");
+            System.out.println(" [4] - Alterar Ficha de Treino.");
+            System.out.println(" [5] - Voltar ao Menu Principal.");
             System.out.println("==================================");
 
-            opc = lerInteiro("Escolha uma opcao: ");
+            opc = lerInteiro("Escolha uma opção: ");
 
             switch (opc) {
                 case 1:
@@ -55,7 +55,7 @@ public class GuiTreino {
                     System.out.println("Voltando para o Menu Principal...");
                     break;
                 default:
-                    System.out.println("Opcao invalida!");
+                    System.out.println("Opção inválida! Tente novamente.");
             }
         }
     }
@@ -67,7 +67,7 @@ public class GuiTreino {
             List<Treino> lista = servico.listarTreinos();
 
             if (lista == null || lista.isEmpty()) {
-                System.out.println("NENHUM TREINO ENCONTRADO!");
+                System.out.println("Nenhum Treino Encontrado!");
                 return;
             }
 
@@ -76,8 +76,8 @@ public class GuiTreino {
                 System.out.println("Aluno: " + t.getIdAluno());
                 System.out.println("Personal: " + t.getIdPersonal());
                 System.out.println("Dia: " + t.getData());
-                System.out.println("Horario: " + t.getHorario());
-                System.out.println("Descricao: " + t.getDescricao());
+                System.out.println("Horário: " + t.getHorario());
+                System.out.println("Descrição: " + t.getDescricao());
                 System.out.println("----------------------");
             }
 
@@ -93,13 +93,13 @@ public class GuiTreino {
         int idPersonal = lerInteiro("ID do Personal: ");
 
         System.out.println("Escolha o dia para esse treino:");
-        System.out.println("Segunda | Terca | Quarta | Quinta | Sexta");
+        System.out.println("Segunda | Terça | Quarta | Quinta | Sexta");
         String data = sc.nextLine();
 
-        System.out.print("Horario: ");
+        System.out.print("Horário: ");
         String horario = sc.nextLine();
 
-        System.out.print("Musculo(s): ");
+        System.out.print("Músculo(s): ");
         String descricao = sc.nextLine();
 
         Treino treino = new Treino(null, idAluno, idPersonal, data, horario, descricao);
@@ -112,18 +112,18 @@ public class GuiTreino {
         int id = lerInteiro("ID do treino a remover: ");
 
         if (servico.removerTreino(id)) {
-            System.out.println("A FICHA DE TREINO ESTA SENDO REMOVIDA!");
+            System.out.println("A Ficha De Treino está Sendo Removida.");
         } else {
-            System.out.println("FICHA DE TREINO NAO ENCONTRADA! TENTE NOVAMENTE");
+            System.out.println("Ficha De Treino Nao Encontrada Tente novamente!");
         }
     }
 
     private void atualizar() {
-        System.out.println("\n======== ALTERACAO DE TREINO ========");
+        System.out.println("\n======== ALTERAÇÃO DE TREINO ========");
 
         List<Treino> lista = servico.listarTreinos();
         if (lista == null || lista.isEmpty()) {
-            System.out.println("NENHUM TREINO ENCONTRADO PARA ALTERAR!");
+            System.out.println("Nenhum treino Encontrado!");
             return;
         }
 
@@ -136,16 +136,15 @@ public class GuiTreino {
         System.out.print("Nova Data (ex.: Segunda): ");
         String data = sc.nextLine();
 
-        System.out.print("Novo Horario (ex.: 18:00): ");
+        System.out.print("Novo Horário (ex.: 18:00): ");
         String horario = sc.nextLine();
 
-        System.out.print("Nova Descricao do Treino: ");
+        System.out.print("Nova Descrição do Treino: ");
         String descricao = sc.nextLine();
 
         Treino treinoAtualizado = new Treino(id, idAluno, idPersonal, data, horario, descricao);
 
         String resultado = servico.atualizarTreino(id, treinoAtualizado);
-        System.out.println("Treino atualizado com sucesso");
         System.out.println(resultado);
     }
 
@@ -156,7 +155,7 @@ public class GuiTreino {
             try {
                 return Integer.parseInt(entrada);
             } catch (NumberFormatException e) {
-                System.out.println("Digite apenas numeros.");
+                System.out.println("Digite apenas números.");
             }
         }
     }

@@ -30,9 +30,9 @@ public class AlunoServico {
         Set<LocalDate> diasTreino = aluno.getDiasTreino();
 
         if (!diasTreino.add(hoje)) {
-            System.out.println("voce ja marcou presenca nesse dia");
+            System.out.println("você já marcou presença nesse dia");
         } else {
-            System.out.println("presenca marcada com sucesso " + hoje);
+            System.out.println("presenca marcada com sucesso");
         }
     }
 
@@ -61,7 +61,7 @@ public class AlunoServico {
         Aluno alunoEncontrado = alunoRepositorio.buscarPorCpf(cpf);
 
         if (alunoEncontrado == null) {
-            System.out.println("Aluno nao encontrado.");
+            System.out.println("Aluno não encontrado");
             return;
         }
 
@@ -205,7 +205,7 @@ public class AlunoServico {
             System.out.println("Procurando Aluno....");
             System.out.println("Aluno Removido com Sucesso!\n");
         } else {
-            System.out.println("Aluno não encontrado.\n");
+            System.out.println("Aluno não encontrado\n");
         }
     }
 
@@ -216,7 +216,7 @@ public class AlunoServico {
 
         Aluno aluno = alunoRepositorio.buscarPorCpf(cpf);
         if (aluno == null) {
-            System.out.println("Aluno não encontrado.");
+            System.out.println("Aluno não encontrado");
             return;
         }
 

@@ -45,6 +45,23 @@ public class PlanoRepositorio {
         }
     }
 
+    public boolean existePorNome(String nome) {
+        if (nome == null || nome.trim().isEmpty()) {
+            return false;
+        }
+
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            Long total = session.createQuery(
+                            "select count(p.id) from Plano p where lower(trim(p.nome)) = :nome",
+                            Long.class
+                    )
+                    .setParameter("nome", nome.trim().toLowerCase())
+                    .uniqueResult();
+
+            return total != null && total > 0;
+        }
+    }
+
     public Plano buscarPorId(int id) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             return session.get(Plano.class, id);
