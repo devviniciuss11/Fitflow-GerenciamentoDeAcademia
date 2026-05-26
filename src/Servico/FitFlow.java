@@ -18,52 +18,69 @@ public class FitFlow {
             System.out.println("[4] - Gerenciar Planos");
             System.out.println("[5] - Gerenciar Pagamentos");
             System.out.println("[6] - Gerenciar Desempenho");
-            System.out.println("[7] - Gerenciar Funcionários");
+            System.out.println("[7] - Gerenciar Funcionarios");
             System.out.println("[8] - Voltar");
             System.out.println("===========================================");
-            System.out.print("Escolha uma opção: ");
-            int opc = sc.nextInt();
-            switch (opc) {
-                case 1:
-                    GuiAluno guiAluno = new GuiAluno();
-                    guiAluno.menuDoAlunoAdm();
-                    break;
-                case 2:
-                    GuiPersonal guiPersonal = new GuiPersonal();
-                    guiPersonal.menuPAdm();
-                    break;
-                case 3:
-                    TreinoRepositorio repositorio = new TreinoRepositorio();
-                    PersonalServico personalServico = new PersonalServico();
-                    AlunoRepositorio alunoRepositorio = new AlunoRepositorio();
-                    TreinoServico treinoServico = new TreinoServico(repositorio,personalServico,alunoRepositorio );
-                    GuiTreino guiTreino = new GuiTreino(treinoServico);
-                    guiTreino.menuTreino();
-                    break;
-                case 4:
-                    PlanoServico servico = new PlanoServico();
-                    GuiPlano gui = new GuiPlano(servico);
-                    gui.menuPlano();
-                    break;
-                case 5:
-                    GuiPagamento guiPagamento = new GuiPagamento();
-                    guiPagamento.menuPagamento();
-                    break;
-                case 6:
-                    GuiDesempenho guiDesempenho = new GuiDesempenho();
-                    guiDesempenho.menu();
-                    break;
-                case 7 :
-                    GuiFuncionario guiFuncionario = new GuiFuncionario();
-                    guiFuncionario.menufAdm();
-                    break;
-                case 8:
-                    System.out.println("Saindo.....");
-                    opc2 = 0;
-                    break;
-                default:
-                    System.out.println("Opção inválida! Tente novamente.");
-                    break;
+
+            int opc = lerInteiro(sc, "Escolha uma opcao: ");
+
+            try {
+                switch (opc) {
+                    case 1:
+                        GuiAluno guiAluno = new GuiAluno();
+                        guiAluno.menuDoAlunoAdm();
+                        break;
+                    case 2:
+                        GuiPersonal guiPersonal = new GuiPersonal();
+                        guiPersonal.menuPAdm();
+                        break;
+                    case 3:
+                        TreinoRepositorio repositorio = new TreinoRepositorio();
+                        PersonalServico personalServico = new PersonalServico();
+                        AlunoRepositorio alunoRepositorio = new AlunoRepositorio();
+                        TreinoServico treinoServico = new TreinoServico(repositorio, personalServico, alunoRepositorio);
+                        GuiTreino guiTreino = new GuiTreino(treinoServico);
+                        guiTreino.menuTreino();
+                        break;
+                    case 4:
+                        PlanoServico servico = new PlanoServico();
+                        GuiPlano gui = new GuiPlano(servico);
+                        gui.menuPlano();
+                        break;
+                    case 5:
+                        GuiPagamento guiPagamento = new GuiPagamento();
+                        guiPagamento.menuPagamento();
+                        break;
+                    case 6:
+                        GuiDesempenho guiDesempenho = new GuiDesempenho();
+                        guiDesempenho.menu();
+                        break;
+                    case 7:
+                        GuiFuncionario guiFuncionario = new GuiFuncionario();
+                        guiFuncionario.menufAdm();
+                        break;
+                    case 8:
+                        System.out.println("Saindo.....");
+                        opc2 = 0;
+                        break;
+                    default:
+                        System.out.println("Opcao invalida! Tente novamente.");
+                        break;
+                }
+            } catch (RuntimeException e) {
+                System.out.println("Nao foi possivel concluir a operacao. Verifique os dados e tente novamente.");
+            }
+        }
+    }
+
+    private int lerInteiro(Scanner sc, String prompt) {
+        while (true) {
+            System.out.print(prompt);
+            String entrada = sc.nextLine().trim();
+            try {
+                return Integer.parseInt(entrada);
+            } catch (NumberFormatException e) {
+                System.out.println("Digite apenas numeros.");
             }
         }
     }

@@ -10,15 +10,14 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
-import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
 public class PersonalServico {
 
-    Scanner sc = new Scanner(System.in);
-    PersonalRepositorio personalRepositorio = new PersonalRepositorio();
-    AlunoRepositorio alunoRepositorio = new AlunoRepositorio();
+    private final Scanner sc = new Scanner(System.in);
+    private final PersonalRepositorio personalRepositorio = new PersonalRepositorio();
+    private final AlunoRepositorio alunoRepositorio = new AlunoRepositorio();
 
     public void vincularAlunoAoPersonal() {
         System.out.println("Vincular Aluno ao Personal");
@@ -29,7 +28,7 @@ public class PersonalServico {
         Personal personalEncontrado = personalRepositorio.buscarPorCraf(crafBusca);
 
         if (personalEncontrado == null) {
-            System.out.println("Personal Não Encontrado.");
+            System.out.println("Personal nao encontrado.");
             return;
         }
 
@@ -52,29 +51,29 @@ public class PersonalServico {
 
         try {
             personalRepositorio.atualizar(personalEncontrado);
-            System.out.println("Sucesso! O aluno " + alunoEncontrado.getNome() + " agora Treina com o Personal " + personalEncontrado.getNome());
+            System.out.println("Sucesso! O aluno " + alunoEncontrado.getNome() + " agora treina com o personal " + personalEncontrado.getNome());
         } catch (RuntimeException e) {
-            System.out.println("Nao foi possivel concluir o vinculo. Este aluno ja pode estar vinculado a este personal.");
+            System.out.println("Nao foi possivel concluir o vinculo. Verifique os dados e tente novamente.");
         }
     }
 
     public void listarAlunosDoPersonal() {
         System.out.println("Ver alunos de um Personal");
-        System.out.println("Digitar o CRAF do Personal:");
+        System.out.println("Digite o CRAF do Personal:");
         String crafBusca = sc.nextLine();
 
         Personal personalEncontrado = personalRepositorio.buscarPorCraf(crafBusca);
         if (personalEncontrado != null) {
             if (personalEncontrado.getAlunosdele().isEmpty()) {
-                System.out.println("Este Personal ainda nao possui alunos vinculados.");
+                System.out.println("Este personal ainda nao possui alunos vinculados.");
             } else {
-                System.out.println("Aluno do Personal \"" + personalEncontrado.getNome() + "\":");
+                System.out.println("Alunos do Personal \"" + personalEncontrado.getNome() + "\":");
                 for (String nomeAluno : personalEncontrado.getAlunosdele()) {
                     System.out.println(" - " + nomeAluno);
                 }
             }
         } else {
-            System.out.println("Personal Não Encontrado.");
+            System.out.println("Personal nao encontrado.");
         }
     }
 
@@ -84,10 +83,10 @@ public class PersonalServico {
         System.out.print("Nome: ");
         String nome = sc.nextLine();
 
-        System.out.println("Cpf:");
+        System.out.println("CPF:");
         String cpf = sc.nextLine();
 
-        System.out.println("Data de Nascimento (dd/mm/aaaa): ");
+        System.out.println("Data de Nascimento (dd/MM/aaaa):");
         LocalDate dataNascimento;
         DateTimeFormatter nascimentoFmt = DateTimeFormatter.ofPattern("dd/MM/uuuu");
         while (true) {
@@ -96,17 +95,17 @@ public class PersonalServico {
                 dataNascimento = LocalDate.parse(entrada, nascimentoFmt);
                 break;
             } catch (DateTimeParseException e) {
-                System.out.println("Data invalida. Use o formato dd/mm/aaaa (ex: 12/09/2000). Tente novamente:");
+                System.out.println("Data invalida. Use o formato dd/MM/aaaa (ex: 12/09/2000). Tente novamente:");
             }
         }
 
-        System.out.println("Email: ");
+        System.out.println("Email:");
         String email = sc.nextLine();
 
-        System.out.println("Telefone: ");
+        System.out.println("Telefone:");
         String telefone = sc.nextLine();
 
-        System.out.println("Senha: ");
+        System.out.println("Senha:");
         String senha = sc.nextLine();
 
         String craf;
@@ -120,35 +119,8 @@ public class PersonalServico {
             }
         }
 
-        double salario = 0;
-        boolean salarioValido = false;
-
-        while (!salarioValido) {
-            try {
-                System.out.print("Salario (R$): ");
-                salario = sc.nextDouble();
-                salarioValido = true;
-            } catch (InputMismatchException e) {
-                System.out.println("Digite apenas numeros para o salario!");
-                sc.nextLine();
-            }
-        }
-
-        double horas = 0;
-        boolean horasValidas = false;
-
-        while (!horasValidas) {
-            try {
-                System.out.print("Horas do expediente do Personal: ");
-                horas = sc.nextDouble();
-                horasValidas = true;
-            } catch (InputMismatchException e) {
-                System.out.println("Digite apenas numeros para as horas!");
-                sc.nextLine();
-            }
-        }
-
-        sc.nextLine();
+        double salario = lerDouble("Salario (R$): ");
+        double horas = lerDouble("Horas do expediente do Personal: ");
 
         Endereco endereco = lerEndereco();
 
@@ -157,20 +129,28 @@ public class PersonalServico {
                 craf, salario, horas, new ArrayList<>(),
                 endereco
         );
-        personalRepositorio.save(novo);
 
-        System.out.println("Personal cadastrado com Sucesso!!");
+        try {
+            personalRepositorio.save(novo);
+            System.out.println("Personal cadastrado com sucesso!!");
+        } catch (RuntimeException e) {
+            System.out.println("Nao foi possivel cadastrar o personal. Verifique CPF, email e CRAF e tente novamente.");
+        }
     }
 
     public void listarPersonais() {
-        List<Personal> personais = personalRepositorio.listarTodos();
-        if (personais.isEmpty()) {
-            System.out.println("Personal não encontrado!");
-        } else {
-            System.out.println("Personal encontrado com Sucesso!");
-            for (Personal p : personais) {
-                System.out.println(p);
+        try {
+            List<Personal> personais = personalRepositorio.listarTodos();
+            if (personais.isEmpty()) {
+                System.out.println("Personal nao encontrado!");
+            } else {
+                System.out.println("Personal encontrado com sucesso!");
+                for (Personal p : personais) {
+                    System.out.println(p);
+                }
             }
+        } catch (RuntimeException e) {
+            System.out.println("Nao foi possivel listar os personais agora.");
         }
     }
 
@@ -180,18 +160,21 @@ public class PersonalServico {
 
         String crafBusca = sc.nextLine();
 
-        boolean removido = personalRepositorio.removerPorCraf(crafBusca);
-
-        if (removido) {
-            System.out.println("Personal com CRAF: " + crafBusca + " removido");
-        } else {
-            System.out.println("Nenhum Personal encontrado");
+        try {
+            boolean removido = personalRepositorio.removerPorCraf(crafBusca);
+            if (removido) {
+                System.out.println("Personal com CRAF: " + crafBusca + " removido");
+            } else {
+                System.out.println("Nenhum personal encontrado");
+            }
+        } catch (RuntimeException e) {
+            System.out.println("Nao foi possivel remover o personal agora.");
         }
     }
 
     public void alterarPersonal() {
         System.out.println("Alterar dados do Personal");
-        System.out.println("Digite o CRAF do personal: ");
+        System.out.println("Digite o CRAF do personal:");
         String crafBusca = sc.nextLine();
 
         Personal encontrado = personalRepositorio.buscarPorCraf(crafBusca);
@@ -201,33 +184,29 @@ public class PersonalServico {
             System.out.println("1- Alterar nome");
             System.out.println("2- Alterar salario");
             System.out.println("3- Alterar endereco");
-            System.out.println("Escolha uma opcao");
-            int op = sc.nextInt();
-            sc.nextLine();
+            int op = lerInteiro("Escolha uma opcao: ");
 
             if (op == 1) {
-                System.out.println("Novo nome: ");
+                System.out.println("Novo nome:");
                 encontrado.setNome(sc.nextLine());
-                personalRepositorio.atualizar(encontrado);
-                System.out.println("Dados do Personal Atualizados com Sucesso!");
-
+                if (atualizarPersonalComTratamento(encontrado)) {
+                    System.out.println("Dados do Personal atualizados com sucesso!");
+                }
             } else if (op == 2) {
-                System.out.println("Novo salario: ");
-                encontrado.setSalario(sc.nextDouble());
-                sc.nextLine();
-                personalRepositorio.atualizar(encontrado);
-                System.out.println("Dados do Personal Atualizados com Sucesso!");
-
+                encontrado.setSalario(lerDouble("Novo salario: "));
+                if (atualizarPersonalComTratamento(encontrado)) {
+                    System.out.println("Dados do Personal atualizados com sucesso!");
+                }
             } else if (op == 3) {
                 encontrado.setEndereco(lerEndereco());
-                personalRepositorio.atualizar(encontrado);
-                System.out.println("Dados do Personal Atualizados com Sucesso!");
-
+                if (atualizarPersonalComTratamento(encontrado)) {
+                    System.out.println("Dados do Personal atualizados com sucesso!");
+                }
             } else {
                 System.out.println("Opcao invalida");
             }
         } else {
-            System.out.println("Personal não encontrado");
+            System.out.println("Personal nao encontrado");
         }
     }
 
@@ -235,22 +214,56 @@ public class PersonalServico {
         return personalRepositorio.buscarPorIdper(id);
     }
 
+    private boolean atualizarPersonalComTratamento(Personal personal) {
+        try {
+            personalRepositorio.atualizar(personal);
+            return true;
+        } catch (RuntimeException e) {
+            System.out.println("Nao foi possivel salvar as alteracoes. Verifique os dados e tente novamente.");
+            return false;
+        }
+    }
+
+    private int lerInteiro(String prompt) {
+        while (true) {
+            System.out.print(prompt);
+            String entrada = sc.nextLine().trim();
+            try {
+                return Integer.parseInt(entrada);
+            } catch (NumberFormatException e) {
+                System.out.println("Digite apenas numeros.");
+            }
+        }
+    }
+
+    private double lerDouble(String prompt) {
+        while (true) {
+            System.out.print(prompt);
+            String entrada = sc.nextLine().trim().replace(',', '.');
+            try {
+                return Double.parseDouble(entrada);
+            } catch (NumberFormatException e) {
+                System.out.println("Digite apenas numeros.");
+            }
+        }
+    }
+
     private Endereco lerEndereco() {
-        System.out.println("CEP: ");
+        System.out.println("CEP:");
         String cep = sc.nextLine();
 
-        System.out.println("Bairro: ");
+        System.out.println("Bairro:");
         String bairro = sc.nextLine();
 
-        System.out.println("Nome da Rua: ");
+        System.out.println("Nome da Rua:");
         String nomeRua = sc.nextLine();
 
-        System.out.println("Complemento: ");
+        System.out.println("Complemento:");
         String complemento = sc.nextLine();
 
         int numCasa;
         while (true) {
-            System.out.println("Numero da Casa: ");
+            System.out.println("Numero da Casa:");
             String entrada = sc.nextLine().trim();
             try {
                 numCasa = Integer.parseInt(entrada);
