@@ -98,4 +98,25 @@ public class PagamentoRepositorio {
             throw new RuntimeException("Erro ao executar operacao de persistencia.", e);
         }
     }
+
+    public boolean existePagamentoPagoParaAlunoEPlanoExcetoId(int alunoId, int planoId, int idIgnorado) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            Long total = session.createQuery(
+                            "select count(p.id) from Pagamento p " +
+                                    "where p.aluno.id = :alunoId " +
+                                    "and p.plano.id = :planoId " +
+                                    "and p.status = :status " +
+                                    "and p.id <> :idIgnorado", Long.class
+                    )
+                    .setParameter("alunoId", alunoId)
+                    .setParameter("planoId", planoId)
+                    .setParameter("status", Pagamento.StatusPagamento.PAGO)
+                    .setParameter("idIgnorado", idIgnorado)
+                    .uniqueResult();
+
+            return total != null && total > 0;
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao verificar pagamentos pagos do aluno/plano.", e);
+        }
+    }
 }

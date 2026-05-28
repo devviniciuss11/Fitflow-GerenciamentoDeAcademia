@@ -1,11 +1,12 @@
 package Repositorio;
 
 import Entidade.Aluno;
+import Entidade.Plano;
+import Entidade.Treino;
 import Infra.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class AlunoRepositorio {
@@ -94,6 +95,97 @@ public class AlunoRepositorio {
                     .setParameter("cpf", cpf)
                     .setParameter("senha", senha)
                     .uniqueResult();
+        }
+    }
+
+    public void vincularPlanoAoAlunoSeAindaNaoExiste(int alunoId, int planoId) {
+        Transaction tx = null;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            tx = session.beginTransaction();
+
+            Aluno aluno = session.get(Aluno.class, alunoId);
+            Plano plano = session.get(Plano.class, planoId);
+            if (aluno == null || plano == null) {
+                tx.commit();
+                return;
+            }
+
+            Number total = (Number) session.createNativeQuery(
+                            "select count(1) from aluno_plano where aluno_id = :alunoId and plano_id = :planoId")
+                    .setParameter("alunoId", alunoId)
+                    .setParameter("planoId", planoId)
+                    .getSingleResult();
+
+            if (total != null && total.longValue() == 0L) {
+                session.createNativeQuery(
+                                "insert into aluno_plano (aluno_id, plano_id) values (:alunoId, :planoId)")
+                        .setParameter("alunoId", alunoId)
+                        .setParameter("planoId", planoId)
+                        .executeUpdate();
+            }
+
+            tx.commit();
+        } catch (Exception e) {
+            if (tx != null) tx.rollback();
+            throw new RuntimeException("Erro ao vincular plano ao aluno.", e);
+        }
+    }
+
+    public void desvincularPlanoAoAlunoSeExistir(int alunoId, int planoId) {
+        Transaction tx = null;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            tx = session.beginTransaction();
+
+            Aluno aluno = session.get(Aluno.class, alunoId);
+            Plano plano = session.get(Plano.class, planoId);
+            if (aluno == null || plano == null) {
+                tx.commit();
+                return;
+            }
+
+            session.createNativeQuery(
+                            "delete from aluno_plano where aluno_id = :alunoId and plano_id = :planoId")
+                    .setParameter("alunoId", alunoId)
+                    .setParameter("planoId", planoId)
+                    .executeUpdate();
+
+            tx.commit();
+        } catch (Exception e) {
+            if (tx != null) tx.rollback();
+            throw new RuntimeException("Erro ao desvincular plano do aluno.", e);
+        }
+    }
+
+    public void vincularTreinoAoAlunoSeAindaNaoExiste(int alunoId, int treinoId) {
+        Transaction tx = null;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            tx = session.beginTransaction();
+
+            Aluno aluno = session.get(Aluno.class, alunoId);
+            Treino treino = session.get(Treino.class, treinoId);
+            if (aluno == null || treino == null) {
+                tx.commit();
+                return;
+            }
+
+            Number total = (Number) session.createNativeQuery(
+                            "select count(1) from aluno_treino where aluno_id = :alunoId and treino_id = :treinoId")
+                    .setParameter("alunoId", alunoId)
+                    .setParameter("treinoId", treinoId)
+                    .getSingleResult();
+
+            if (total != null && total.longValue() == 0L) {
+                session.createNativeQuery(
+                                "insert into aluno_treino (aluno_id, treino_id) values (:alunoId, :treinoId)")
+                        .setParameter("alunoId", alunoId)
+                        .setParameter("treinoId", treinoId)
+                        .executeUpdate();
+            }
+
+            tx.commit();
+        } catch (Exception e) {
+            if (tx != null) tx.rollback();
+            throw new RuntimeException("Erro ao vincular treino ao aluno.", e);
         }
     }
 }
