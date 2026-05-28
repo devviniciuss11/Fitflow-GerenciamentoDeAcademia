@@ -106,7 +106,7 @@ SELECT * FROM desempenho;
 ```
 
 ## Observacoes
-
+- Link Da Documentação Completa do Projeto https://canva.link/zqz3lsd3ms97h3l
 - O projeto nao usa Spring Boot.
 - A criacao/atualizacao de schema no Hibernate esta configurada por `hibernate.hbm2ddl.auto`.
 - Se aparecer muito log no console, ajuste `show_sql` e `format_sql` no `hibernate.cfg.xml`.
