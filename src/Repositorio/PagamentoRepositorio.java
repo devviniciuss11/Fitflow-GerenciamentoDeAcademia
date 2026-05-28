@@ -119,4 +119,32 @@ public class PagamentoRepositorio {
             throw new RuntimeException("Erro ao verificar pagamentos pagos do aluno/plano.", e);
         }
     }
+
+    public boolean existePorAlunoId(int alunoId) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            Long total = session.createQuery(
+                            "select count(p.id) from Pagamento p where p.aluno.id = :alunoId",
+                            Long.class
+                    )
+                    .setParameter("alunoId", alunoId)
+                    .uniqueResult();
+            return total != null && total > 0;
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao verificar pagamentos do aluno.", e);
+        }
+    }
+
+    public boolean existePorPlanoId(int planoId) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            Long total = session.createQuery(
+                            "select count(p.id) from Pagamento p where p.plano.id = :planoId",
+                            Long.class
+                    )
+                    .setParameter("planoId", planoId)
+                    .uniqueResult();
+            return total != null && total > 0;
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao verificar pagamentos do plano.", e);
+        }
+    }
 }

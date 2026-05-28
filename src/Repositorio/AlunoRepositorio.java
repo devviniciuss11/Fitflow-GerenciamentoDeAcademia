@@ -39,10 +39,67 @@ public class AlunoRepositorio {
     }
 
     public boolean existePorCpf(String cpf) {
+        if (cpf == null || cpf.trim().isEmpty()) {
+            return false;
+        }
+
         Long total;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             total = session.createQuery("select count(a.id) from Aluno a where a.cpf = :cpf", Long.class)
-                    .setParameter("cpf", cpf)
+                    .setParameter("cpf", cpf.trim())
+                    .uniqueResult();
+        }
+        return total != null && total > 0;
+    }
+
+    public boolean existePorEmail(String email) {
+        if (email == null || email.trim().isEmpty()) {
+            return false;
+        }
+
+        Long total;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            total = session.createQuery(
+                            "select count(a.id) from Aluno a where lower(trim(a.email)) = :email",
+                            Long.class
+                    )
+                    .setParameter("email", email.trim().toLowerCase())
+                    .uniqueResult();
+        }
+        return total != null && total > 0;
+    }
+
+    public boolean existePorCpfExcetoId(String cpf, Integer idIgnorado) {
+        if (cpf == null || cpf.trim().isEmpty() || idIgnorado == null) {
+            return false;
+        }
+
+        Long total;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            total = session.createQuery(
+                            "select count(a.id) from Aluno a where a.cpf = :cpf and a.id <> :idIgnorado",
+                            Long.class
+                    )
+                    .setParameter("cpf", cpf.trim())
+                    .setParameter("idIgnorado", idIgnorado)
+                    .uniqueResult();
+        }
+        return total != null && total > 0;
+    }
+
+    public boolean existePorEmailExcetoId(String email, Integer idIgnorado) {
+        if (email == null || email.trim().isEmpty() || idIgnorado == null) {
+            return false;
+        }
+
+        Long total;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            total = session.createQuery(
+                            "select count(a.id) from Aluno a where lower(trim(a.email)) = :email and a.id <> :idIgnorado",
+                            Long.class
+                    )
+                    .setParameter("email", email.trim().toLowerCase())
+                    .setParameter("idIgnorado", idIgnorado)
                     .uniqueResult();
         }
         return total != null && total > 0;

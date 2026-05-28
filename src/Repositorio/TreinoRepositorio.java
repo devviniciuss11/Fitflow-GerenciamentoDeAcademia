@@ -34,6 +34,34 @@ public class TreinoRepositorio {
         }
     }
 
+    public boolean existePorAlunoId(int alunoId) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            Long total = session.createQuery(
+                            "select count(t.id) from Treino t where t.idAluno = :alunoId",
+                            Long.class
+                    )
+                    .setParameter("alunoId", alunoId)
+                    .uniqueResult();
+            return total != null && total > 0;
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao verificar treinos do aluno.", e);
+        }
+    }
+
+    public boolean existePorPersonalId(int personalId) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            Long total = session.createQuery(
+                            "select count(t.id) from Treino t where t.idPersonal = :personalId",
+                            Long.class
+                    )
+                    .setParameter("personalId", personalId)
+                    .uniqueResult();
+            return total != null && total > 0;
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao verificar treinos do personal.", e);
+        }
+    }
+
     public boolean remover(int id) {
         Transaction tx = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {

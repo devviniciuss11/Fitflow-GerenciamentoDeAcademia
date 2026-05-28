@@ -5,6 +5,7 @@ import Entidade.Endereco;
 import Entidade.Personal;
 import Repositorio.AlunoRepositorio;
 import Repositorio.PersonalRepositorio;
+import Repositorio.TreinoRepositorio;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -15,9 +16,17 @@ import java.util.Scanner;
 
 public class PersonalServico {
 
+    private static final String MSG_CAMPOS_VAZIOS = "Campos vazios. Tente novamente!";
+    private static final String MSG_CPF_DUPLICADO = "Cpf ja cadastrado. Tente novamente com outro CPF.";
+    private static final String MSG_EMAIL_DUPLICADO = "Email ja cadastrado. Tente novamente com outro email.";
+    private static final String MSG_CRAF_DUPLICADO = "CRAF ja cadastrado. Tente novamente com outro CRAF.";
+    private static final String MSG_PERSONAL_COM_TREINO = "Nao e possivel remover o personal pois existem treinos vinculados a ele.";
+    private static final String MSG_PERSONAL_NAO_ENCONTRADO = "Personal nao encontrado.";
+
     private final Scanner sc = new Scanner(System.in);
     private final PersonalRepositorio personalRepositorio = new PersonalRepositorio();
     private final AlunoRepositorio alunoRepositorio = new AlunoRepositorio();
+    private final TreinoRepositorio treinoRepositorio = new TreinoRepositorio();
 
     public void vincularAlunoAoPersonal() {
         System.out.println("Vincular Aluno ao Personal");
@@ -81,10 +90,10 @@ public class PersonalServico {
         System.out.println("CADASTRO DO PERSONAL!");
 
         System.out.print("Nome: ");
-        String nome = sc.nextLine();
+        String nome = sc.nextLine().trim();
 
         System.out.println("CPF:");
-        String cpf = sc.nextLine();
+        String cpf = sc.nextLine().trim();
 
         System.out.println("Data de Nascimento (dd/MM/aaaa):");
         LocalDate dataNascimento;
@@ -100,23 +109,36 @@ public class PersonalServico {
         }
 
         System.out.println("Email:");
-        String email = sc.nextLine();
+        String email = sc.nextLine().trim();
 
         System.out.println("Telefone:");
-        String telefone = sc.nextLine();
+        String telefone = sc.nextLine().trim();
 
         System.out.println("Senha:");
-        String senha = sc.nextLine();
+        String senha = sc.nextLine().trim();
 
         String craf;
         while (true) {
             System.out.print("CRAF: ");
             craf = sc.nextLine().trim();
             if (craf.isEmpty()) {
-                System.out.println("Campos vazios. Tente novamente!");
+                System.out.println(MSG_CAMPOS_VAZIOS);
             } else {
                 break;
             }
+        }
+
+        if (personalRepositorio.existePorCpf(cpf)) {
+            System.out.println(MSG_CPF_DUPLICADO);
+            return;
+        }
+        if (personalRepositorio.existePorEmail(email)) {
+            System.out.println(MSG_EMAIL_DUPLICADO);
+            return;
+        }
+        if (personalRepositorio.existePorCraf(craf)) {
+            System.out.println(MSG_CRAF_DUPLICADO);
+            return;
         }
 
         double salario = lerDouble("Salario (R$): ");
@@ -158,14 +180,25 @@ public class PersonalServico {
         System.out.println("Remover Personal");
         System.out.println("Digite o CRAF do Personal que deseja excluir:");
 
-        String crafBusca = sc.nextLine();
+        String crafBusca = sc.nextLine().trim();
 
         try {
+            Personal personal = personalRepositorio.buscarPorCraf(crafBusca);
+            if (personal == null) {
+                System.out.println(MSG_PERSONAL_NAO_ENCONTRADO);
+                return;
+            }
+
+            if (treinoRepositorio.existePorPersonalId(personal.getId())) {
+                System.out.println(MSG_PERSONAL_COM_TREINO);
+                return;
+            }
+
             boolean removido = personalRepositorio.removerPorCraf(crafBusca);
             if (removido) {
                 System.out.println("Personal com CRAF: " + crafBusca + " removido");
             } else {
-                System.out.println("Nenhum personal encontrado");
+                System.out.println(MSG_PERSONAL_NAO_ENCONTRADO);
             }
         } catch (RuntimeException e) {
             System.out.println("Nao foi possivel remover o personal agora.");
@@ -184,6 +217,9 @@ public class PersonalServico {
             System.out.println("1- Alterar nome");
             System.out.println("2- Alterar salario");
             System.out.println("3- Alterar endereco");
+            System.out.println("4- Alterar CPF");
+            System.out.println("5- Alterar email");
+            System.out.println("6- Alterar CRAF");
             int op = lerInteiro("Escolha uma opcao: ");
 
             if (op == 1) {
@@ -199,6 +235,36 @@ public class PersonalServico {
                 }
             } else if (op == 3) {
                 encontrado.setEndereco(lerEndereco());
+                if (atualizarPersonalComTratamento(encontrado)) {
+                    System.out.println("Dados do Personal atualizados com sucesso!");
+                }
+            } else if (op == 4) {
+                String novoCpf = lerLinhaObrigatoria("Novo CPF: ");
+                if (personalRepositorio.existePorCpfExcetoId(novoCpf, encontrado.getId())) {
+                    System.out.println(MSG_CPF_DUPLICADO);
+                    return;
+                }
+                encontrado.setCpf(novoCpf);
+                if (atualizarPersonalComTratamento(encontrado)) {
+                    System.out.println("Dados do Personal atualizados com sucesso!");
+                }
+            } else if (op == 5) {
+                String novoEmail = lerLinhaObrigatoria("Novo email: ");
+                if (personalRepositorio.existePorEmailExcetoId(novoEmail, encontrado.getId())) {
+                    System.out.println(MSG_EMAIL_DUPLICADO);
+                    return;
+                }
+                encontrado.setEmail(novoEmail);
+                if (atualizarPersonalComTratamento(encontrado)) {
+                    System.out.println("Dados do Personal atualizados com sucesso!");
+                }
+            } else if (op == 6) {
+                String novoCraf = lerLinhaObrigatoria("Novo CRAF: ");
+                if (personalRepositorio.existePorCrafExcetoId(novoCraf, encontrado.getId())) {
+                    System.out.println(MSG_CRAF_DUPLICADO);
+                    return;
+                }
+                encontrado.setCraf(novoCraf);
                 if (atualizarPersonalComTratamento(encontrado)) {
                     System.out.println("Dados do Personal atualizados com sucesso!");
                 }
@@ -245,6 +311,17 @@ public class PersonalServico {
             } catch (NumberFormatException e) {
                 System.out.println("Digite apenas numeros.");
             }
+        }
+    }
+
+    private String lerLinhaObrigatoria(String prompt) {
+        while (true) {
+            System.out.print(prompt);
+            String valor = sc.nextLine().trim();
+            if (!valor.isEmpty()) {
+                return valor;
+            }
+            System.out.println(MSG_CAMPOS_VAZIOS);
         }
     }
 

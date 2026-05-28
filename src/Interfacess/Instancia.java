@@ -12,6 +12,6 @@ public class Instancia implements Adicionando,Removendo,Alterando{
     }
     @Override
     public void alterar() {
-        System.out.println("Dados Alterado com Sucesso!");
+        System.out.println("Dados Alterados com Sucesso!");
     }
 }

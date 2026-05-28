@@ -92,12 +92,8 @@ public class GuiPlano {
         int id = lerInteiro("ID do plano: ");
 
         try {
-            boolean removido = servico.removerPlano(id);
-            if (removido) {
-                System.out.println("PLANO REMOVIDO COM SUCESSO!");
-            } else {
-                System.out.println(MSG_NAO_ENCONTRADO);
-            }
+            String resultado = servico.removerPlanoComValidacao(id);
+            System.out.println(resultado);
         } catch (RuntimeException e) {
             System.out.println("Nao foi possivel remover o plano agora.");
         }

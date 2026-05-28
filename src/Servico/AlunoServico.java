@@ -4,6 +4,8 @@ import Entidade.Aluno;
 import Entidade.Endereco;
 import Interfacess.Instancia;
 import Repositorio.AlunoRepositorio;
+import Repositorio.PagamentoRepositorio;
+import Repositorio.TreinoRepositorio;
 
 import java.time.LocalDate;
 import java.time.Period;
@@ -16,8 +18,15 @@ import java.util.Set;
 
 public class AlunoServico {
     private static final String MSG_CAMPOS_OBRIGATORIOS = "Preencha todos os campos obrigatórios.";
+    private static final String MSG_CPF_DUPLICADO = "Cpf ja cadastrado. Tente novamente com outro CPF.";
+    private static final String MSG_EMAIL_DUPLICADO = "Email ja cadastrado. Tente novamente com outro email.";
+    private static final String MSG_ALUNO_COM_PAGAMENTO = "Nao e possivel remover o aluno pois existem pagamentos vinculados a ele.";
+    private static final String MSG_ALUNO_COM_TREINO = "Nao e possivel remover o aluno pois existem treinos vinculados a ele.";
+    private static final String MSG_ALUNO_NAO_ENCONTRADO = "Aluno nao encontrado";
     Scanner sc = new Scanner(System.in);
     AlunoRepositorio alunoRepositorio = new AlunoRepositorio();
+    PagamentoRepositorio pagamentoRepositorio = new PagamentoRepositorio();
+    TreinoRepositorio treinoRepositorio = new TreinoRepositorio();
     Instancia instancia = new Instancia();
 
     public static void marcarPresenca(Aluno aluno) {
@@ -135,11 +144,15 @@ public class AlunoServico {
                 String cpf = lerCampoObrigatorio("Cpf Do Responsavel: ");
 
                 if (alunoRepositorio.existePorCpf(cpf)) {
-                    System.out.println("Cpf ja cadastrado. Tente novamente com outro CPF.");
+                    System.out.println(MSG_CPF_DUPLICADO);
                     return;
                 }
 
                 String email = lerCampoObrigatorio("Email Do Responsavel: ");
+                if (alunoRepositorio.existePorEmail(email)) {
+                    System.out.println(MSG_EMAIL_DUPLICADO);
+                    return;
+                }
                 String telefone = lerCampoObrigatorio("Telefone Do Responsavel: ");
                 String senha = lerCampoObrigatorio("Senha Do Responsavel: ");
 
@@ -162,11 +175,15 @@ public class AlunoServico {
 
         String cpf = lerCampoObrigatorio("CPF: ");
         if (alunoRepositorio.existePorCpf(cpf)) {
-            System.out.println("Cpf ja cadastrado. Tente novamente com outro CPF.");
+            System.out.println(MSG_CPF_DUPLICADO);
             return;
         }
 
         String email = lerCampoObrigatorio("Email: ");
+        if (alunoRepositorio.existePorEmail(email)) {
+            System.out.println(MSG_EMAIL_DUPLICADO);
+            return;
+        }
         String telefone = lerCampoObrigatorio("Telefone: ");
         String senha = lerCampoObrigatorio("Senha: ");
 
@@ -195,17 +212,35 @@ public class AlunoServico {
             System.out.println(a);
         }
     }
-
     public void excluirAluno() {
-        Scanner sc1 = new Scanner(System.in);
         System.out.println("Qual Aluno voce deseja excluir do cadastro? Digite o CPF:");
-        String cpf = sc1.nextLine();
+        String cpf = sc.nextLine().trim();
 
-        if (alunoRepositorio.removerPorCpf(cpf)) {
-            System.out.println("Procurando Aluno....");
-            System.out.println("Aluno Removido com Sucesso!\n");
-        } else {
-            System.out.println("Aluno não encontrado\n");
+        Aluno aluno = alunoRepositorio.buscarPorCpf(cpf);
+        if (aluno == null) {
+            System.out.println(MSG_ALUNO_NAO_ENCONTRADO + "\n");
+            return;
+        }
+
+        try {
+            if (pagamentoRepositorio.existePorAlunoId(aluno.getId())) {
+                System.out.println(MSG_ALUNO_COM_PAGAMENTO);
+                return;
+            }
+
+            if (treinoRepositorio.existePorAlunoId(aluno.getId())) {
+                System.out.println(MSG_ALUNO_COM_TREINO);
+                return;
+            }
+
+            if (alunoRepositorio.removerPorCpf(cpf)) {
+                System.out.println("Procurando Aluno....");
+                System.out.println("Aluno Removido com Sucesso!\n");
+            } else {
+                System.out.println(MSG_ALUNO_NAO_ENCONTRADO + "\n");
+            }
+        } catch (RuntimeException e) {
+            System.out.println("Nao foi possivel remover o aluno agora. Verifique os vinculos e tente novamente.");
         }
     }
 
@@ -250,7 +285,16 @@ public class AlunoServico {
                     break;
                 case 2:
                     System.out.println("Digite o novo CPF: ");
-                    aluno.setCpf(sc.nextLine());
+                    String novoCpf = sc.nextLine().trim();
+                    if (novoCpf.isEmpty()) {
+                        System.out.println(MSG_CAMPOS_OBRIGATORIOS);
+                        break;
+                    }
+                    if (alunoRepositorio.existePorCpfExcetoId(novoCpf, aluno.getId())) {
+                        System.out.println(MSG_CPF_DUPLICADO);
+                        break;
+                    }
+                    aluno.setCpf(novoCpf);
                     aluno = alunoRepositorio.atualizar(aluno);
                     instancia.alterar();
                     break;
@@ -272,7 +316,16 @@ public class AlunoServico {
                     break;
                 case 4:
                     System.out.println("Digite o novo email: ");
-                    aluno.setEmail(sc.nextLine());
+                    String novoEmail = sc.nextLine().trim();
+                    if (novoEmail.isEmpty()) {
+                        System.out.println(MSG_CAMPOS_OBRIGATORIOS);
+                        break;
+                    }
+                    if (alunoRepositorio.existePorEmailExcetoId(novoEmail, aluno.getId())) {
+                        System.out.println(MSG_EMAIL_DUPLICADO);
+                        break;
+                    }
+                    aluno.setEmail(novoEmail);
                     aluno = alunoRepositorio.atualizar(aluno);
                     instancia.alterar();
                     break;
@@ -376,3 +429,5 @@ public class AlunoServico {
         }
     }
 }
+
+

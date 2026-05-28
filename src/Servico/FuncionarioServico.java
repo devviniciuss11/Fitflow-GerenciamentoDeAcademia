@@ -14,6 +14,11 @@ import java.util.Scanner;
 import java.util.Set;
 
 public class FuncionarioServico {
+    private static final String MSG_CAMPOS_VAZIOS = "Campos vazios. Tente novamente!";
+    private static final String MSG_CPF_DUPLICADO = "Cpf ja cadastrado. Tente novamente com outro CPF.";
+    private static final String MSG_EMAIL_DUPLICADO = "Email ja cadastrado. Tente novamente com outro email.";
+    private static final String MSG_FUNCIONARIO_NAO_ENCONTRADO = "Nenhum funcionario com o CPF informado foi encontrado.";
+
     private final Scanner sc = new Scanner(System.in);
     private final FuncionarioRepositorio funcionariosRepositorio = new FuncionarioRepositorio();
     private final Instancia instancia = new Instancia();
@@ -93,7 +98,11 @@ public class FuncionarioServico {
         String nome = sc.nextLine();
 
         System.out.println("Digite o CPF do Funcionario:");
-        String cpf = sc.nextLine();
+        String cpf = sc.nextLine().trim();
+        if (funcionariosRepositorio.existePorCpf(cpf)) {
+            System.out.println(MSG_CPF_DUPLICADO);
+            return;
+        }
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/uuuu");
         while (true) {
@@ -124,7 +133,11 @@ public class FuncionarioServico {
         }
 
         System.out.println("Digite seu Email:");
-        String email = sc.nextLine();
+        String email = sc.nextLine().trim();
+        if (funcionariosRepositorio.existePorEmail(email)) {
+            System.out.println(MSG_EMAIL_DUPLICADO);
+            return;
+        }
 
         System.out.println("Digite seu telefone:");
         String telefone = sc.nextLine();
@@ -173,17 +186,23 @@ public class FuncionarioServico {
     public void RemoverFuncionario() {
         System.out.println("Aba de remocao de Funcionarios!!");
         System.out.println("Digite o CPF do Funcionario que deseja remover");
-        String buscaCpf = sc.nextLine();
+        String buscaCpf = sc.nextLine().trim();
 
         int escolha = lerInteiro("Deseja realmente remover este funcionario? (1 para Sim, qualquer outro numero para cancelar): ");
 
         if (escolha == 1) {
             try {
+                Funcionario funcionario = funcionariosRepositorio.buscarPorCpf(buscaCpf);
+                if (funcionario == null) {
+                    System.out.println(MSG_FUNCIONARIO_NAO_ENCONTRADO);
+                    return;
+                }
+
                 boolean removido = funcionariosRepositorio.removerPorCpf(buscaCpf);
                 if (removido) {
                     System.out.println("Funcionario com o CPF: " + buscaCpf + " removido com sucesso!");
                 } else {
-                    System.out.println("Nenhum funcionario com o CPF: " + buscaCpf + " encontrado");
+                    System.out.println(MSG_FUNCIONARIO_NAO_ENCONTRADO);
                 }
             } catch (RuntimeException e) {
                 System.out.println("Nao foi possivel remover o funcionario agora.");
@@ -229,7 +248,16 @@ public class FuncionarioServico {
                     break;
                 case 2:
                     System.out.println("Digite o novo CPF:");
-                    funcionario.setCpf(sc.nextLine());
+                    String novoCpf = sc.nextLine().trim();
+                    if (novoCpf.isEmpty()) {
+                        System.out.println(MSG_CAMPOS_VAZIOS);
+                        break;
+                    }
+                    if (funcionariosRepositorio.existePorCpfExcetoId(novoCpf, funcionario.getId())) {
+                        System.out.println(MSG_CPF_DUPLICADO);
+                        break;
+                    }
+                    funcionario.setCpf(novoCpf);
                     funcionario = atualizarFuncionarioComTratamento(funcionario);
                     break;
                 case 3:
@@ -250,7 +278,16 @@ public class FuncionarioServico {
 
                 case 4:
                     System.out.println("Digite o novo email:");
-                    funcionario.setEmail(sc.nextLine());
+                    String novoEmail = sc.nextLine().trim();
+                    if (novoEmail.isEmpty()) {
+                        System.out.println(MSG_CAMPOS_VAZIOS);
+                        break;
+                    }
+                    if (funcionariosRepositorio.existePorEmailExcetoId(novoEmail, funcionario.getId())) {
+                        System.out.println(MSG_EMAIL_DUPLICADO);
+                        break;
+                    }
+                    funcionario.setEmail(novoEmail);
                     funcionario = atualizarFuncionarioComTratamento(funcionario);
                     break;
                 case 5:
