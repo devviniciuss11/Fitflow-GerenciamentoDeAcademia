@@ -159,8 +159,14 @@ public class PagamentoServico {
 
     public void removerPagamento() {
         int id = lerInteiro("  Digite o ID do pagamento que deseja remover: ");
+        Pagamento pagamentoParaRemover = pagamentoRepositorio.buscarPorId(id);
+        if (pagamentoParaRemover == null) {
+            System.out.println(MSG_PAGAMENTO_NAO_ENCONTRADO);
+            return;
+        }
 
         if (pagamentoRepositorio.remover(id)) {
+            sincronizarVinculoPlanoPosRemocao(pagamentoParaRemover);
             System.out.println(MSG_PAGAMENTO_REMOVIDO);
         } else {
             System.out.println(MSG_PAGAMENTO_NAO_ENCONTRADO);
@@ -263,6 +269,26 @@ public class PagamentoServico {
             if (!existeOutroPagamentoPago) {
                 alunoRepositorio.desvincularPlanoAoAlunoSeExistir(alunoId, planoId);
             }
+        }
+    }
+
+    private void sincronizarVinculoPlanoPosRemocao(Pagamento pagamentoRemovido) {
+        if (pagamentoRemovido == null) return;
+        if (pagamentoRemovido.getStatus() != Pagamento.StatusPagamento.PAGO) return;
+        if (pagamentoRemovido.getAluno() == null || pagamentoRemovido.getPlano() == null) return;
+        if (pagamentoRemovido.getAluno().getId() == null || pagamentoRemovido.getPlano().getId() == null) return;
+
+        int alunoId = pagamentoRemovido.getAluno().getId();
+        int planoId = pagamentoRemovido.getPlano().getId();
+
+        boolean existeOutroPagamentoPago = pagamentoRepositorio.existePagamentoPagoParaAlunoEPlanoExcetoId(
+                alunoId,
+                planoId,
+                pagamentoRemovido.getId()
+        );
+
+        if (!existeOutroPagamentoPago) {
+            alunoRepositorio.desvincularPlanoAoAlunoSeExistir(alunoId, planoId);
         }
     }
 }

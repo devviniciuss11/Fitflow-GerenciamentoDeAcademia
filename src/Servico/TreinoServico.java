@@ -77,7 +77,7 @@ public class TreinoServico {
 
             if (treinoRepositorio.atualizar(treinoAtualizado)) {
                 alunoRepositorio.vincularTreinoAoAlunoSeAindaNaoExiste(treinoAtualizado.getIdAluno(), id);
-                return "Treino Cadastrado com Sucesso!";
+                return "Treino Atualizado com Sucesso!";
             }
 
             return "Nenhum treino Encontrado!";

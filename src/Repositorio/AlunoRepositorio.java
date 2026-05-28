@@ -188,4 +188,29 @@ public class AlunoRepositorio {
             throw new RuntimeException("Erro ao vincular treino ao aluno.", e);
         }
     }
+
+    public void desvincularTreinoDoAlunoSeExistir(int alunoId, int treinoId) {
+        Transaction tx = null;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            tx = session.beginTransaction();
+
+            Aluno aluno = session.get(Aluno.class, alunoId);
+            Treino treino = session.get(Treino.class, treinoId);
+            if (aluno == null || treino == null) {
+                tx.commit();
+                return;
+            }
+
+            session.createNativeQuery(
+                            "delete from aluno_treino where aluno_id = :alunoId and treino_id = :treinoId")
+                    .setParameter("alunoId", alunoId)
+                    .setParameter("treinoId", treinoId)
+                    .executeUpdate();
+
+            tx.commit();
+        } catch (Exception e) {
+            if (tx != null) tx.rollback();
+            throw new RuntimeException("Erro ao desvincular treino do aluno.", e);
+        }
+    }
 }
