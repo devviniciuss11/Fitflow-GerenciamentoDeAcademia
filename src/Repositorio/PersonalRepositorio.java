@@ -118,6 +118,28 @@ public class PersonalRepositorio {
         }
     }
 
+    public int desvincularAlunoDeTodosPersonaisPorNome(String nomeAluno) {
+        if (nomeAluno == null || nomeAluno.trim().isEmpty()) {
+            return 0;
+        }
+
+        Transaction tx = null;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            tx = session.beginTransaction();
+
+            int linhasAfetadas = session.createNativeQuery(
+                            "delete from personal_alunos where lower(trim(nome_aluno)) = :nomeAluno")
+                    .setParameter("nomeAluno", nomeAluno.trim().toLowerCase())
+                    .executeUpdate();
+
+            tx.commit();
+            return linhasAfetadas;
+        } catch (Exception e) {
+            if (tx != null) tx.rollback();
+            throw new RuntimeException("Erro ao desvincular aluno dos personais.", e);
+        }
+    }
+
     public void save(Personal personal) {
         Transaction tx = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {

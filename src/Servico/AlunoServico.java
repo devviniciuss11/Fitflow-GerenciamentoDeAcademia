@@ -5,6 +5,7 @@ import Entidade.Endereco;
 import Interfacess.Instancia;
 import Repositorio.AlunoRepositorio;
 import Repositorio.PagamentoRepositorio;
+import Repositorio.PersonalRepositorio;
 import Repositorio.TreinoRepositorio;
 
 import java.time.LocalDate;
@@ -26,6 +27,7 @@ public class AlunoServico {
     Scanner sc = new Scanner(System.in);
     AlunoRepositorio alunoRepositorio = new AlunoRepositorio();
     PagamentoRepositorio pagamentoRepositorio = new PagamentoRepositorio();
+    PersonalRepositorio personalRepositorio = new PersonalRepositorio();
     TreinoRepositorio treinoRepositorio = new TreinoRepositorio();
     Instancia instancia = new Instancia();
 
@@ -234,6 +236,12 @@ public class AlunoServico {
             }
 
             if (alunoRepositorio.removerPorCpf(cpf)) {
+                try {
+                    personalRepositorio.desvincularAlunoDeTodosPersonaisPorNome(aluno.getNome());
+                } catch (RuntimeException e) {
+                    System.out.println("Aluno removido, mas nao foi possivel atualizar os vinculos com personais agora.");
+                    return;
+                }
                 System.out.println("Procurando Aluno....");
                 System.out.println("Aluno Removido com Sucesso!\n");
             } else {
