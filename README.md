@@ -2,6 +2,15 @@
 
 Sistema de gerenciamento de academia em Java puro (console), com persistencia em PostgreSQL via Hibernate ORM.
 
+## Integrantes do grupo
+-Vinicius de Sousa Silva
+-Matheus Guilherme de Paula 
+-Joao Felipe
+-Tainon Coutinho
+-Igor Gustavo
+-Emanuel Vinicius
+-Pedro Henrique
+
 ## Especificacoes do projeto
 
 - Linguagem: Java 21
