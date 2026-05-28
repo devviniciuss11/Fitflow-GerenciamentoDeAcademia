@@ -104,6 +104,7 @@ public class PagamentoServico {
         Pagamento novoPagamento = new Pagamento(null, alunoEncontrado, planoEncontrado, statusDefinido, metodoEscolhido);
 
         pagamentoRepositorio.salvar(novoPagamento);
+        vincularPlanoSePagamentoPago(novoPagamento);
 
         System.out.println("  Registro criado no sistema com sucesso!  ");
         System.out.println(
@@ -172,6 +173,7 @@ public class PagamentoServico {
         Pagamento encontrado = pagamentoRepositorio.buscarPorId(id);
 
         if (encontrado != null) {
+            Pagamento.StatusPagamento statusAnterior = encontrado.getStatus();
             System.out.println("Status atual: " + encontrado.getStatus());
             System.out.println("Novo status: [1] PENDENTE  [2] PAGO  [3] CANCELADO");
             int opc = lerInteiro("Opcao: ");
@@ -190,6 +192,7 @@ public class PagamentoServico {
 
             if (opcaoValida) {
                 pagamentoRepositorio.atualizar(encontrado);
+                sincronizarVinculoPlanoPosAlteracaoStatus(encontrado, statusAnterior);
                 System.out.println(MSG_PAGAMENTO_ALTERADO);
             }
 
@@ -221,6 +224,44 @@ public class PagamentoServico {
                 return Integer.parseInt(entrada);
             } catch (NumberFormatException e) {
                 System.out.println("Digite apenas numeros.");
+            }
+        }
+    }
+
+    private void vincularPlanoSePagamentoPago(Pagamento pagamento) {
+        if (pagamento == null) return;
+        if (pagamento.getStatus() != Pagamento.StatusPagamento.PAGO) return;
+        if (pagamento.getAluno() == null || pagamento.getPlano() == null) return;
+        if (pagamento.getAluno().getId() == null || pagamento.getPlano().getId() == null) return;
+
+        alunoRepositorio.vincularPlanoAoAlunoSeAindaNaoExiste(
+                pagamento.getAluno().getId(),
+                pagamento.getPlano().getId()
+        );
+    }
+
+    private void sincronizarVinculoPlanoPosAlteracaoStatus(Pagamento pagamento, Pagamento.StatusPagamento statusAnterior) {
+        if (pagamento == null) return;
+        if (pagamento.getAluno() == null || pagamento.getPlano() == null) return;
+        if (pagamento.getAluno().getId() == null || pagamento.getPlano().getId() == null) return;
+
+        int alunoId = pagamento.getAluno().getId();
+        int planoId = pagamento.getPlano().getId();
+
+        if (pagamento.getStatus() == Pagamento.StatusPagamento.PAGO) {
+            alunoRepositorio.vincularPlanoAoAlunoSeAindaNaoExiste(alunoId, planoId);
+            return;
+        }
+
+        if (statusAnterior == Pagamento.StatusPagamento.PAGO) {
+            boolean existeOutroPagamentoPago = pagamentoRepositorio.existePagamentoPagoParaAlunoEPlanoExcetoId(
+                    alunoId,
+                    planoId,
+                    pagamento.getId()
+            );
+
+            if (!existeOutroPagamentoPago) {
+                alunoRepositorio.desvincularPlanoAoAlunoSeExistir(alunoId, planoId);
             }
         }
     }

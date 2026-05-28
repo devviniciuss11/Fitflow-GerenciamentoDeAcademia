@@ -52,6 +52,9 @@ public class TreinoServico {
 
         treino.setId(null);
         treinoRepositorio.salvar(treino);
+        if (treino.getId() != null) {
+            alunoRepositorio.vincularTreinoAoAlunoSeAindaNaoExiste(treino.getIdAluno(), treino.getId());
+        }
         return "Treino Cadastrado com Sucesso!";
     }
 
@@ -73,6 +76,7 @@ public class TreinoServico {
             treinoAtualizado.setId(id);
 
             if (treinoRepositorio.atualizar(treinoAtualizado)) {
+                alunoRepositorio.vincularTreinoAoAlunoSeAindaNaoExiste(treinoAtualizado.getIdAluno(), id);
                 return "Treino Cadastrado com Sucesso!";
             }
 
