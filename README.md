@@ -2,6 +2,15 @@
 
 Sistema de gerenciamento de academia em Java puro (console), com persistencia em PostgreSQL via Hibernate ORM.
 
+## Integrantes do grupo
+-Vinicius de Sousa Silva
+-Matheus Guilherme de Paula 
+-Joao Felipe
+-Tainon Coutinho
+-Igor Gustavo
+-Emanuel Vinicius
+-Pedro Henrique
+
 ## Especificacoes do projeto
 
 - Linguagem: Java 21
@@ -106,7 +115,7 @@ SELECT * FROM desempenho;
 ```
 
 ## Observacoes
-
+- Link Da Documentação Completa do Projeto https://canva.link/zqz3lsd3ms97h3l
 - O projeto nao usa Spring Boot.
 - A criacao/atualizacao de schema no Hibernate esta configurada por `hibernate.hbm2ddl.auto`.
 - Se aparecer muito log no console, ajuste `show_sql` e `format_sql` no `hibernate.cfg.xml`.
